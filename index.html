@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Westfield FC — RP Dashboard</title>
+<style>
+:root{
+  --gd:#060e09;--gs:#0b1a0f;--gm:#1a5c30;--ga:#2d8a50;
+  --y:#e8c547;--yd:#c9a82e;
+  --w:#f0f5f2;--gr:#4a5e52;--grl:#8fa898;
+  --cb:#0d1c12;--cbo:#1c3824;
+  --ok:#27ae60;--ng:#e74c3c;--info:#3498db;--warn:#f39c12;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gd);color:var(--w);height:100vh;display:flex;overflow:hidden}
+#sb{width:215px;min-width:215px;background:var(--gs);border-right:1px solid var(--cbo);display:flex;flex-direction:column}
+.sb-head{padding:20px 16px 16px;border-bottom:1px solid var(--cbo);text-align:center}
+.sb-logo{width:80px;height:80px;border-radius:50%;border:3px solid var(--y);object-fit:cover;display:block;margin:0 auto 10px;background:var(--gm)}
+.cn{font-size:13px;font-weight:800;letter-spacing:1.5px;color:var(--w);text-transform:uppercase}
+.cl{font-size:10px;color:var(--grl);margin-top:3px;line-height:1.5}
+nav{flex:1;padding:10px 0;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;border-left:3px solid transparent;font-size:13px;color:var(--grl);transition:all .18s;user-select:none}
+.ni:hover{background:rgba(255,255,255,.04);color:var(--w)}
+.ni.active{background:rgba(232,197,71,.08);color:var(--y);border-left-color:var(--y);font-weight:600}
+.ni-ic{font-size:14px;width:18px;text-align:center}
+.sb-foot{padding:11px 16px;border-top:1px solid var(--cbo);font-size:10px;color:var(--gr);text-align:center;line-height:1.6}
+.sb-season{font-size:11px;color:var(--y);font-weight:700;display:block;margin-top:2px}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#topbar{background:var(--gs);border-bottom:1px solid var(--cbo);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.pt{font-size:16px;font-weight:700;white-space:nowrap}
+.tbm{display:flex;gap:16px;font-size:12px;color:var(--grl);flex-wrap:wrap}
+.tbm span{display:flex;align-items:center;gap:5px}
+.tbm strong{color:var(--y)}
+.page{display:none;flex:1;overflow-y:auto;padding:20px 22px}
+.page.active{display:block}
+.card{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.ct{font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:13px;display:flex;align-items:center;gap:8px}
+.ct::after{content:'';flex:1;height:1px;background:var(--cbo)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sc{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:13px 16px;text-align:center}
+.sv{font-size:28px;font-weight:900;color:var(--y);line-height:1}
+.sl{font-size:10px;color:var(--grl);text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+input,select,textarea{background:var(--gd);border:1px solid var(--cbo);border-radius:6px;color:var(--w);padding:7px 10px;font-size:13px;font-family:inherit;outline:none;transition:border-color .18s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--y);box-shadow:0 0 0 2px rgba(232,197,71,.1)}
+select option{background:var(--gs)}
+.btn{padding:7px 14px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all .18s;white-space:nowrap}
+.bp{background:var(--y);color:#000}.bp:hover{background:var(--yd)}
+.bd{background:rgba(192,57,43,.15);color:var(--ng);border:1px solid rgba(192,57,43,.28)}.bd:hover{background:rgba(192,57,43,.28)}
+.bg{background:transparent;color:var(--grl);border:1px solid var(--cbo)}.bg:hover{color:var(--w);border-color:var(--gr)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;color:var(--grl);font-size:10px;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--cbo)}
+td{padding:8px 10px;border-bottom:1px solid rgba(28,56,36,.6);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase}
+.bgk{background:rgba(184,134,11,.25);color:#e8c547}
+.bdef{background:rgba(39,174,96,.18);color:#27ae60}
+.bmid{background:rgba(52,152,219,.18);color:#3498db}
+.batt{background:rgba(232,112,64,.2);color:#e87040}
+.rb{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:4px;font-size:10px;font-weight:700;flex-shrink:0}
+.rw{background:rgba(39,174,96,.2);color:#27ae60}
+.rd{background:rgba(149,165,166,.2);color:#95a5a6}
+.rl{background:rgba(192,57,43,.2);color:#e74c3c}
+.fr{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.fr label{font-size:12px;color:var(--grl);min-width:105px;flex-shrink:0}
+.fr input,.fr select{flex:1}
+.tabs{display:flex;gap:3px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:6px 13px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--grl);border:1px solid transparent;transition:all .18s}
+.tab:hover{color:var(--w)}
+.tab.active{background:rgba(232,197,71,.1);color:var(--y);border-color:rgba(232,197,71,.25)}
+.pbc{background:var(--gd);border-radius:4px;height:5px;overflow:hidden;margin-top:7px}
+.pb{height:100%;border-radius:4px;transition:width .5s,background .3s}
+[contenteditable]{outline:none;border-bottom:1px dashed rgba(160,184,152,.3);padding:1px 3px;cursor:text;transition:border-color .2s;min-width:20px;display:inline-block}
+[contenteditable]:focus{border-color:var(--y)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--cbo);border-radius:2px}
+
+/* ── WELCOME SCREEN ── */
+#screen-welcome{position:fixed;inset:0;z-index:1000;background:var(--gd);display:flex;align-items:center;justify-content:center;padding:28px;overflow-y:auto}
+.wlc-wrap{width:100%;max-width:500px}
+.wlc-hero{text-align:center;margin-bottom:36px}
+.wlc-logo-img{width:96px;height:96px;border-radius:50%;border:3px solid var(--y);object-fit:cover;display:block;margin:0 auto 16px;box-shadow:0 0 48px rgba(232,197,71,.3)}
+.wlc-title{font-size:24px;font-weight:900;color:var(--w);letter-spacing:2.5px;text-transform:uppercase}
+.wlc-sub{font-size:12px;color:var(--grl);margin-top:5px;letter-spacing:.5px}
+.wlc-stitle{font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--cbo);display:flex;align-items:center;gap:6px}
+.wlc-stitle::after{content:'';flex:1;height:1px;background:var(--cbo)}
+.save-card{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:13px 15px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.save-card:hover{border-color:rgba(232,197,71,.45);background:rgba(232,197,71,.04);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.save-card-ico{width:40px;height:40px;border-radius:50%;border:2px solid var(--y);object-fit:cover;flex-shrink:0}
+.save-card-name{font-size:14px;font-weight:800;color:var(--w)}
+.save-card-info{font-size:11px;color:var(--grl);margin-top:2px}
+.wlc-empty{text-align:center;padding:26px 0;color:var(--grl);font-size:13px}
+/* ── LOADING SCREEN ── */
+#screen-loading{position:fixed;inset:0;z-index:2000;background:#050d08;display:none;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#screen-loading::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(20,80,40,.55) 0%,transparent 70%);animation:ld-bg 3.5s ease-in-out infinite alternate;pointer-events:none}
+@keyframes ld-bg{from{opacity:.5}to{opacity:1}}
+.ld-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.045);animation:ld-spin-r 11s linear infinite}
+.ld-ring2{position:absolute;border-radius:50%;border:1px solid rgba(232,197,71,.06);animation:ld-spin-r 16s linear infinite reverse}
+@keyframes ld-spin-r{to{transform:rotate(360deg)}}
+/* Logo */
+.ld-logo-wrap{position:relative;z-index:2;margin-bottom:32px;width:124px;height:124px;display:flex;align-items:center;justify-content:center}
+.ld-glow{position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,.25) 0%,transparent 68%);animation:ld-glow-a 2.2s ease-in-out infinite alternate}
+@keyframes ld-glow-a{from{opacity:.3;transform:scale(.9)}to{opacity:1;transform:scale(1.05)}}
+.ld-logo{width:110px;height:110px;border-radius:50%;border:2.5px solid var(--y);object-fit:cover;display:block;position:relative;z-index:2}
+.ld-spin-ring{position:absolute;inset:-9px;border-radius:50%;border:2px solid transparent;border-top-color:var(--y);border-right-color:rgba(232,197,71,.25);animation:ld-spin-logo 1.6s linear infinite;z-index:3}
+@keyframes ld-spin-logo{to{transform:rotate(360deg)}}
+/* Text */
+.ld-content{position:relative;z-index:2;text-align:center}
+.ld-club-name{font-size:22px;font-weight:900;color:var(--w);letter-spacing:3.5px;text-transform:uppercase}
+.ld-tagline{font-size:11px;color:var(--grl);letter-spacing:.8px;margin-top:5px}
+.ld-sep{width:36px;height:2px;background:var(--y);margin:18px auto 16px;border-radius:1px}
+.ld-mgr-wrap{font-size:13px;color:var(--grl);margin-bottom:28px}
+.ld-mgr-wrap strong{color:var(--y);font-size:14px}
+/* Progress */
+.ld-bar{width:260px;height:2px;background:rgba(255,255,255,.06);border-radius:1px;margin-bottom:16px;position:relative;overflow:visible}
+.ld-fill{height:100%;background:linear-gradient(90deg,#1a6b35,var(--y));border-radius:1px;width:0;transition:width 1.95s cubic-bezier(.04,0,.12,1);position:relative}
+.ld-fill::after{content:'';position:absolute;right:-4px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--y);box-shadow:0 0 12px rgba(232,197,71,.9);transition:opacity .3s}
+.ld-msg{font-size:11px;color:rgba(160,184,152,.6);letter-spacing:.5px;min-height:15px;transition:opacity .35s ease}
+
+/* ── MODALS ── */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:20px}
+.mo.active{display:flex}
+.md{background:#0e1f15;border:1px solid var(--cbo);border-radius:14px;width:520px;max-width:96vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.md-head{padding:18px 22px 14px;border-bottom:1px solid var(--cbo);display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.2)}
+.md-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.md-icon.green{background:rgba(26,92,48,.4);border:1px solid rgba(42,138,80,.3)}
+.md-icon.yellow{background:rgba(232,197,71,.15);border:1px solid rgba(232,197,71,.3)}
+.md-icon.red{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3)}
+.md-icon.blue{background:rgba(52,152,219,.15);border:1px solid rgba(52,152,219,.3)}
+.mdt{font-size:15px;font-weight:700;color:var(--w)}
+.md-sub{font-size:11px;color:var(--grl);margin-top:1px}
+.md-body{padding:18px 22px;overflow-y:auto;flex:1}
+.md-sect{font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--cbo)}
+.md-sect:first-child{margin-top:0}
+.md-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px}
+.md-grid .fr{margin-bottom:0}
+.md-full{grid-column:1/-1}
+.mdf{padding:14px 22px;border-top:1px solid var(--cbo);display:flex;gap:8px;justify-content:flex-end;background:rgba(0,0,0,.15)}
+
+/* ── TACTICS ── */
+#tac-layout{display:flex;gap:20px;align-items:flex-start}
+#tac-left{flex-shrink:0;width:320px}
+#tac-right{flex:1;min-width:0}
+
+/* Pitch */
+svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
+.player-dot{cursor:grab}
+.player-dot:active{cursor:grabbing}
+
+/* Formation display bar */
+#form-bar{background:var(--cb);border:1px solid var(--cbo);border-radius:8px;padding:10px 14px;margin-top:10px;display:flex;align-items:center;gap:14px}
+#form-string{font-size:22px;font-weight:900;color:var(--y);letter-spacing:2px;min-width:70px}
+#form-dots{flex:1}
+.form-line{display:flex;align-items:center;gap:4px;margin-bottom:3px}
+.form-line:last-child{margin-bottom:0}
+.form-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.form-label{font-size:9px;color:var(--grl);text-transform:uppercase;letter-spacing:.8px;min-width:22px}
+#form-hint{font-size:10px;color:var(--gr);text-align:center;margin-top:6px}
+
+/* Tactic instruction panels */
+.tac-inst-section{margin-bottom:14px}
+.tac-inst-title{font-size:10px;font-weight:700;color:var(--y);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;padding:5px 10px;background:rgba(232,197,71,.07);border-radius:5px;border-left:2px solid var(--y)}
+.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.inst-row{display:flex;flex-direction:column;gap:3px}
+.inst-row label{font-size:10px;color:var(--grl)}
+.inst-row select{padding:5px 8px;font-size:12px}
+.roles-table{width:100%;font-size:12px}
+.roles-table th{font-size:10px;padding:6px 8px}
+.roles-table td{padding:5px 8px}
+.roles-table input{padding:4px 7px;font-size:12px}
+.roles-table select{padding:4px 7px;font-size:12px}
+
+/* History */
+.hist-card{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:16px 18px;margin-bottom:12px;transition:border-color .2s}
+.hist-card:hover{border-color:rgba(232,197,71,.3)}
+.hist-season{font-size:16px;font-weight:800;color:var(--y)}
+.hist-stats{display:flex;gap:14px;margin-top:9px;font-size:13px;flex-wrap:wrap}
+.hist-pos{font-size:36px;font-weight:900;color:var(--y);line-height:1}
+
+/* Next match */
+.nm-box{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.nm-team{font-weight:700;font-size:14px}
+.nm-vs{background:var(--gm);color:var(--y);padding:6px 14px;border-radius:6px;font-weight:800;font-size:12px;border:1px solid rgba(232,197,71,.2)}
+</style>
+</head>
+<body>
+
+<!-- ══ ÉCRAN D'ACCUEIL ══ -->
+<div id="screen-welcome">
+  <div class="wlc-wrap">
+    <div class="wlc-hero">
+      <img class="wlc-logo-img" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
+      <div class="wlc-title">Westfield FC</div>
+      <div class="wlc-sub">RP Dashboard · Football Manager 26</div>
+    </div>
+
+    <!-- Liste des saves -->
+    <div id="wlc-saves-section">
+      <div class="wlc-stitle">Vos sauvegardes</div>
+      <div id="wlc-saves"><div class="wlc-empty">Aucune sauvegarde.</div></div>
+      <button class="btn bp" style="width:100%;margin-top:12px;padding:10px;font-size:13px" onclick="showNewSaveForm()">+ Nouvelle partie</button>
+    </div>
+
+    <!-- Formulaire nouvelle save (caché) -->
+    <div id="wlc-new-form" style="display:none">
+      <div class="wlc-stitle">Nouvelle partie</div>
+      <div style="background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:20px">
+        <div class="fr" style="margin-bottom:14px">
+          <label style="min-width:130px">Nom du manager</label>
+          <input type="text" id="ns-mgr" placeholder="Votre nom…" onkeydown="if(event.key==='Enter')createSave()" autofocus>
+        </div>
+        <div class="fr" style="margin-bottom:0">
+          <label style="min-width:130px">Club</label>
+          <input type="text" value="Westfield FC" disabled style="opacity:.5">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn bg" style="flex:1;padding:9px" onclick="hideNewSaveForm()">← Retour</button>
+        <button class="btn bp" style="flex:2;padding:9px;font-size:13px" onclick="createSave()">Commencer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ÉCRAN DE CHARGEMENT ══ -->
+<div id="screen-loading">
+  <!-- Anneaux décoratifs (positionnés via JS pour éviter les conflits transform) -->
+  <div class="ld-ring"  id="ld-r1"></div>
+  <div class="ld-ring2" id="ld-r2"></div>
+
+  <!-- Logo animé -->
+  <div class="ld-logo-wrap">
+    <div class="ld-glow"></div>
+    <img class="ld-logo" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
+    <div class="ld-spin-ring"></div>
+  </div>
+
+  <!-- Texte -->
+  <div class="ld-content">
+    <div class="ld-club-name">Westfield FC</div>
+    <div class="ld-tagline">RP Dashboard · Football Manager 26</div>
+    <div class="ld-sep"></div>
+    <div class="ld-mgr-wrap">Manager : <strong id="ld-mgr">—</strong></div>
+    <div class="ld-bar"><div class="ld-fill" id="ld-fill"></div></div>
+    <div class="ld-msg" id="ld-msg">Chargement en cours…</div>
+  </div>
+</div>
+
+<div id="sb" style="display:none">
+  <div class="sb-head">
+    <img class="sb-logo" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
+    <div class="cn">Westfield FC</div>
+    <div class="cl">Gray Hooper Holt Mid Sussex FL<br><span class="sb-season" id="sb-season">2025/26</span></div>
+  </div>
+  <nav>
+    <div class="ni active" onclick="showPage('dashboard',this)"><span class="ni-ic">⚡</span>Dashboard</div>
+    <div class="ni" onclick="showPage('finances',this)"><span class="ni-ic">💰</span>Finances</div>
+    <div class="ni" onclick="showPage('tactics',this)"><span class="ni-ic">🎯</span>Tactique</div>
+    <div class="ni" onclick="showPage('squad',this)"><span class="ni-ic">👥</span>Effectif</div>
+    <div class="ni" onclick="showPage('recruitment',this)"><span class="ni-ic">🔍</span>Recrutement</div>
+    <div class="ni" onclick="showPage('notes',this)"><span class="ni-ic">📋</span>Notes</div>
+    <div class="ni" onclick="showPage('history',this)"><span class="ni-ic">📜</span>Historique</div>
+  </nav>
+  <div style="padding:10px 12px;border-top:1px solid var(--cbo)">
+    <div class="ni" style="border-radius:6px;border:1px solid var(--cbo)" onclick="quitToMenu()"><span class="ni-ic">🚪</span>Menu principal</div>
+  </div>
+  <div class="sb-foot">FM26 RP Dashboard<br>Westfield FC · Est. 1966</div>
+</div>
+
+<div id="main" style="display:none">
+  <div id="topbar">
+    <div class="pt" id="tp-title">Dashboard</div>
+    <div class="tbm">
+      <span>Saison <strong id="tb-season" contenteditable="true" oninput="sd()">2025/26</strong></span>
+      <span>Manager <strong id="tb-mgr" contenteditable="true" oninput="sd()">Votre nom</strong></span>
+      <span>Division <strong>D11 — Mid Sussex FL</strong></span>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div class="g4" style="margin-bottom:16px">
+      <div class="sc"><div class="sv" id="d-pos">—</div><div class="sl">Position</div></div>
+      <div class="sc"><div class="sv" id="d-pts">0</div><div class="sl">Points</div></div>
+      <div class="sc"><div class="sv" id="d-form" style="font-size:13px;padding-top:9px;display:flex;gap:3px;justify-content:center;flex-wrap:wrap">—</div><div class="sl">Forme récente</div></div>
+      <div class="sc"><div class="sv" id="d-budget">£0</div><div class="sl">Budget transferts</div></div>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="ct">Résultats récents</div>
+          <div id="res-list"><p style="color:var(--grl);font-size:13px">Aucun résultat.</p></div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn bp" onclick="openM('res')">+ Résultat</button>
+            <button class="btn bg" onclick="openM('archive')">📦 Archiver saison</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ct">Classement</div>
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <div style="font-size:44px;font-weight:900;color:var(--y);line-height:1" id="pos-big">—</div>
+            <div style="font-size:13px;color:var(--grl)">/ <span id="pos-tot" contenteditable="true" oninput="sd()">20</span> clubs</div>
+          </div>
+          <div style="margin-top:9px;display:flex;gap:12px;font-size:13px;flex-wrap:wrap">
+            <span>J:<strong id="d-j">0</strong></span>
+            <span style="color:#27ae60">V:<strong id="d-v">0</strong></span>
+            <span style="color:#95a5a6">N:<strong id="d-n">0</strong></span>
+            <span style="color:#e74c3c">D:<strong id="d-d">0</strong></span>
+            <span>BP:<strong id="d-bp">0</strong></span>
+            <span>BC:<strong id="d-bc">0</strong></span>
+          </div>
+          <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+            <label style="font-size:12px;color:var(--grl);white-space:nowrap">Position actuelle :</label>
+            <input type="number" id="pos-input" min="1" max="100" placeholder="Ex: 3" style="width:70px" oninput="updatePos()">
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="ct">Prochain match</div>
+          <div class="nm-box">
+            <div><div style="font-size:10px;color:var(--grl);margin-bottom:3px">DOMICILE</div><div class="nm-team">Westfield FC</div></div>
+            <div class="nm-vs">VS</div>
+            <div style="text-align:right"><div style="font-size:10px;color:var(--grl);margin-bottom:3px">EXTÉRIEUR</div><div class="nm-team" id="nm-opp" contenteditable="true" oninput="sd()">—</div></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <input type="date" id="nm-date" style="flex:1" oninput="sd()">
+            <input type="text" id="nm-comp" placeholder="Compétition" style="flex:1" oninput="sd()">
+          </div>
+        </div>
+        <div class="card">
+          <div class="ct">Infos club</div>
+          <div class="fr"><label>Stade</label><input type="text" id="c-stad" placeholder="Nom du stade" oninput="sd()"></div>
+          <div class="fr"><label>Capacité</label><input type="number" id="c-cap" placeholder="Capacité" oninput="sd()"></div>
+          <div class="fr"><label>Ville</label><input type="text" id="c-city" placeholder="West Sussex" oninput="sd()"></div>
+          <div class="fr"><label>Fondé en</label><input type="text" id="c-found" value="1966" style="width:80px" oninput="sd()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCES -->
+  <div id="page-finances" class="page">
+    <div class="g3" style="margin-bottom:16px">
+      <div class="sc">
+        <div class="sl" style="margin-bottom:7px">Budget transferts</div>
+        <div style="display:flex;align-items:center;gap:5px;justify-content:center">
+          <span style="color:var(--grl);font-size:16px">£</span>
+          <input type="number" id="f-transfer" placeholder="0" style="font-size:22px;font-weight:900;color:var(--y);background:transparent;border:none;border-bottom:1px dashed var(--cbo);width:120px;text-align:center" oninput="sd()">
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sl" style="margin-bottom:7px">Budget salaires / sem.</div>
+        <div style="display:flex;align-items:center;gap:5px;justify-content:center">
+          <span style="color:var(--grl);font-size:16px">£</span>
+          <input type="number" id="f-wages" placeholder="0" style="font-size:22px;font-weight:900;color:var(--y);background:transparent;border:none;border-bottom:1px dashed var(--cbo);width:120px;text-align:center" oninput="sd()">
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sl" style="margin-bottom:7px">Trésorerie</div>
+        <div style="display:flex;align-items:center;gap:5px;justify-content:center">
+          <span style="color:var(--grl);font-size:16px">£</span>
+          <input type="number" id="f-balance" placeholder="0" style="font-size:22px;font-weight:900;color:#27ae60;background:transparent;border:none;border-bottom:1px dashed var(--cbo);width:120px;text-align:center" oninput="sd()">
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Utilisation salaires</div>
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span id="wl">£0/sem. utilisé</span><span id="wp">0%</span></div>
+      <div class="pbc"><div class="pb" id="wb" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="ct">Journal des transactions</div>
+      <div style="display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap">
+        <input type="text" id="tx-d" placeholder="Description" style="flex:2;min-width:130px">
+        <input type="number" id="tx-a" placeholder="Montant (£)" style="flex:1;min-width:85px">
+        <select id="tx-t" style="flex:1;min-width:85px"><option value="in">Entrée</option><option value="out">Sortie</option></select>
+        <select id="tx-c" style="flex:1;min-width:100px">
+          <option value="transfer">Transfert</option><option value="wages">Salaires</option>
+          <option value="matchday">Jour match</option><option value="sponsor">Sponsoring</option>
+          <option value="prize">Prime</option><option value="other">Autre</option>
+        </select>
+        <button class="btn bp" onclick="addTx()">Ajouter</button>
+      </div>
+      <table>
+        <thead><tr><th>Date</th><th>Description</th><th>Catégorie</th><th>Type</th><th style="text-align:right">Montant</th><th></th></tr></thead>
+        <tbody id="tx-table"><tr><td colspan="6" style="color:var(--gr);text-align:center;padding:20px">Aucune transaction</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TACTIQUE -->
+  <div id="page-tactics" class="page">
+    <div id="tac-layout">
+      <div id="tac-left">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <label style="font-size:12px;color:var(--grl)">Formation</label>
+          <select id="f-select" onchange="setFormation(this.value)" style="width:auto">
+            <option>4-4-2</option><option>4-4-2 ◆</option><option>4-3-3</option><option>4-5-1</option>
+            <option>3-5-2</option><option>5-3-2</option><option>4-2-3-1</option><option>3-4-3</option>
+          </select>
+          <button class="btn bg" style="font-size:11px;padding:5px 10px" onclick="resetPositions()">↺ Réinitialiser</button>
+          <button class="btn bg" style="font-size:11px;padding:5px 10px" onclick="clearNames()">✕ Noms</button>
+        </div>
+
+        <!-- Vue ATT / DEF / Combiné -->
+        <div style="display:flex;gap:4px;margin-bottom:10px">
+          <button id="pv-att"      class="btn bp" style="font-size:11px;padding:5px 12px;flex:1" onclick="setPosView('att')">⚽ Attaque</button>
+          <button id="pv-def"      class="btn bg" style="font-size:11px;padding:5px 12px;flex:1" onclick="setPosView('def')">🛡️ Défense</button>
+          <button id="pv-combined" class="btn bg" style="font-size:11px;padding:5px 12px;flex:1" onclick="setPosView('combined')">⊕ Combiné</button>
+        </div>
+
+        <!-- Pitch SVG -->
+        <svg id="pitch" width="320" height="500" viewBox="0 0 320 500"></svg>
+
+        <!-- Formation bar -->
+        <div id="form-bar">
+          <div id="form-string">—</div>
+          <div id="form-dots"></div>
+        </div>
+        <p id="form-hint">Glissez les joueurs · Cliquez pour nommer</p>
+
+        <!-- Zone legend -->
+        <div style="display:flex;gap:10px;margin-top:8px;justify-content:center;flex-wrap:wrap">
+          <span style="font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#b8860b;display:inline-block"></span>GK</span>
+          <span style="font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#27ae60;display:inline-block"></span>DEF</span>
+          <span style="font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#3498db;display:inline-block"></span>MIL</span>
+          <span style="font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#e87040;display:inline-block"></span>ATT</span>
+        </div>
+      </div>
+
+      <div id="tac-right">
+        <div class="tabs">
+          <div class="tab active" onclick="tacTab('instructions',this)">Instructions d'équipe</div>
+          <div class="tab" onclick="tacTab('roles',this)">Rôles joueurs</div>
+          <div class="tab" onclick="tacTab('setpieces',this)">Coups de pied</div>
+        </div>
+
+        <div id="tt-instructions">
+          <div class="card">
+            <div class="tac-inst-section">
+              <div class="tac-inst-title">⚽ En possession</div>
+              <div class="inst-grid">
+                <div class="inst-row"><label>Mentalité</label><select id="ti-men" onchange="saveTac()"><option>Très défensif</option><option>Défensif</option><option selected>Équilibré</option><option>Offensif</option><option>Très offensif</option></select></div>
+                <div class="inst-row"><label>Tempo</label><select id="ti-tem" onchange="saveTac()"><option>Lent</option><option selected>Normal</option><option>Rapide</option></select></div>
+                <div class="inst-row"><label>Largeur de jeu</label><select id="ti-wid" onchange="saveTac()"><option>Très étroit</option><option>Étroit</option><option selected>Normal</option><option>Large</option><option>Très large</option></select></div>
+                <div class="inst-row"><label>Style de passes</label><select id="ti-pas" onchange="saveTac()"><option>Direct</option><option selected>Mixte</option><option>Court</option></select></div>
+                <div class="inst-row"><label>Ligne défensive</label><select id="ti-dln" onchange="saveTac()"><option>Très basse</option><option>Basse</option><option selected>Normale</option><option>Haute</option><option>Très haute</option></select></div>
+                <div class="inst-row"><label>Prise de risque</label><select id="ti-risk" onchange="saveTac()"><option>Faible</option><option selected>Moyenne</option><option>Élevée</option></select></div>
+              </div>
+            </div>
+            <div class="tac-inst-section">
+              <div class="tac-inst-title">🛡️ Hors possession</div>
+              <div class="inst-grid">
+                <div class="inst-row"><label>Pressing</label><select id="ti-pre" onchange="saveTac()"><option>Bas</option><option selected>Moyen</option><option>Haut</option><option>Contre-pressing</option></select></div>
+                <div class="inst-row"><label>Déclencheur pressing</label><select id="ti-ptrig" onchange="saveTac()"><option>Basse récupération</option><option selected>Récupération moyenne</option><option>Haute récupération</option></select></div>
+                <div class="inst-row"><label>Agressivité</label><select id="ti-agg" onchange="saveTac()"><option>Prudente</option><option selected>Normale</option><option>Agressive</option></select></div>
+                <div class="inst-row"><label>Bloc défensif</label><select id="ti-blk" onchange="saveTac()"><option>Très bas</option><option>Bas</option><option selected>Moyen</option><option>Haut</option><option>Très haut</option></select></div>
+              </div>
+            </div>
+            <div class="tac-inst-section" style="margin-bottom:0">
+              <div class="tac-inst-title">⚡ Transitions</div>
+              <div class="inst-grid">
+                <div class="inst-row"><label>Contre-attaque</label><select id="ti-ca" onchange="saveTac()"><option selected>Désactivée</option><option>Activée</option></select></div>
+                <div class="inst-row"><label>Contre-pressing</label><select id="ti-cp" onchange="saveTac()"><option selected>Désactivé</option><option>Activé</option></select></div>
+                <div class="inst-row"><label>Distribution GK</label><select id="ti-gk" onchange="saveTac()"><option>Courte</option><option selected>Mixte</option><option>Longue</option></select></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ct">Notes tactiques</div>
+            <textarea id="t-notes" rows="4" style="width:100%;resize:vertical" placeholder="Consignes générales, plan de jeu…" oninput="saveTac()"></textarea>
+          </div>
+        </div>
+
+        <div id="tt-roles" style="display:none">
+          <div class="card">
+            <div class="ct">Rôles & Devoirs — mis à jour selon positions sur le terrain</div>
+            <p style="font-size:11px;color:var(--grl);margin-bottom:12px">Le poste est détecté automatiquement. Saisissez le rôle FM exact (ex: Milieu relayeur, Arrière offensif…)</p>
+            <table class="roles-table">
+              <thead><tr><th>Zone</th><th>Poste auto</th><th>Joueur</th><th>Rôle FM</th><th>Devoir</th></tr></thead>
+              <tbody id="roles-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="tt-setpieces" style="display:none">
+          <div class="card">
+            <div class="ct">Coups de pied arrêtés</div>
+            <div style="margin-bottom:10px"><div style="font-size:11px;color:var(--grl);margin-bottom:5px">Corners (attaque)</div>
+              <textarea id="sp-corners" rows="3" style="width:100%;resize:vertical" placeholder="Routines offensives sur corners…" oninput="saveTac()"></textarea></div>
+            <div style="margin-bottom:10px"><div style="font-size:11px;color:var(--grl);margin-bottom:5px">Coups-francs</div>
+              <textarea id="sp-fk" rows="3" style="width:100%;resize:vertical" placeholder="Tireurs, placement, routines…" oninput="saveTac()"></textarea></div>
+            <div><div style="font-size:11px;color:var(--grl);margin-bottom:5px">Défense — corners & coups-francs</div>
+              <textarea id="sp-def" rows="3" style="width:100%;resize:vertical" placeholder="Organisation défensive…" oninput="saveTac()"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EFFECTIF -->
+  <div id="page-squad" class="page">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+      <button class="btn bp" onclick="openM('player')">+ Ajouter un joueur</button>
+    </div>
+    <div class="card">
+      <div class="ct">Effectif — <span id="sq-count" style="color:var(--y);font-style:normal">0 joueurs</span></div>
+      <table>
+        <thead><tr><th>#</th><th>Nom</th><th>Poste</th><th>Âge</th><th>Nat.</th><th>Salaire/sem.</th><th>Contrat</th><th>Statut</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="sq-table"><tr><td colspan="10" style="color:var(--gr);text-align:center;padding:22px">Effectif vide</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RECRUTEMENT -->
+  <div id="page-recruitment" class="page">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="tabs" style="margin-bottom:0">
+        <div class="tab active" onclick="rTab('targets',this)">Cibles</div>
+        <div class="tab" onclick="rTab('shortlist',this)">Liste courte</div>
+        <div class="tab" onclick="rTab('scouts',this)">Rapport scouts</div>
+      </div>
+      <button class="btn bp" onclick="openM('target')">+ Ajouter</button>
+    </div>
+    <div id="rt-targets">
+      <div class="card"><div class="ct">Cibles</div>
+        <table><thead><tr><th>Nom</th><th>Club</th><th>Poste</th><th>Âge</th><th>Valeur</th><th>Statut</th><th>Priorité</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="tg-table"><tr><td colspan="9" style="color:var(--gr);text-align:center;padding:22px">Aucune cible</td></tr></tbody></table>
+      </div>
+    </div>
+    <div id="rt-shortlist" style="display:none">
+      <div class="card"><div class="ct">Liste courte</div>
+        <table><thead><tr><th>Nom</th><th>Club</th><th>Poste</th><th>Âge</th><th>Valeur</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="sl-table"><tr><td colspan="7" style="color:var(--gr);text-align:center;padding:22px">Liste vide</td></tr></tbody></table>
+      </div>
+    </div>
+    <div id="rt-scouts" style="display:none">
+      <div class="card"><div class="ct">Rapports de scouts</div>
+        <textarea id="scout-notes" rows="15" style="width:100%;resize:vertical" placeholder="Collez vos rapports FM ici…" oninput="sd()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div id="page-notes" class="page">
+    <div class="card"><div class="ct">Notes libres</div>
+      <textarea id="gen-notes" rows="9" style="width:100%;resize:vertical" placeholder="Réflexions sur la save, stratégie long terme…" oninput="sd()"></textarea>
+    </div>
+    <div class="card"><div class="ct">Objectifs de saison</div>
+      <div id="obj-list"><p style="color:var(--grl);font-size:13px">Aucun objectif.</p></div>
+      <div style="display:flex;gap:8px;margin-top:11px">
+        <input type="text" id="new-obj" placeholder="Nouvel objectif…" style="flex:1" onkeydown="if(event.key==='Enter')addObj()">
+        <button class="btn bp" onclick="addObj()">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div id="page-history" class="page">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div><div style="font-size:15px;font-weight:700">Historique des saisons</div>
+        <div style="font-size:12px;color:var(--grl);margin-top:2px">Toutes les saisons archivées</div></div>
+      <button class="btn bg" onclick="openM('archive')">📦 Archiver saison en cours</button>
+    </div>
+    <div id="history-list"><div style="text-align:center;padding:40px;color:var(--gr)">Aucune saison archivée.</div></div>
+  </div>
+</div>
+
+<!-- MODAL: Résultat -->
+<div class="mo" id="m-res">
+  <div class="md">
+    <div class="md-head"><div class="md-icon yellow">⚽</div><div><div class="mdt">Ajouter un résultat</div><div class="md-sub">Stats mises à jour automatiquement</div></div></div>
+    <div class="md-body">
+      <div class="md-grid">
+        <div class="fr md-full"><label>Adversaire</label><input type="text" id="r-opp" placeholder="Nom du club adversaire"></div>
+        <div class="fr"><label>Lieu</label><select id="r-venue"><option value="H">Domicile</option><option value="A">Extérieur</option></select></div>
+        <div class="fr"><label>Compétition</label><input type="text" id="r-comp" placeholder="Ex: Mid Sussex FL"></div>
+        <div class="fr"><label>Date</label><input type="date" id="r-date"></div>
+        <div class="fr"><label>Score</label><div style="display:flex;align-items:center;gap:8px;flex:1">
+          <input type="number" id="r-us" min="0" placeholder="Nous" style="text-align:center;font-size:20px;font-weight:700">
+          <span style="color:var(--grl);font-weight:700;flex-shrink:0">–</span>
+          <input type="number" id="r-them" min="0" placeholder="Eux" style="text-align:center;font-size:20px;font-weight:700">
+        </div></div>
+        <div class="fr md-full"><label>Buteurs</label><input type="text" id="r-scorers" placeholder="Ex: Smith 23', Jones 67'"></div>
+      </div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('res')">Annuler</button><button class="btn bp" onclick="addResult()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Joueur -->
+<div class="mo" id="m-player">
+  <div class="md">
+    <div class="md-head"><div class="md-icon green">👤</div><div><div class="mdt">Ajouter un joueur</div><div class="md-sub">Effectif Westfield FC</div></div></div>
+    <div class="md-body">
+      <div class="md-sect">Identité</div>
+      <div class="md-grid">
+        <div class="fr"><label>N° maillot</label><input type="number" id="p-num" min="1" max="99" placeholder="N°"></div>
+        <div class="fr"><label>Poste</label>
+          <select id="p-pos">
+            <option value="GK">GK — Gardien</option><option value="CB">CB — Défenseur central</option>
+            <option value="LB">LB — Arrière gauche</option><option value="RB">RB — Arrière droit</option>
+            <option value="LWB">LWB — Wing-back gauche</option><option value="RWB">RWB — Wing-back droit</option>
+            <option value="DM">DM — Milieu défensif</option><option value="CM">CM — Milieu central</option>
+            <option value="LM">LM — Milieu gauche</option><option value="RM">RM — Milieu droit</option>
+            <option value="AM">AM — Milieu offensif</option><option value="LW">LW — Ailier gauche</option>
+            <option value="RW">RW — Ailier droit</option><option value="ST">ST — Attaquant</option>
+          </select>
+        </div>
+        <div class="fr md-full"><label>Nom complet</label><input type="text" id="p-name" placeholder="Prénom Nom"></div>
+        <div class="fr"><label>Âge</label><input type="number" id="p-age" min="14" max="45" placeholder="Âge"></div>
+        <div class="fr"><label>Nationalité</label><input type="text" id="p-nat" placeholder="ENG, FRA…"></div>
+      </div>
+      <div class="md-sect">Contrat & Statut</div>
+      <div class="md-grid">
+        <div class="fr"><label>Salaire / sem.</label><input type="number" id="p-wage" placeholder="£ par semaine"></div>
+        <div class="fr"><label>Fin de contrat</label><input type="text" id="p-con" placeholder="Juin 2026"></div>
+        <div class="fr"><label>Statut</label>
+          <select id="p-stat"><option value="key">Titulaire</option><option value="rot">Rotation</option><option value="bak">Remplaçant</option><option value="yth">Espoir</option><option value="lon">Prêt</option><option value="inj">Blessé</option></select>
+        </div>
+        <div class="fr"><label>Arrivée</label>
+          <select id="p-acq"><option value="">—</option><option>Signature libre</option><option>Transfert</option><option>Prêt</option><option>Académie</option></select>
+        </div>
+        <div class="fr md-full"><label>Notes</label><input type="text" id="p-note" placeholder="Forces, faiblesses, observations…"></div>
+      </div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('player')">Annuler</button><button class="btn bp" onclick="addPlayer()">Ajouter</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Cible -->
+<div class="mo" id="m-target">
+  <div class="md">
+    <div class="md-head"><div class="md-icon blue">🔍</div><div><div class="mdt">Ajouter une cible</div><div class="md-sub">Recrutement & suivi</div></div></div>
+    <div class="md-body">
+      <div class="md-sect">Joueur</div>
+      <div class="md-grid">
+        <div class="fr md-full"><label>Nom complet</label><input type="text" id="tg-name" placeholder="Prénom Nom"></div>
+        <div class="fr"><label>Club actuel</label><input type="text" id="tg-club" placeholder="Nom du club"></div>
+        <div class="fr"><label>Poste</label>
+          <select id="tg-pos"><option>GK</option><option>CB</option><option>LB</option><option>RB</option><option>LWB</option><option>RWB</option><option>DM</option><option>CM</option><option>LM</option><option>RM</option><option>AM</option><option>LW</option><option>RW</option><option>ST</option></select>
+        </div>
+        <div class="fr"><label>Âge</label><input type="number" id="tg-age" placeholder="Âge"></div>
+        <div class="fr"><label>Valeur estimée</label><input type="text" id="tg-val" placeholder="Ex: £500, Libre…"></div>
+      </div>
+      <div class="md-sect">Suivi</div>
+      <div class="md-grid">
+        <div class="fr"><label>Statut</label>
+          <select id="tg-stat"><option value="watch">Surveillance</option><option value="int">Intéressé</option><option value="neg">Négociation</option><option value="ok">Accord</option><option value="fail">Échec</option></select>
+        </div>
+        <div class="fr"><label>Priorité</label>
+          <select id="tg-pri"><option value="lo">🔵 Basse</option><option value="me">🟡 Moyenne</option><option value="hi">🔴 Haute</option></select>
+        </div>
+        <div class="fr"><label>Liste</label>
+          <select id="tg-list"><option value="targets">Cibles</option><option value="shortlist">Liste courte</option></select>
+        </div>
+        <div class="fr md-full"><label>Notes</label><input type="text" id="tg-note" placeholder="Observations…"></div>
+      </div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('target')">Annuler</button><button class="btn bp" onclick="addTarget()">Ajouter</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Archive -->
+<div class="mo" id="m-archive">
+  <div class="md">
+    <div class="md-head"><div class="md-icon yellow">📦</div><div><div class="mdt">Archiver la saison</div><div class="md-sub" id="arch-sub">Clôture et sauvegarde</div></div></div>
+    <div class="md-body">
+      <div style="background:rgba(232,197,71,.06);border:1px solid rgba(232,197,71,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--grl)">Les stats (J/V/N/D/BP/BC) seront archivées puis remises à zéro.</div>
+      <div class="md-sect">Bilan final</div>
+      <div class="md-grid">
+        <div class="fr"><label>Saison</label><input type="text" id="arch-season" placeholder="Ex: 2025/26"></div>
+        <div class="fr"><label>Division</label><input type="text" id="arch-div" placeholder="Ex: D11 Mid Sussex"></div>
+        <div class="fr"><label>Position finale</label><input type="number" id="arch-pos" min="1" max="50" placeholder="Ex: 3"></div>
+        <div class="fr"><label>Nb clubs</label><input type="number" id="arch-tot" min="2" max="50" placeholder="Ex: 12"></div>
+        <div class="fr"><label>Meilleur buteur</label><input type="text" id="arch-scorer" placeholder="Nom du joueur"></div>
+        <div class="fr"><label>Buts</label><input type="number" id="arch-goals" min="0" placeholder="0"></div>
+        <div class="fr md-full"><label>Notes / Bilan</label><textarea id="arch-notes" rows="3" style="width:100%;resize:none" placeholder="Résumé de la saison…"></textarea></div>
+      </div>
+      <div class="md-sect">Prochaine saison</div>
+      <div class="fr"><label>Nom saison suivante</label><input type="text" id="arch-nexts" placeholder="Ex: 2026/27"></div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('archive')">Annuler</button><button class="btn bp" onclick="archiveSeason()">📦 Archiver &amp; Nouvelle saison</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Renommer joueur sur terrain -->
+<div class="mo" id="m-rename">
+  <div class="md" style="width:420px">
+    <div class="md-head"><div class="md-icon green">✏️</div><div><div class="mdt" id="rename-title">Nommer le joueur</div><div class="md-sub" id="rename-sub">Poste détecté automatiquement</div></div></div>
+    <div class="md-body">
+      <div class="fr" style="margin-bottom:12px">
+        <label>Lier à l'effectif</label>
+        <select id="rename-squad-sel" onchange="selectSquadForPos()">
+          <option value="">— Choisir depuis l'effectif —</option>
+        </select>
+      </div>
+      <div class="fr"><label>Ou saisir manuellement</label><input type="text" id="rename-input" placeholder="Tapez le nom…" onkeydown="if(event.key==='Enter')confirmRename()" oninput="g('rename-squad-sel').value=''"></div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="confirmRename(null)">Effacer</button><button class="btn bp" onclick="confirmRename()">Confirmer</button></div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+//  ZONE & ROLE SYSTEM
+// ════════════════════════════════════════════
+const W = 320, H = 500;
+
+// Y thresholds (% from top = attack, bottom = defense)
+const Y_GK   = 80;  // y >= 80 → GK
+const Y_DEF  = 58;  // y >= 58 → DEF
+const Y_MID  = 36;  // y >= 36 → MID
+                    // y <  36 → ATT
+
+const ZONE_FILL  = {gk:'#8a6500', def:'#1a6b35', mid:'#1a3d7a', att:'#7a2800'};
+const ZONE_STR   = {gk:'#e8c547', def:'#4ab870', mid:'#5b9bd5', att:'#e87040'};
+const ZONE_BADGE = {gk:'bgk',     def:'bdef',    mid:'bmid',    att:'batt'};
+const ZONE_NAME  = {gk:'GK',      def:'DEF',     mid:'MIL',     att:'ATT'};
+const ZONE_DOT   = {gk:'#e8c547', def:'#4ab870', mid:'#5b9bd5', att:'#e87040'};
+
+function getZone(y) {
+  if (y >= Y_GK)  return 'gk';
+  if (y >= Y_DEF) return 'def';
+  if (y >= Y_MID) return 'mid';
+  return 'att';
+}
+
+function detectRole(x, y) {
+  const L = x < 28, R = x > 72;
+  if (y >= 82)   return 'GK';
+  if (y >= Y_DEF) {
+    if (y >= 66) return L ? 'LB'  : R ? 'RB'  : 'CB';
+    else         return L ? 'LWB' : R ? 'RWB' : 'DM';
+  }
+  if (y >= Y_MID) {
+    if (y >= 50) return L ? 'LM'  : R ? 'RM'  : 'DM';  // milieu défensif/sentinelle
+    if (y >= 43) return L ? 'LM'  : R ? 'RM'  : 'CM';  // milieu central
+    else         return L ? 'LW'  : R ? 'RW'  : 'MOC'; // milieu offensif central
+  }
+  if (y >= 20)   return L ? 'LW'  : R ? 'RW'  : 'AM';
+  return                L ? 'LW'  : R ? 'RW'  : 'ST';
+}
+
+function activePosSet() {
+  const v = D.tac.posView || 'att';
+  return (v === 'def') ? (D.tac.playerPosDef || {}) : (D.tac.playerPos || {});
+}
+
+function detectFormation() {
+  const pos = activePosSet();
+  const all = Object.values(pos);
+  if (all.length < 11) return D.tac.form || '—';
+  const non = all.filter(p => p.y < Y_GK);
+  const def = non.filter(p => p.y >= Y_DEF).length;
+  const mid = non.filter(p => p.y >= Y_MID && p.y < Y_DEF).length;
+  const att = non.filter(p => p.y < Y_MID).length;
+  return `${def}-${mid}-${att}`;
+}
+
+function updateFormationBar() {
+  const detected = detectFormation();
+  const storedBase = (D.tac.form || '').split(' ')[0];
+  const display = (storedBase === detected && D.tac.form !== detected) ? D.tac.form : detected;
+  document.getElementById('form-string').textContent = display;
+
+  const pos = activePosSet();
+  const all = Object.values(pos);
+  const gk  = all.filter(p => p.y >= Y_GK);
+  const def = all.filter(p => p.y >= Y_DEF && p.y < Y_GK);
+  const mid = all.filter(p => p.y >= Y_MID && p.y < Y_DEF);
+  const att = all.filter(p => p.y < Y_MID);
+
+  const mkDots = (arr, z) => arr.map(() =>
+    `<span class="form-dot" style="background:${ZONE_DOT[z]}"></span>`).join('');
+
+  document.getElementById('form-dots').innerHTML =
+    `<div class="form-line"><span class="form-label" style="color:${ZONE_DOT.att}">ATT</span>${mkDots(att,'att')}</div>` +
+    `<div class="form-line"><span class="form-label" style="color:${ZONE_DOT.mid}">MIL</span>${mkDots(mid,'mid')}</div>` +
+    `<div class="form-line"><span class="form-label" style="color:${ZONE_DOT.def}">DEF</span>${mkDots(def,'def')}</div>` +
+    `<div class="form-line"><span class="form-label" style="color:${ZONE_DOT.gk}">GK</span>${mkDots(gk,'gk')}</div>`;
+}
+
+// ════════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════════
+const FORM_PRESETS = {
+  '4-4-2':   [{x:50,y:88},{x:12,y:68},{x:33,y:68},{x:67,y:68},{x:88,y:68},{x:12,y:46},{x:35,y:46},{x:65,y:46},{x:88,y:46},{x:35,y:22},{x:65,y:22}],
+  '4-4-2 ◆': [{x:50,y:88},{x:12,y:68},{x:33,y:68},{x:67,y:68},{x:88,y:68},{x:50,y:53},{x:28,y:46},{x:72,y:46},{x:50,y:38},{x:35,y:20},{x:65,y:20}],
+  '4-3-3':   [{x:50,y:88},{x:12,y:68},{x:33,y:68},{x:67,y:68},{x:88,y:68},{x:20,y:48},{x:50,y:46},{x:80,y:48},{x:15,y:20},{x:50,y:18},{x:85,y:20}],
+  '4-5-1':   [{x:50,y:88},{x:12,y:68},{x:33,y:68},{x:67,y:68},{x:88,y:68},{x:10,y:46},{x:28,y:48},{x:50,y:46},{x:72,y:48},{x:90,y:46},{x:50,y:22}],
+  '3-5-2':   [{x:50,y:88},{x:22,y:70},{x:50,y:70},{x:78,y:70},{x:8,y:48},{x:28,y:50},{x:50,y:48},{x:72,y:50},{x:92,y:48},{x:35,y:22},{x:65,y:22}],
+  '5-3-2':   [{x:50,y:88},{x:8,y:68},{x:25,y:70},{x:50,y:70},{x:75,y:70},{x:92,y:68},{x:20,y:46},{x:50,y:46},{x:80,y:46},{x:35,y:22},{x:65,y:22}],
+  '4-2-3-1': [{x:50,y:88},{x:12,y:68},{x:33,y:68},{x:67,y:68},{x:88,y:68},{x:35,y:56},{x:65,y:56},{x:15,y:38},{x:50,y:38},{x:85,y:38},{x:50,y:18}],
+  '3-4-3':   [{x:50,y:88},{x:22,y:70},{x:50,y:70},{x:78,y:70},{x:8,y:48},{x:35,y:50},{x:65,y:50},{x:92,y:48},{x:15,y:20},{x:50,y:18},{x:85,y:20}],
+};
+
+const DFLT = () => ({
+  mgr:'Votre nom', season:'2025/26',
+  pos:null, posTotal:20,
+  played:0, won:0, drawn:0, lost:0, gf:0, ga:0,
+  club:{stad:'',cap:'',city:'West Sussex',found:'1966'},
+  next:{opp:'—',date:'',comp:''},
+  fin:{transfer:0,wages:0,balance:0,tx:[]},
+  tac:{
+    form:'4-4-2',
+    posView:'att',
+    players:{},      // idx → name
+    playerPos:{},    // idx → {x,y} attaque
+    playerPosDef:{}, // idx → {x,y} défense
+    roles:{},        // idx → {role,duty}
+    linkedSquad:{},  // idx → squadIndex
+    inPoss:{men:'Équilibré',tem:'Normal',wid:'Normal',pas:'Mixte',dln:'Normale',risk:'Moyenne'},
+    outPoss:{pre:'Moyen',ptrig:'Récupération moyenne',agg:'Normale',blk:'Moyen'},
+    trans:{ca:'Désactivée',cp:'Désactivé',gk:'Mixte'},
+    notes:'',spCorners:'',spFk:'',spDef:''
+  },
+  squad:[],targets:[],shortlist:[],results:[],
+  objectives:[],notes:'',scoutNotes:'',history:[]
+});
+let D = DFLT();
+
+// ════════════════════════════════════════════
+//  SYSTÈME DE SAUVEGARDES
+// ════════════════════════════════════════════
+const SAVES_IDX = 'wfc26_index';
+const SAVE_PFX  = 'wfc26_save_';
+let currentSaveId = null;
+
+function getSaves() {
+  try { return JSON.parse(localStorage.getItem(SAVES_IDX) || '[]'); } catch(e) { return []; }
+}
+function updateIndex() {
+  const saves = getSaves();
+  const meta = {
+    id: currentSaveId,
+    managerName: D.mgr || 'Manager',
+    season: D.season || '2025/26',
+    club: 'Westfield FC',
+    lastPlayed: new Date().toISOString()
+  };
+  const idx = saves.findIndex(s => s.id === currentSaveId);
+  if (idx >= 0) saves[idx] = meta; else saves.unshift(meta);
+  localStorage.setItem(SAVES_IDX, JSON.stringify(saves));
+}
+function sv() {
+  if (!currentSaveId) return;
+  localStorage.setItem(SAVE_PFX + currentSaveId, JSON.stringify(D));
+  updateIndex();
+}
+function loadSaveData(id) {
+  const s = localStorage.getItem(SAVE_PFX + id);
+  D = DFLT();
+  if (s) {
+    try {
+      const p = JSON.parse(s);
+      D = {...DFLT(), ...p};
+      D.fin = {...DFLT().fin, ...(p.fin||{})};
+      D.tac = {...DFLT().tac, ...(p.tac||{})};
+      D.tac.inPoss       = {...DFLT().tac.inPoss,  ...(p.tac?.inPoss||{})};
+      D.tac.outPoss      = {...DFLT().tac.outPoss, ...(p.tac?.outPoss||{})};
+      D.tac.trans        = {...DFLT().tac.trans,   ...(p.tac?.trans||{})};
+      D.tac.linkedSquad  = {...(p.tac?.linkedSquad||{})};
+    } catch(e) {}
+  }
+  if (!D.tac.playerPos || Object.keys(D.tac.playerPos).length < 11)
+    initPosFromPreset(D.tac.form || '4-4-2');
+  if (!D.tac.playerPosDef || Object.keys(D.tac.playerPosDef).length < 11)
+    D.tac.playerPosDef = JSON.parse(JSON.stringify(D.tac.playerPos));
+}
+
+// ── Migration ancienne save ──
+function migrateOldSave() {
+  const old = localStorage.getItem('wfc26v3');
+  if (!old || getSaves().length > 0) return;
+  try {
+    const p = JSON.parse(old);
+    const id = 'save_' + Date.now().toString(36);
+    localStorage.setItem(SAVE_PFX + id, old);
+    localStorage.setItem(SAVES_IDX, JSON.stringify([{
+      id, managerName: p.mgr || 'Manager',
+      season: p.season || '2025/26', club: 'Westfield FC',
+      lastPlayed: new Date().toISOString()
+    }]));
+    localStorage.removeItem('wfc26v3');
+  } catch(e) {}
+}
+
+// ── Navigation écrans ──
+function showApp() {
+  g('sb').style.display   = 'flex';
+  g('main').style.display = 'flex';
+}
+function hideApp() {
+  g('sb').style.display   = 'none';
+  g('main').style.display = 'none';
+}
+function showWelcome() {
+  migrateOldSave();
+  renderSaveCards();
+  g('screen-welcome').style.display = 'flex';
+  hideApp();
+}
+function quitToMenu() {
+  sv();
+  g('screen-welcome').style.display = 'flex';
+  hideNewSaveForm();
+  renderSaveCards();
+  hideApp();
+}
+
+// ── Cards de saves ──
+function renderSaveCards() {
+  const saves = getSaves();
+  const el = g('wlc-saves');
+  if (!saves.length) {
+    el.innerHTML = '<div class="wlc-empty">Aucune sauvegarde — commencez une nouvelle partie.</div>';
+    return;
+  }
+  el.innerHTML = saves.map(s => {
+    const d = new Date(s.lastPlayed);
+    const when = isNaN(d) ? '—' : d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+    return `<div class="save-card" onclick="selectSave('${s.id}')">
+      <img class="save-card-ico" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="">
+      <div style="flex:1">
+        <div class="save-card-name">${s.managerName}</div>
+        <div class="save-card-info">${s.club} · ${s.season}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:var(--gr)">${when}</div>
+        <button class="btn bd" style="padding:2px 8px;font-size:10px;margin-top:5px" onclick="event.stopPropagation();deleteSave('${s.id}')">Supprimer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Nouvelle save ──
+function showNewSaveForm() {
+  g('wlc-saves-section').style.display = 'none';
+  g('wlc-new-form').style.display = 'block';
+  setTimeout(() => g('ns-mgr').focus(), 80);
+}
+function hideNewSaveForm() {
+  g('wlc-new-form').style.display  = 'none';
+  g('wlc-saves-section').style.display = 'block';
+}
+function createSave() {
+  const name = g('ns-mgr').value.trim();
+  if (!name) { g('ns-mgr').focus(); return; }
+  const id = 'save_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+  currentSaveId = id;
+  D = DFLT();
+  D.mgr = name;
+  initPosFromPreset('4-4-2');
+  sv();
+  startLoading(name);
+}
+function selectSave(id) {
+  currentSaveId = id;
+  loadSaveData(id);
+  startLoading(D.mgr || 'Manager');
+}
+function deleteSave(id) {
+  if (!confirm('Supprimer cette sauvegarde définitivement ?')) return;
+  localStorage.removeItem(SAVE_PFX + id);
+  const saves = getSaves().filter(s => s.id !== id);
+  localStorage.setItem(SAVES_IDX, JSON.stringify(saves));
+  renderSaveCards();
+}
+
+// ── Écran de chargement ──
+const LD_MSGS = [
+  'Préparation du vestiaire…',
+  'Analyse tactique en cours…',
+  'Chargement des statistiques…',
+  'Briefing d\'avant-match…',
+  'Mise en place du dispositif…',
+  'Lecture du rapport de scouts…',
+  'Finalisation de l\'effectif…',
+];
+let _ldInterval = null;
+
+function positionRings() {
+  const r1 = g('ld-r1'), r2 = g('ld-r2');
+  if (!r1 || !r2) return;
+  const W = window.innerWidth, H = window.innerHeight;
+  const s1 = Math.min(W, H) * 1.1;
+  const s2 = s1 * 0.72;
+  r1.style.cssText += `;width:${s1}px;height:${s1}px;left:${(W-s1)/2}px;top:${(H-s1)/2}px`;
+  r2.style.cssText += `;width:${s2}px;height:${s2}px;left:${(W-s2)/2}px;top:${(H-s2)/2}px`;
+}
+
+function startLoading(managerName) {
+  g('screen-welcome').style.display = 'none';
+  const lscr = g('screen-loading');
+  lscr.style.display = 'flex';
+  positionRings();
+  g('ld-mgr').textContent = managerName;
+
+  // Progress bar reset then animate
+  const fill = g('ld-fill');
+  fill.style.transition = 'none';
+  fill.style.width = '0';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    fill.style.transition = 'width 1.95s cubic-bezier(.04,0,.12,1)';
+    fill.style.width = '100%';
+  }));
+
+  // Cycling messages
+  let mi = 0;
+  const msgEl = g('ld-msg');
+  msgEl.style.opacity = '1';
+  msgEl.textContent = LD_MSGS[0];
+  if (_ldInterval) clearInterval(_ldInterval);
+  _ldInterval = setInterval(() => {
+    msgEl.style.opacity = '0';
+    setTimeout(() => {
+      mi = (mi + 1) % LD_MSGS.length;
+      msgEl.textContent = LD_MSGS[mi];
+      msgEl.style.opacity = '1';
+    }, 350);
+  }, 560);
+
+  setTimeout(() => {
+    clearInterval(_ldInterval); _ldInterval = null;
+    lscr.style.display = 'none';
+    showApp();
+    applyAll();
+    initPitchDrag();
+  }, 2100);
+}
+
+// ── Init app ──
+function initApp() {
+  showWelcome();
+}
+function sd() {
+  D.mgr   = document.getElementById('tb-mgr').innerText.trim();
+  D.season = document.getElementById('tb-season').innerText.trim();
+  D.next.opp  = document.getElementById('nm-opp').innerText.trim();
+  D.next.date = document.getElementById('nm-date').value;
+  D.next.comp = document.getElementById('nm-comp').value;
+  D.club.stad = document.getElementById('c-stad').value;
+  D.club.cap  = document.getElementById('c-cap').value;
+  D.club.city = document.getElementById('c-city').value;
+  D.club.found = document.getElementById('c-found').value;
+  D.fin.transfer = parseFloat(document.getElementById('f-transfer').value)||0;
+  D.fin.wages    = parseFloat(document.getElementById('f-wages').value)||0;
+  D.fin.balance  = parseFloat(document.getElementById('f-balance').value)||0;
+  D.tac.notes     = document.getElementById('t-notes').value;
+  D.tac.spCorners = document.getElementById('sp-corners').value;
+  D.tac.spFk      = document.getElementById('sp-fk').value;
+  D.tac.spDef     = document.getElementById('sp-def').value;
+  D.notes      = document.getElementById('gen-notes').value;
+  D.scoutNotes = document.getElementById('scout-notes').value;
+  D.posTotal   = parseInt(document.getElementById('pos-tot').innerText)||20;
+  document.getElementById('sb-season').textContent = D.season;
+  sv(); updateDash(); updateWages();
+}
+function saveTac() {
+  D.tac.inPoss  = {men:g('ti-men').value,tem:g('ti-tem').value,wid:g('ti-wid').value,pas:g('ti-pas').value,dln:g('ti-dln').value,risk:g('ti-risk').value};
+  D.tac.outPoss = {pre:g('ti-pre').value,ptrig:g('ti-ptrig').value,agg:g('ti-agg').value,blk:g('ti-blk').value};
+  D.tac.trans   = {ca:g('ti-ca').value,cp:g('ti-cp').value,gk:g('ti-gk').value};
+  D.tac.notes     = g('t-notes').value;
+  D.tac.spCorners = g('sp-corners').value;
+  D.tac.spFk      = g('sp-fk').value;
+  D.tac.spDef     = g('sp-def').value;
+  sv();
+}
+function applyAll() {
+  g('tb-mgr').innerText   = D.mgr||'Votre nom';
+  g('tb-season').innerText = D.season||'2025/26';
+  g('sb-season').textContent = D.season||'2025/26';
+  g('nm-opp').innerText   = D.next.opp||'—';
+  g('nm-date').value      = D.next.date||'';
+  g('nm-comp').value      = D.next.comp||'';
+  g('c-stad').value  = D.club.stad||'';
+  g('c-cap').value   = D.club.cap||'';
+  g('c-city').value  = D.club.city||'West Sussex';
+  g('c-found').value = D.club.found||'1966';
+  g('f-transfer').value = D.fin.transfer||'';
+  g('f-wages').value    = D.fin.wages||'';
+  g('f-balance').value  = D.fin.balance||'';
+  const ip=D.tac.inPoss, op=D.tac.outPoss, tr=D.tac.trans;
+  sv2('ti-men',ip.men); sv2('ti-tem',ip.tem); sv2('ti-wid',ip.wid); sv2('ti-pas',ip.pas); sv2('ti-dln',ip.dln); sv2('ti-risk',ip.risk);
+  sv2('ti-pre',op.pre); sv2('ti-ptrig',op.ptrig); sv2('ti-agg',op.agg); sv2('ti-blk',op.blk);
+  sv2('ti-ca',tr.ca); sv2('ti-cp',tr.cp); sv2('ti-gk',tr.gk);
+  g('t-notes').value     = D.tac.notes||'';
+  g('sp-corners').value  = D.tac.spCorners||'';
+  g('sp-fk').value       = D.tac.spFk||'';
+  g('sp-def').value      = D.tac.spDef||'';
+  g('gen-notes').value   = D.notes||'';
+  g('scout-notes').value = D.scoutNotes||'';
+  g('pos-tot').innerText = D.posTotal||20;
+  g('f-select').value    = D.tac.form||'4-4-2';
+  if (D.pos) g('pos-input').value = D.pos;
+  // Sync view buttons
+  const cv = D.tac.posView||'att';
+  ['att','def','combined'].forEach(x => {
+    const el = g('pv-'+x);
+    if (el) { el.className = 'btn '+(cv===x?'bp':'bg'); el.style.flex='1'; }
+  });
+  renderResults(); renderSquad(); renderTargets(); renderShortlist();
+  renderTx(); renderObj(); renderHistory();
+  renderPitch();
+  updateDash(); updateWages();
+}
+const g   = id => document.getElementById(id);
+const sv2 = (id,v) => { const e=g(id); if(e&&v!==undefined) e.value=v; };
+
+// ── NAV ──
+const PTITLES = {dashboard:'Dashboard',finances:'Finances',tactics:'Tactique',squad:'Effectif',recruitment:'Recrutement',notes:'Notes & Objectifs',history:'Historique'};
+function showPage(n, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+  g('page-'+n).classList.add('active');
+  el.classList.add('active');
+  g('tp-title').textContent = PTITLES[n]||n;
+}
+
+// ══════════════════════════════════════════════
+//  PITCH / DRAG
+// ══════════════════════════════════════════════
+function initPosFromPreset(name) {
+  const preset = FORM_PRESETS[name] || FORM_PRESETS['4-4-2'];
+  D.tac.playerPos = {};
+  D.tac.playerPosDef = {};
+  preset.forEach((p, i) => {
+    D.tac.playerPos[i]    = {x: p.x, y: p.y};
+    D.tac.playerPosDef[i] = {x: p.x, y: p.y};
+  });
+}
+
+function setFormation(name, save=true) {
+  D.tac.form = name;
+  initPosFromPreset(name);
+  if (save) sv();
+  renderPitch();
+  renderRolesTable();
+}
+
+function resetPositions() {
+  if (confirm('Remettre les joueurs aux positions par défaut de la formation ?')) {
+    initPosFromPreset(D.tac.form || '4-4-2');
+    sv(); renderPitch(); renderRolesTable();
+  }
+}
+
+function clearNames() {
+  if (confirm('Effacer tous les noms sur le terrain ?')) {
+    D.tac.players = {}; sv(); renderPitch(); renderRolesTable();
+  }
+}
+
+function pitchBg() {
+  const pxf = p => (p/100)*W, pyf = p => (p/100)*H;
+  const yATT=pyf(0),hATT=pyf(Y_MID),yMID=pyf(Y_MID),hMID=pyf(Y_DEF-Y_MID),yDEF=pyf(Y_DEF),hDEF=pyf(Y_GK-Y_DEF),yGK=pyf(Y_GK),hGK=H-pyf(Y_GK);
+  return `
+    <rect width="${W}" height="${H}" fill="#14402a" rx="10"/>
+    ${Array.from({length:9},(_,i)=>`<rect x="0" y="${i*56}" width="${W}" height="26" fill="rgba(0,0,0,.06)"/>`).join('')}
+    <rect x="0" y="${yATT}" width="${W}" height="${hATT}" fill="rgba(232,112,64,.06)"/>
+    <rect x="0" y="${yMID}" width="${W}" height="${hMID}" fill="rgba(91,155,213,.05)"/>
+    <rect x="0" y="${yDEF}" width="${W}" height="${hDEF}" fill="rgba(74,184,112,.05)"/>
+    <rect x="0" y="${yGK}"  width="${W}" height="${hGK}"  fill="rgba(184,134,11,.07)"/>
+    <line x1="0" y1="${pyf(Y_MID)}" x2="${W}" y2="${pyf(Y_MID)}" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="0" y1="${pyf(Y_DEF)}" x2="${W}" y2="${pyf(Y_DEF)}" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="0" y1="${pyf(Y_GK)}"  x2="${W}" y2="${pyf(Y_GK)}"  stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="5,5"/>
+    <text x="${W-4}" y="${pyf(Y_MID/2)+4}"           text-anchor="end" fill="rgba(232,112,64,.5)"  font-size="9" font-family="Segoe UI,sans-serif">ATT</text>
+    <text x="${W-4}" y="${pyf((Y_MID+Y_DEF)/2)+4}"   text-anchor="end" fill="rgba(91,155,213,.5)"  font-size="9" font-family="Segoe UI,sans-serif">MIL</text>
+    <text x="${W-4}" y="${pyf((Y_DEF+Y_GK)/2)+4}"    text-anchor="end" fill="rgba(74,184,112,.5)"  font-size="9" font-family="Segoe UI,sans-serif">DEF</text>
+    <text x="${W-4}" y="${pyf((Y_GK+100)/2)+4}"       text-anchor="end" fill="rgba(184,134,11,.5)"  font-size="9" font-family="Segoe UI,sans-serif">GK</text>
+    <rect x="16" y="16" width="${W-32}" height="${H-32}" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.8"/>
+    <line x1="16" y1="${H/2}" x2="${W-16}" y2="${H/2}" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+    <circle cx="${W/2}" cy="${H/2}" r="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+    <circle cx="${W/2}" cy="${H/2}" r="3" fill="rgba(255,255,255,.4)"/>
+    <rect x="${W/2-22}" y="9" width="44" height="7" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+    <rect x="${W/2-60}" y="16" width="120" height="58" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+    <rect x="${W/2-28}" y="16" width="56" height="24" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
+    <circle cx="${W/2}" cy="${16+46}" r="2.5" fill="rgba(255,255,255,.4)"/>
+    <path d="M ${W/2-46} ${74} A 46 46 0 0 0 ${W/2+46} ${74}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
+    <rect x="${W/2-22}" y="${H-16}" width="44" height="7" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+    <rect x="${W/2-60}" y="${H-74}" width="120" height="58" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+    <rect x="${W/2-28}" y="${H-40}" width="56" height="24" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
+    <circle cx="${W/2}" cy="${H-60}" r="2.5" fill="rgba(255,255,255,.4)"/>
+    <path d="M ${W/2-46} ${H-74} A 46 46 0 0 1 ${W/2+46} ${H-74}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>`;
+}
+
+function playerDot(i, pos, draggable, ghost) {
+  const p = pos[i] || FORM_PRESETS['4-4-2'][i] || {x:50,y:50};
+  const cx = (p.x/100)*W, cy = (p.y/100)*H;
+  const zone = getZone(p.y), role = detectRole(p.x, p.y);
+  const nm = ((D.tac.players && D.tac.players[i]) || '').split(' ').pop().substring(0,9);
+  if (ghost) {
+    const str = ZONE_STR[zone];
+    return `<g class="player-ghost" data-ghost="${i}" transform="translate(${cx},${cy})" opacity="0.55">
+      <circle r="15" fill="rgba(0,0,0,.25)" stroke="${str}" stroke-width="1.8" stroke-dasharray="4,2.5"/>
+      <text text-anchor="middle" dy="-1.5" fill="${str}" font-size="8" font-weight="700" font-family="Segoe UI,sans-serif">${role}</text>
+      <text text-anchor="middle" dy="8" fill="${str}" font-size="6.5" font-family="Segoe UI,sans-serif">${nm}</text>
+    </g>`;
+  }
+  const fill = ZONE_FILL[zone], str = ZONE_STR[zone];
+  const tc = zone === 'gk' ? '#000' : '#fff';
+  const attr = draggable ? `class="player-dot" data-player="${i}"` : `class="player-dot-nd"`;
+  return `<g ${attr} transform="translate(${cx},${cy})">
+    <circle r="17" fill="${fill}" stroke="${str}" stroke-width="2.2"/>
+    <circle r="17" fill="rgba(255,255,255,.04)" stroke="none"/>
+    <text class="role-lbl" text-anchor="middle" dy="-2" fill="${tc}" font-size="9" font-weight="700" font-family="Segoe UI,sans-serif">${role}</text>
+    <text text-anchor="middle" dy="9.5" fill="${tc==='#000'?'rgba(0,0,0,.75)':'rgba(255,255,255,.85)'}" font-size="7.5" font-family="Segoe UI,sans-serif">${nm}</text>
+  </g>`;
+}
+
+function renderPitch() {
+  const svg = g('pitch');
+  const view = D.tac.posView || 'att';
+  const posAtt = D.tac.playerPos    || {};
+  const posDef = D.tac.playerPosDef || {};
+
+  let players = '';
+  if (view === 'combined') {
+    // Position moyenne entre ATT et DEF
+    const posMoy = {};
+    for (let i=0;i<11;i++) {
+      const a = posAtt[i] || FORM_PRESETS['4-4-2'][i] || {x:50,y:50};
+      const d = posDef[i] || FORM_PRESETS['4-4-2'][i] || {x:50,y:50};
+      posMoy[i] = {x:(a.x+d.x)/2, y:(a.y+d.y)/2};
+    }
+    for (let i=0;i<11;i++) players += playerDot(i, posMoy, false, false);
+  } else {
+    const pos = (view === 'def') ? posDef : posAtt;
+    for (let i=0;i<11;i++) players += playerDot(i, pos, true, false);
+  }
+
+  svg.innerHTML = pitchBg() + players;
+  updateFormationBar();
+}
+
+function setPosView(v) {
+  D.tac.posView = v;
+  ['att','def','combined'].forEach(x => {
+    const el = g('pv-'+x);
+    if (el) { el.className = 'btn ' + (v===x ? 'bp' : 'bg'); el.style.flex='1'; }
+  });
+  const hint = g('form-hint');
+  if (hint) hint.textContent = v==='combined'
+    ? 'Vue combinée — ATT (plein) + DEF (pointillé)'
+    : 'Glissez les joueurs · Cliquez pour nommer';
+  sv(); renderPitch(); renderRolesTable();
+}
+
+// ── DRAG ──
+let drag = null;
+let pitchDragReady = false;
+const DRAG_THRESH = 6;
+
+function initPitchDrag() {
+  if (pitchDragReady) return;
+  pitchDragReady = true;
+  const svg = g('pitch');
+
+  svg.addEventListener('pointerdown', e => {
+    if ((D.tac.posView||'att') === 'combined') return;
+    const el = e.target.closest('[data-player]');
+    if (!el) return;
+    e.preventDefault();
+    svg.setPointerCapture(e.pointerId);
+    drag = {
+      idx: parseInt(el.dataset.player),
+      pid: e.pointerId,
+      startX: e.clientX, startY: e.clientY,
+      moved: false
+    };
+  });
+
+  svg.addEventListener('pointermove', e => {
+    if (!drag || drag.pid !== e.pointerId) return;
+    const dx = e.clientX - drag.startX, dy = e.clientY - drag.startY;
+    if (!drag.moved && Math.sqrt(dx*dx+dy*dy) > DRAG_THRESH) drag.moved = true;
+    if (!drag.moved) return;
+
+    const rect = svg.getBoundingClientRect();
+    const scaleX = W / rect.width, scaleY = H / rect.height;
+    const nx = Math.max(4, Math.min(96, ((e.clientX - rect.left) * scaleX / W) * 100));
+    const ny = Math.max(3, Math.min(97, ((e.clientY - rect.top)  * scaleY / H) * 100));
+
+    const posKey = (D.tac.posView||'att') === 'def' ? 'playerPosDef' : 'playerPos';
+    if (!D.tac[posKey]) D.tac[posKey] = {};
+    D.tac[posKey][drag.idx] = {x: nx, y: ny};
+
+    // Live update without full re-render
+    const playerG = svg.querySelector(`[data-player="${drag.idx}"]`);
+    if (playerG) {
+      playerG.setAttribute('transform', `translate(${(nx/100)*W},${(ny/100)*H})`);
+      const zone = getZone(ny);
+      const role = detectRole(nx, ny);
+      const circ = playerG.querySelector('circle');
+      if (circ) { circ.setAttribute('fill', ZONE_FILL[zone]); circ.setAttribute('stroke', ZONE_STR[zone]); }
+      const rl = playerG.querySelector('.role-lbl');
+      if (rl) rl.textContent = role;
+      const textCol = zone === 'gk' ? '#000' : '#fff';
+      playerG.querySelectorAll('text').forEach(t => {
+        t.setAttribute('fill', t.classList.contains('role-lbl') ? textCol : (zone==='gk'?'rgba(0,0,0,.75)':'rgba(255,255,255,.85)'));
+      });
+    }
+    updateFormationBar();
+  });
+
+  svg.addEventListener('pointerup', e => {
+    if (!drag || drag.pid !== e.pointerId) return;
+    if (!drag.moved) {
+      // Click → rename
+      openRenameModal(drag.idx);
+    } else {
+      sv();
+      renderRolesTable();
+    }
+    drag = null;
+  });
+
+  svg.addEventListener('pointercancel', () => { drag = null; });
+}
+
+// ── RENAME MODAL ──
+let renameIdx = null;
+let renameLinkedSquad = null;
+
+function selectSquadForPos() {
+  const sel = g('rename-squad-sel');
+  const val = sel.value;
+  if (val !== '') {
+    const sqIdx = parseInt(val);
+    if (!isNaN(sqIdx) && D.squad[sqIdx]) {
+      g('rename-input').value = D.squad[sqIdx].name;
+      renameLinkedSquad = sqIdx;
+    }
+  } else {
+    renameLinkedSquad = null;
+  }
+}
+
+function openRenameModal(idx) {
+  renameIdx = idx;
+  renameLinkedSquad = (D.tac.linkedSquad && D.tac.linkedSquad[idx] !== undefined && D.tac.linkedSquad[idx] !== null)
+    ? D.tac.linkedSquad[idx] : null;
+  const pos = D.tac.playerPos || {};
+  const p = pos[idx] || {x:50,y:50};
+  const role = detectRole(p.x, p.y);
+  const zone = getZone(p.y);
+  g('rename-title').textContent = `Joueur en ${role}`;
+  g('rename-sub').textContent   = `Zone : ${ZONE_NAME[zone]}`;
+  g('rename-input').value       = (D.tac.players && D.tac.players[idx]) || '';
+
+  // Populate squad dropdown
+  const sel = g('rename-squad-sel');
+  sel.innerHTML = '<option value="">— Choisir depuis l\'effectif —</option>';
+  (D.squad || []).forEach((sq, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${sq.name} (${sq.pos})`;
+    if (renameLinkedSquad === i) opt.selected = true;
+    sel.appendChild(opt);
+  });
+
+  openM('rename');
+  setTimeout(() => g('rename-input').focus(), 100);
+}
+
+function confirmRename(val) {
+  if (renameIdx === null) return;
+  const name = val === null ? '' : g('rename-input').value.trim();
+  if (!D.tac.players) D.tac.players = {};
+  if (!D.tac.linkedSquad) D.tac.linkedSquad = {};
+  D.tac.players[renameIdx] = name;
+  D.tac.linkedSquad[renameIdx] = (val === null || !name) ? null : renameLinkedSquad;
+  renameIdx = null; renameLinkedSquad = null;
+  sv(); renderPitch(); renderRolesTable(); renderSquad();
+  closeM('rename');
+}
+
+// ── ROLES TABLE ──
+function renderRolesTable() {
+  const pos = activePosSet();
+  const count = Object.keys(pos).length || 11;
+  const tb = g('roles-tbody');
+  tb.innerHTML = Array.from({length: count}, (_, i) => {
+    const p = pos[i] || {x:50,y:50};
+    const zone = getZone(p.y);
+    const role = detectRole(p.x, p.y);
+    const nm   = (D.tac.players && D.tac.players[i]) || '';
+    const rv   = (D.tac.roles  && D.tac.roles[i])   || {};
+    return `<tr>
+      <td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${ZONE_DOT[zone]};margin-right:4px"></span>${ZONE_NAME[zone]}</td>
+      <td><span class="badge ${ZONE_BADGE[zone]}">${role}</span></td>
+      <td style="color:${nm?'var(--w)':'var(--gr)'}">${nm||'—'}</td>
+      <td><input type="text" value="${rv.role||''}" placeholder="Ex: Milieu relayeur" style="font-size:11px" onchange="saveRole(${i},'role',this.value)"></td>
+      <td><select style="font-size:11px" onchange="saveRole(${i},'duty',this.value)">
+        ${['','Défendre','Couvrir','Soutenir','Attaquer','Automatique'].map(d=>`<option${rv.duty===d?' selected':''}>${d}</option>`).join('')}
+      </select></td>
+    </tr>`;
+  }).join('');
+}
+function saveRole(i, key, val) {
+  if (!D.tac.roles) D.tac.roles = {};
+  if (!D.tac.roles[i]) D.tac.roles[i] = {};
+  D.tac.roles[i][key] = val; sv();
+}
+function tacTab(n, el) {
+  ['instructions','roles','setpieces'].forEach(t => {
+    const e = g('tt-'+t); if (e) e.style.display = 'none';
+  });
+  document.querySelectorAll('#tac-right .tab').forEach(t => t.classList.remove('active'));
+  const tgt = g('tt-'+n); if (tgt) tgt.style.display = 'block';
+  el.classList.add('active');
+  if (n === 'roles') renderRolesTable();
+}
+
+// ════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════
+function updatePos() { D.pos = parseInt(g('pos-input').value)||null; sd(); }
+function updateDash() {
+  const pts = D.won*3 + D.drawn;
+  g('d-pts').textContent = pts;
+  g('d-pos').textContent = D.pos||'—';
+  g('pos-big').textContent = D.pos||'—';
+  g('d-budget').textContent = '£'+fmt(D.fin.transfer);
+  g('d-j').textContent = D.played; g('d-v').textContent = D.won;
+  g('d-n').textContent = D.drawn;  g('d-d').textContent = D.lost;
+  g('d-bp').textContent = D.gf;    g('d-bc').textContent = D.ga;
+  const last5 = (D.results||[]).slice(-5).map(r => {
+    if (r.us > r.them)  return '<span class="rb rw">V</span>';
+    if (r.us === r.them) return '<span class="rb rd">N</span>';
+    return '<span class="rb rl">D</span>';
+  });
+  g('d-form').innerHTML = last5.length ? last5.join('') : '—';
+}
+
+// ════════════════════════════════════════════
+//  RESULTS
+// ════════════════════════════════════════════
+function addResult() {
+  const us   = parseInt(g('r-us').value)||0;
+  const them = parseInt(g('r-them').value)||0;
+  const opp  = g('r-opp').value.trim();
+  if (!opp) return;
+  D.results.push({date:g('r-date').value, opp, us, them, venue:g('r-venue').value, comp:g('r-comp').value, scorers:g('r-scorers').value});
+  D.played++; D.gf+=us; D.ga+=them;
+  if (us > them) D.won++; else if (us === them) D.drawn++; else D.lost++;
+  sv(); renderResults(); closeM('res'); updateDash();
+  ['r-date','r-opp','r-us','r-them','r-comp','r-scorers'].forEach(id => g(id).value = '');
+}
+function renderResults() {
+  const el = g('res-list');
+  if (!D.results||!D.results.length) { el.innerHTML='<p style="color:var(--grl);font-size:13px">Aucun résultat.</p>'; return; }
+  el.innerHTML = [...D.results].reverse().slice(0,7).map((r,i) => {
+    const ri  = D.results.length-1-i;
+    const res = r.us > r.them ? 'V' : r.us === r.them ? 'N' : 'D';
+    const cls = res==='V' ? 'rw' : res==='N' ? 'rd' : 'rl';
+    return `<div style="display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--cbo)">
+      <span class="rb ${cls}">${res}</span>
+      <span style="font-size:10px;color:var(--grl);width:26px">${r.venue==='H'?'DOM':'EXT'}</span>
+      <span style="flex:1;font-size:13px">${r.opp}</span>
+      <span style="font-weight:800">${r.us}–${r.them}</span>
+      <span style="font-size:11px;color:var(--gr)">${r.comp||''}</span>
+      <button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delResult(${ri})">✕</button>
+    </div>`;
+  }).join('');
+}
+function delResult(i) { D.results.splice(i,1); recalc(); sv(); renderResults(); updateDash(); }
+function recalc() { D.played=D.won=D.drawn=D.lost=D.gf=D.ga=0; D.results.forEach(r=>{D.played++;D.gf+=r.us;D.ga+=r.them;if(r.us>r.them)D.won++;else if(r.us===r.them)D.drawn++;else D.lost++;}); }
+
+// ════════════════════════════════════════════
+//  FINANCES
+// ════════════════════════════════════════════
+function updateWages() {
+  const budget = D.fin.wages||0;
+  const used = (D.squad||[]).reduce((s,p)=>s+(parseFloat(p.wage)||0),0);
+  const pct = budget>0 ? Math.min(100,(used/budget)*100) : 0;
+  g('wl').textContent = `£${fmt(used)}/sem. utilisé (budget: £${fmt(budget)})`;
+  g('wp').textContent = Math.round(pct)+'%';
+  g('wb').style.width = pct+'%';
+  g('wb').style.background = pct>90?'#e74c3c':pct>70?'#f39c12':'var(--y)';
+}
+function addTx() {
+  const desc = g('tx-d').value.trim(), amt = parseFloat(g('tx-a').value)||0;
+  if (!desc||!amt) return;
+  D.fin.tx.unshift({date:new Date().toLocaleDateString('fr-FR'),desc,amt,type:g('tx-t').value,cat:g('tx-c').value});
+  g('tx-d').value=''; g('tx-a').value='';
+  sv(); renderTx(); updateWages();
+}
+function delTx(i) { D.fin.tx.splice(i,1); sv(); renderTx(); }
+const CATL = {transfer:'Transfert',wages:'Salaires',matchday:'Jour match',sponsor:'Sponsoring',prize:'Prime',other:'Autre'};
+function renderTx() {
+  const tb = g('tx-table');
+  if (!D.fin.tx||!D.fin.tx.length) { tb.innerHTML='<tr><td colspan="6" style="color:var(--gr);text-align:center;padding:20px">Aucune transaction</td></tr>'; return; }
+  tb.innerHTML = D.fin.tx.map((t,i) => `<tr>
+    <td style="color:var(--grl);white-space:nowrap">${t.date}</td>
+    <td>${t.desc}</td>
+    <td><span class="badge" style="background:rgba(255,255,255,.04);color:var(--grl)">${CATL[t.cat]||t.cat}</span></td>
+    <td style="color:${t.type==='in'?'#27ae60':'#e74c3c'};font-weight:600">${t.type==='in'?'Entrée':'Sortie'}</td>
+    <td style="text-align:right;font-weight:700;color:${t.type==='in'?'#27ae60':'#e74c3c'}">${t.type==='in'?'+':'-'}£${fmt(t.amt)}</td>
+    <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delTx(${i})">✕</button></td>
+  </tr>`).join('');
+}
+
+// ════════════════════════════════════════════
+//  SQUAD
+// ════════════════════════════════════════════
+const PORD  = {GK:0,CB:1,LB:2,RB:3,LWB:4,RWB:5,DM:6,CM:7,LM:8,RM:9,AM:10,LW:11,RW:12,ST:13};
+const PCLS  = p => p==='GK'?'bgk':['CB','LB','RB','LWB','RWB'].includes(p)?'bdef':['DM','CM','LM','RM','AM'].includes(p)?'bmid':'batt';
+const STAT_L = {key:'Titulaire',rot:'Rotation',bak:'Remplaçant',yth:'Espoir',lon:'Prêt',inj:'Blessé'};
+const STAT_C = {key:'#27ae60',rot:'#3498db',bak:'#95a5a6',yth:'#9b59b6',lon:'#f39c12',inj:'#e74c3c'};
+function addPlayer() {
+  const p = {num:g('p-num').value,name:g('p-name').value.trim(),pos:g('p-pos').value,age:g('p-age').value,nat:g('p-nat').value,wage:g('p-wage').value,con:g('p-con').value,stat:g('p-stat').value,acq:g('p-acq').value,note:g('p-note').value};
+  if (!p.name) return;
+  D.squad.push(p); sv(); renderSquad(); closeM('player');
+  ['p-num','p-name','p-age','p-nat','p-wage','p-con','p-note'].forEach(id=>g(id).value='');
+}
+function delPlayer(i) { if(confirm('Retirer ce joueur ?')){D.squad.splice(i,1);sv();renderSquad();updateWages();} }
+function renderSquad() {
+  const tb = g('sq-table');
+  g('sq-count').textContent = (D.squad||[]).length + ' joueur' + (D.squad.length!==1?'s':'');
+  if (!D.squad||!D.squad.length) { tb.innerHTML='<tr><td colspan="10" style="color:var(--gr);text-align:center;padding:24px">Effectif vide</td></tr>'; return; }
+  const linked = new Set(Object.values(D.tac.linkedSquad||{}).filter(v=>v!==null&&v!==undefined));
+  const sorted = [...D.squad].map((p,i)=>({...p,_i:i})).sort((a,b)=>(PORD[a.pos]||99)-(PORD[b.pos]||99));
+  tb.innerHTML = sorted.map(p => `<tr>
+    <td style="color:var(--grl);font-weight:700">${p.num||'—'}</td>
+    <td><strong>${p.name}</strong>${linked.has(p._i)?'<span class="badge" style="background:rgba(232,197,71,.15);color:#e8c547;margin-left:5px;font-size:9px">⚽ XI</span>':''}${p.acq?`<span style="font-size:10px;color:var(--gr);margin-left:5px">${p.acq}</span>`:''}</td>
+    <td><span class="badge ${PCLS(p.pos)}">${p.pos}</span></td>
+    <td>${p.age||'—'}</td><td style="color:var(--grl)">${p.nat||'—'}</td>
+    <td>${p.wage?'<strong>£'+fmt(p.wage)+'</strong>/sem':'<span style="color:var(--gr)">—</span>'}</td>
+    <td style="color:var(--grl)">${p.con||'—'}</td>
+    <td style="color:${STAT_C[p.stat]};font-weight:600;font-size:11px">${STAT_L[p.stat]||p.stat}</td>
+    <td style="color:var(--gr);font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.note||''}</td>
+    <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delPlayer(${p._i})">✕</button></td>
+  </tr>`).join('');
+}
+
+// ════════════════════════════════════════════
+//  RECRUITMENT
+// ════════════════════════════════════════════
+const TS_L = {watch:'Surveillance',int:'Intéressé',neg:'Négociation',ok:'Accord',fail:'Échec'};
+const TS_C = {watch:'#95a5a6',int:'#3498db',neg:'#f39c12',ok:'#27ae60',fail:'#e74c3c'};
+const TP_L = {lo:'🔵 Basse',me:'🟡 Moyenne',hi:'🔴 Haute'};
+function addTarget() {
+  const t = {name:g('tg-name').value.trim(),club:g('tg-club').value,pos:g('tg-pos').value,age:g('tg-age').value,val:g('tg-val').value,stat:g('tg-stat').value,pri:g('tg-pri').value,note:g('tg-note').value};
+  if (!t.name) return;
+  if (g('tg-list').value === 'shortlist') D.shortlist.push(t);
+  else D.targets.push(t);
+  sv(); renderTargets(); renderShortlist(); closeM('target');
+  ['tg-name','tg-club','tg-age','tg-val','tg-note'].forEach(id=>g(id).value='');
+}
+function delTarget(i) { D.targets.splice(i,1); sv(); renderTargets(); }
+function delShortlist(i) { D.shortlist.splice(i,1); sv(); renderShortlist(); }
+function renderTargets() {
+  const tb = g('tg-table');
+  if (!D.targets||!D.targets.length) { tb.innerHTML='<tr><td colspan="9" style="color:var(--gr);text-align:center;padding:22px">Aucune cible</td></tr>'; return; }
+  tb.innerHTML = D.targets.map((t,i) => `<tr>
+    <td><strong>${t.name}</strong></td>
+    <td style="color:var(--grl)">${t.club||'—'}</td>
+    <td><span class="badge ${PCLS(t.pos)}">${t.pos}</span></td>
+    <td>${t.age||'—'}</td><td style="color:var(--grl)">${t.val||'—'}</td>
+    <td style="color:${TS_C[t.stat]};font-weight:600;font-size:12px">${TS_L[t.stat]||t.stat}</td>
+    <td style="font-size:12px">${TP_L[t.pri]||t.pri}</td>
+    <td style="color:var(--gr);font-size:12px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.note||''}</td>
+    <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delTarget(${i})">✕</button></td>
+  </tr>`).join('');
+}
+function renderShortlist() {
+  const tb = g('sl-table');
+  if (!D.shortlist||!D.shortlist.length) { tb.innerHTML='<tr><td colspan="7" style="color:var(--gr);text-align:center;padding:22px">Liste vide</td></tr>'; return; }
+  tb.innerHTML = D.shortlist.map((t,i) => `<tr>
+    <td><strong>${t.name}</strong></td>
+    <td style="color:var(--grl)">${t.club||'—'}</td>
+    <td><span class="badge ${PCLS(t.pos)}">${t.pos}</span></td>
+    <td>${t.age||'—'}</td><td style="color:var(--grl)">${t.val||'—'}</td>
+    <td style="color:var(--gr);font-size:12px">${t.note||''}</td>
+    <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delShortlist(${i})">✕</button></td>
+  </tr>`).join('');
+}
+function rTab(n, el) {
+  ['targets','shortlist','scouts'].forEach(t=>{const e=g('rt-'+t);if(e)e.style.display='none';});
+  document.querySelectorAll('#page-recruitment .tab').forEach(t=>t.classList.remove('active'));
+  g('rt-'+n).style.display='block'; el.classList.add('active');
+}
+
+// ════════════════════════════════════════════
+//  OBJECTIVES
+// ════════════════════════════════════════════
+function addObj() { const v=g('new-obj').value.trim(); if(!v)return; D.objectives.push({text:v,done:false}); g('new-obj').value=''; sv(); renderObj(); }
+function toggleObj(i) { D.objectives[i].done=!D.objectives[i].done; sv(); renderObj(); }
+function delObj(i) { D.objectives.splice(i,1); sv(); renderObj(); }
+function renderObj() {
+  const el = g('obj-list');
+  if (!D.objectives||!D.objectives.length) { el.innerHTML='<p style="color:var(--grl);font-size:13px">Aucun objectif.</p>'; return; }
+  el.innerHTML = D.objectives.map((o,i) => `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--cbo)">
+    <input type="checkbox" ${o.done?'checked':''} onchange="toggleObj(${i})" style="width:15px;height:15px;accent-color:var(--y);cursor:pointer;flex-shrink:0">
+    <span style="flex:1;font-size:13px;${o.done?'text-decoration:line-through;color:var(--gr)':''}">${o.text}</span>
+    <button class="btn bd" style="padding:2px 7px;font-size:10px" onclick="delObj(${i})">✕</button>
+  </div>`).join('');
+}
+
+// ════════════════════════════════════════════
+//  HISTORY
+// ════════════════════════════════════════════
+function openArchiveModal() {
+  g('arch-season').value = D.season||'';
+  g('arch-pos').value    = D.pos||'';
+  g('arch-tot').value    = D.posTotal||20;
+  g('arch-div').value    = 'D11 — Gray Hooper Holt Mid Sussex FL';
+  g('arch-nexts').value  = '';
+  g('arch-notes').value  = '';
+  g('arch-scorer').value = '';
+  g('arch-goals').value  = '';
+  g('arch-sub').textContent = `Clôture saison ${D.season||''} — ${D.won*3+D.drawn} pts`;
+  openM('archive');
+}
+function archiveSeason() {
+  const snap = {
+    season:g('arch-season').value||D.season, div:g('arch-div').value,
+    pos:parseInt(g('arch-pos').value)||D.pos, tot:parseInt(g('arch-tot').value)||D.posTotal,
+    played:D.played, won:D.won, drawn:D.drawn, lost:D.lost, gf:D.gf, ga:D.ga,
+    pts:D.won*3+D.drawn, scorer:g('arch-scorer').value, goals:g('arch-goals').value,
+    notes:g('arch-notes').value, date:new Date().toLocaleDateString('fr-FR')
+  };
+  D.history.unshift(snap);
+  const ns = g('arch-nexts').value;
+  D.played=D.won=D.drawn=D.lost=D.gf=D.ga=0; D.pos=null; D.results=[];
+  if (ns) { D.season=ns; g('tb-season').innerText=ns; g('sb-season').textContent=ns; }
+  g('pos-input').value='';
+  sv(); renderResults(); renderHistory(); updateDash(); closeM('archive');
+  alert(`Saison ${snap.season} archivée ⚽ Bonne continuation pour ${ns||'la prochaine saison'} !`);
+}
+function renderHistory() {
+  const el = g('history-list');
+  if (!D.history||!D.history.length) { el.innerHTML='<div style="text-align:center;padding:40px;color:var(--gr)">Aucune saison archivée.</div>'; return; }
+  el.innerHTML = D.history.map((h,i) => {
+    const gd = h.gf-h.ga, gdc = gd>0?'#27ae60':gd<0?'#e74c3c':'#95a5a6';
+    return `<div class="hist-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:18px">
+          <div><div class="hist-pos">${h.pos||'—'}<span style="font-size:16px;color:var(--grl)">/${h.tot||'?'}</span></div><div style="font-size:10px;color:var(--grl);margin-top:2px">Position finale</div></div>
+          <div>
+            <div style="font-size:16px;font-weight:800;color:var(--y)">${h.season}</div>
+            <div style="font-size:11px;color:var(--grl)">${h.div||'Mid Sussex FL'}</div>
+            <div class="hist-stats">
+              <span><strong style="color:var(--y)">${h.pts}</strong> pts</span>
+              <span>J:<strong>${h.played}</strong></span>
+              <span style="color:#27ae60">V:<strong>${h.won}</strong></span>
+              <span style="color:#95a5a6">N:<strong>${h.drawn}</strong></span>
+              <span style="color:#e74c3c">D:<strong>${h.lost}</strong></span>
+              <span>BP:<strong>${h.gf}</strong></span>
+              <span>BC:<strong>${h.ga}</strong></span>
+              <span style="color:${gdc}">Diff:<strong>${gd>0?'+':''}${gd}</strong></span>
+            </div>
+            ${h.scorer?`<div style="margin-top:6px;font-size:12px;color:var(--grl)">⚽ Meilleur buteur : <strong style="color:var(--w)">${h.scorer}</strong> (${h.goals||'?'} buts)</div>`:''}
+            ${h.notes?`<div style="margin-top:5px;font-size:12px;color:var(--grl);font-style:italic">"${h.notes}"</div>`:''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span style="font-size:10px;color:var(--gr)">Archivé le ${h.date||'—'}</span>
+          <button class="btn bd" style="padding:3px 8px;font-size:10px" onclick="delHistory(${i})">Supprimer</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function delHistory(i) { if(confirm('Supprimer cette saison ?')){D.history.splice(i,1);sv();renderHistory();} }
+
+// ════════════════════════════════════════════
+//  MODALS
+// ════════════════════════════════════════════
+function openM(n) { if(n==='archive'){openArchiveModal();return;} g('m-'+n).classList.add('active'); }
+function closeM(n) { g('m-'+n).classList.remove('active'); }
+document.querySelectorAll('.mo').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('active'); }));
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.mo.active').forEach(m=>m.classList.remove('active')); });
+
+// ════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════
+function fmt(n) {
+  n = parseFloat(n)||0;
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000)    return (n/1000).toFixed(1)+'K';
+  return n.toString();
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+initApp();
+window.addEventListener('beforeunload', sv);
+</script>
+</body>
+</html>
