@@ -266,7 +266,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
             <div class="club-card-div">D11 · Mid Sussex FL</div>
           </div>
           <div class="club-card" id="club-card-tattingstone" onclick="selectClub('tattingstone')">
-            <img src="./tattingstone-logo.svg" alt="Tattingstone United" style="border-radius:50%;border:2px solid var(--cbo);width:56px;height:56px;object-fit:cover;display:block;margin:0 auto 10px">
+            <img src="./tattingstone.png" alt="Tattingstone United" style="border-radius:50%;border:2px solid var(--cbo);width:56px;height:56px;object-fit:cover;display:block;margin:0 auto 10px">
             <div class="club-card-name">Tattingstone United</div>
             <div class="club-card-div">Suffolk</div>
           </div>
@@ -913,7 +913,7 @@ const CLUBS = {
   tattingstone: {
     name: 'Tattingstone United', short: 'TU',
     division: 'Suffolk', found: '1900', city: 'Tattingstone',
-    logo: './tattingstone-logo.svg',
+    logo: './tattingstone.png',
     vars: {
       '--gd':'#06080f','--gs':'#0b1020','--gm':'#1a2f6f','--ga':'#2d4aab',
       '--y':'#c9a227','--yd':'#a8831c',
@@ -1141,7 +1141,7 @@ function startLoading(managerName, clubId) {
   fill.style.transition = 'none';
   fill.style.width = '0';
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    fill.style.transition = 'width 5.6s cubic-bezier(.04,0,.18,1)';
+    fill.style.transition = 'width 8.2s cubic-bezier(.04,0,.18,1)';
     fill.style.width = '100%';
   }));
 
@@ -1166,7 +1166,7 @@ function startLoading(managerName, clubId) {
     showApp();
     applyAll();
     initPitchDrag();
-  }, 6200);
+  }, 8800);
 }
 
 // ── Auth functions ──
