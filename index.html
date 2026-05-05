@@ -209,6 +209,16 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
 .nm-box{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
 .nm-team{font-weight:700;font-size:14px}
 .nm-vs{background:var(--gm);color:var(--y);padding:6px 14px;border-radius:6px;font-weight:800;font-size:12px;border:1px solid rgba(232,197,71,.2)}
+/* Save badge */
+#save-badge{font-size:11px;color:var(--y);opacity:0;transition:opacity .4s;pointer-events:none;display:inline-flex;align-items:center;gap:4px}
+/* Squad filter */
+#sq-filter-wrap{display:flex;gap:8px;margin-bottom:12px;align-items:center}
+/* Pitch responsive */
+#tac-left{flex-shrink:0;width:clamp(260px,34vw,340px)}
+svg#pitch{width:100%;height:auto;display:block}
+/* Auth forgot */
+.auth-forgot{text-align:right;margin-top:-4px;margin-bottom:12px;font-size:11px;color:var(--grl);cursor:pointer}
+.auth-forgot:hover{color:var(--w)}
 </style>
 </head>
 <body>
@@ -229,6 +239,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
       <div id="auth-err" style="display:none" class="auth-err"></div>
       <div class="fr"><label>Email</label><input type="email" id="auth-email" placeholder="votre@email.com" onkeydown="if(event.key==='Enter')authSubmit()"></div>
       <div class="fr"><label>Mot de passe</label><input type="password" id="auth-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')authSubmit()"></div>
+      <div class="auth-forgot" id="auth-forgot-wrap" onclick="forgotPassword()">Mot de passe oublié ?</div>
       <button class="btn bp" id="auth-submit" style="width:100%;padding:10px;font-size:13px;margin-top:4px" onclick="authSubmit()">Se connecter</button>
     </div>
   </div>
@@ -337,6 +348,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
       <span>Saison <strong id="tb-season" contenteditable="true" oninput="sd()">2025/26</strong></span>
       <span>Manager <strong id="tb-mgr" contenteditable="true" oninput="sd()">Votre nom</strong></span>
       <span>Division <strong id="tb-division">—</strong></span>
+      <span id="save-badge">✓ Sauvegardé</span>
     </div>
   </div>
 
@@ -474,7 +486,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
         </div>
 
         <!-- Pitch SVG -->
-        <svg id="pitch" width="320" height="500" viewBox="0 0 320 500"></svg>
+        <svg id="pitch" viewBox="0 0 320 500" preserveAspectRatio="xMidYMid meet"></svg>
 
         <!-- Formation bar -->
         <div id="form-bar">
@@ -564,7 +576,8 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
 
   <!-- EFFECTIF -->
   <div id="page-squad" class="page">
-    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+    <div id="sq-filter-wrap">
+      <input type="text" id="sq-filter" placeholder="🔍 Rechercher nom, poste…" oninput="renderSquad()" style="flex:1;max-width:280px">
       <button class="btn bp" onclick="openM('player')">+ Ajouter un joueur</button>
     </div>
     <div class="card">
@@ -646,9 +659,11 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
           <input type="number" id="r-them" min="0" placeholder="Eux" style="text-align:center;font-size:20px;font-weight:700">
         </div></div>
         <div class="fr md-full"><label>Buteurs</label><input type="text" id="r-scorers" placeholder="Ex: Smith 23', Jones 67'"></div>
+        <div class="fr"><label>Homme du match</label><input type="text" id="r-motm" placeholder="Prénom Nom"></div>
+        <div class="fr md-full"><label>Notes du match</label><input type="text" id="r-notes" placeholder="Résumé tactique, impressions…"></div>
       </div>
     </div>
-    <div class="mdf"><button class="btn bg" onclick="closeM('res')">Annuler</button><button class="btn bp" onclick="addResult()">Enregistrer</button></div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('res');_editResIdx=null">Annuler</button><button class="btn bp" onclick="addResult()">Enregistrer</button></div>
   </div>
 </div>
 
@@ -680,11 +695,12 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
         <div class="fr"><label>Salaire / sem.</label><input type="number" id="p-wage" placeholder="£ par semaine"></div>
         <div class="fr"><label>Fin de contrat</label><input type="text" id="p-con" placeholder="Juin 2026"></div>
         <div class="fr"><label>Statut</label>
-          <select id="p-stat"><option value="key">Titulaire</option><option value="rot">Rotation</option><option value="bak">Remplaçant</option><option value="yth">Espoir</option><option value="lon">Prêt</option><option value="inj">Blessé</option></select>
+          <select id="p-stat" onchange="g('p-return-wrap').style.display=this.value==='inj'?'flex':'none'"><option value="key">Titulaire</option><option value="rot">Rotation</option><option value="bak">Remplaçant</option><option value="yth">Espoir</option><option value="lon">Prêt</option><option value="inj">Blessé</option></select>
         </div>
         <div class="fr"><label>Arrivée</label>
           <select id="p-acq"><option value="">—</option><option>Signature libre</option><option>Transfert</option><option>Prêt</option><option>Académie</option></select>
         </div>
+        <div class="fr" id="p-return-wrap" style="display:none"><label>Retour prévu</label><input type="text" id="p-return" placeholder="Ex: mi-mars, 15/04…"></div>
         <div class="fr md-full"><label>Notes</label><input type="text" id="p-note" placeholder="Forces, faiblesses, observations…"></div>
       </div>
     </div>
@@ -985,6 +1001,7 @@ async function sv() {
     data: D
   });
   if (error) console.error('sv:', error);
+  else showSaveBadge();
 }
 
 async function loadSaveData(id) {
@@ -1610,10 +1627,44 @@ function tacTab(n, el) {
   if (n === 'roles') renderRolesTable();
 }
 
+// ── Save badge ──
+let _saveBadgeTimer = null;
+function showSaveBadge() {
+  const el = g('save-badge');
+  if (!el) return;
+  el.style.opacity = '1';
+  if (_saveBadgeTimer) clearTimeout(_saveBadgeTimer);
+  _saveBadgeTimer = setTimeout(() => { el.style.opacity = '0'; }, 2200);
+}
+
+// ── Forgot password ──
+async function forgotPassword() {
+  const email = g('auth-email').value.trim();
+  if (!email) { showAuthErr('Entrez votre email d\'abord.'); return; }
+  const { error } = await supa.auth.resetPasswordForEmail(email);
+  if (error) showAuthErr(error.message);
+  else showAuthErr('Email de réinitialisation envoyé ! Vérifiez votre boîte.');
+}
+
 // ════════════════════════════════════════════
 //  DASHBOARD
 // ════════════════════════════════════════════
 function updatePos() { D.pos = parseInt(g('pos-input').value)||null; sd(); }
+function calcStreak(results) {
+  if (!results || !results.length) return '';
+  let count = 0, type = null;
+  for (let i = results.length - 1; i >= 0; i--) {
+    const r = results[i];
+    const t = r.us > r.them ? 'V' : r.us === r.them ? 'N' : 'D';
+    if (type === null) { type = t; count = 1; }
+    else if (t === type) count++;
+    else break;
+  }
+  if (count < 2) return '';
+  const labels = { V:'victoires d\'affilée', N:'nuls consécutifs', D:'défaites consécutives' };
+  const colors = { V:'#27ae60', N:'#95a5a6', D:'#e74c3c' };
+  return `<div style="font-size:11px;color:${colors[type]};font-weight:700;margin-top:4px">${count} ${labels[type]}</div>`;
+}
 function updateDash() {
   const pts = D.won*3 + D.drawn;
   g('d-pts').textContent = pts;
@@ -1628,22 +1679,42 @@ function updateDash() {
     if (r.us === r.them) return '<span class="rb rd">N</span>';
     return '<span class="rb rl">D</span>';
   });
-  g('d-form').innerHTML = last5.length ? last5.join('') : '—';
+  const streak = calcStreak(D.results||[]);
+  g('d-form').innerHTML = (last5.length ? last5.join('') : '—') + streak;
 }
 
 // ════════════════════════════════════════════
 //  RESULTS
 // ════════════════════════════════════════════
+let _editResIdx = null;
+function openEditResult(i) {
+  _editResIdx = i;
+  const r = D.results[i];
+  g('r-opp').value    = r.opp||'';
+  g('r-venue').value  = r.venue||'H';
+  g('r-comp').value   = r.comp||'';
+  g('r-date').value   = r.date||'';
+  g('r-us').value     = r.us??'';
+  g('r-them').value   = r.them??'';
+  g('r-scorers').value= r.scorers||'';
+  g('r-motm').value   = r.motm||'';
+  g('r-notes').value  = r.notes||'';
+  openM('res');
+}
 function addResult() {
   const us   = parseInt(g('r-us').value)||0;
   const them = parseInt(g('r-them').value)||0;
   const opp  = g('r-opp').value.trim();
   if (!opp) return;
-  D.results.push({date:g('r-date').value, opp, us, them, venue:g('r-venue').value, comp:g('r-comp').value, scorers:g('r-scorers').value});
-  D.played++; D.gf+=us; D.ga+=them;
-  if (us > them) D.won++; else if (us === them) D.drawn++; else D.lost++;
-  sv(); renderResults(); closeM('res'); updateDash();
-  ['r-date','r-opp','r-us','r-them','r-comp','r-scorers'].forEach(id => g(id).value = '');
+  const entry = {date:g('r-date').value, opp, us, them, venue:g('r-venue').value, comp:g('r-comp').value, scorers:g('r-scorers').value, motm:g('r-motm').value, notes:g('r-notes').value};
+  if (_editResIdx !== null) {
+    D.results[_editResIdx] = entry;
+    _editResIdx = null;
+  } else {
+    D.results.push(entry);
+  }
+  recalc(); sv(); renderResults(); closeM('res'); updateDash();
+  ['r-date','r-opp','r-us','r-them','r-comp','r-scorers','r-motm','r-notes'].forEach(id => g(id).value = '');
 }
 function renderResults() {
   const el = g('res-list');
@@ -1652,13 +1723,17 @@ function renderResults() {
     const ri  = D.results.length-1-i;
     const res = r.us > r.them ? 'V' : r.us === r.them ? 'N' : 'D';
     const cls = res==='V' ? 'rw' : res==='N' ? 'rd' : 'rl';
-    return `<div style="display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--cbo)">
-      <span class="rb ${cls}">${res}</span>
-      <span style="font-size:10px;color:var(--grl);width:26px">${r.venue==='H'?'DOM':'EXT'}</span>
-      <span style="flex:1;font-size:13px">${r.opp}</span>
-      <span style="font-weight:800">${r.us}–${r.them}</span>
-      <span style="font-size:11px;color:var(--gr)">${r.comp||''}</span>
-      <button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delResult(${ri})">✕</button>
+    return `<div style="padding:6px 0;border-bottom:1px solid var(--cbo)">
+      <div style="display:flex;align-items:center;gap:9px">
+        <span class="rb ${cls}">${res}</span>
+        <span style="font-size:10px;color:var(--grl);width:26px">${r.venue==='H'?'DOM':'EXT'}</span>
+        <span style="flex:1;font-size:13px">${r.opp}</span>
+        <span style="font-weight:800">${r.us}–${r.them}</span>
+        <span style="font-size:11px;color:var(--gr)">${r.comp||''}</span>
+        <button class="btn bg" style="padding:2px 6px;font-size:10px" onclick="openEditResult(${ri})">✏️</button>
+        <button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delResult(${ri})">✕</button>
+      </div>
+      ${r.motm?`<div style="font-size:11px;color:var(--grl);margin-top:3px;padding-left:2px">⭐ ${r.motm}${r.notes?' · <em style="opacity:.7">${r.notes}</em>':''}</div>`:''}
     </div>`;
   }).join('');
 }
@@ -1707,29 +1782,38 @@ const PCLS  = p => p==='GK'?'bgk':['CB','LB','RB','LWB','RWB'].includes(p)?'bdef
 const STAT_L = {key:'Titulaire',rot:'Rotation',bak:'Remplaçant',yth:'Espoir',lon:'Prêt',inj:'Blessé'};
 const STAT_C = {key:'#27ae60',rot:'#3498db',bak:'#95a5a6',yth:'#9b59b6',lon:'#f39c12',inj:'#e74c3c'};
 function addPlayer() {
-  const p = {num:g('p-num').value,name:g('p-name').value.trim(),pos:g('p-pos').value,age:g('p-age').value,nat:g('p-nat').value,wage:g('p-wage').value,con:g('p-con').value,stat:g('p-stat').value,acq:g('p-acq').value,note:g('p-note').value};
+  const p = {num:g('p-num').value,name:g('p-name').value.trim(),pos:g('p-pos').value,age:g('p-age').value,nat:g('p-nat').value,wage:g('p-wage').value,con:g('p-con').value,stat:g('p-stat').value,acq:g('p-acq').value,note:g('p-note').value,returnDate:g('p-return').value};
   if (!p.name) return;
   D.squad.push(p); sv(); renderSquad(); closeM('player');
-  ['p-num','p-name','p-age','p-nat','p-wage','p-con','p-note'].forEach(id=>g(id).value='');
+  ['p-num','p-name','p-age','p-nat','p-wage','p-con','p-note','p-return'].forEach(id=>g(id).value='');
+  g('p-return-wrap').style.display='none';
 }
 function delPlayer(i) { if(confirm('Retirer ce joueur ?')){D.squad.splice(i,1);sv();renderSquad();updateWages();} }
 function renderSquad() {
   const tb = g('sq-table');
-  g('sq-count').textContent = (D.squad||[]).length + ' joueur' + (D.squad.length!==1?'s':'');
+  const filter = (g('sq-filter')?.value||'').toLowerCase();
+  g('sq-count').textContent = (D.squad||[]).length + ' joueur' + ((D.squad||[]).length!==1?'s':'');
   if (!D.squad||!D.squad.length) { tb.innerHTML='<tr><td colspan="10" style="color:var(--gr);text-align:center;padding:24px">Effectif vide</td></tr>'; return; }
   const linked = new Set(Object.values(D.tac.linkedSquad||{}).filter(v=>v!==null&&v!==undefined));
-  const sorted = [...D.squad].map((p,i)=>({...p,_i:i})).sort((a,b)=>(PORD[a.pos]||99)-(PORD[b.pos]||99));
-  tb.innerHTML = sorted.map(p => `<tr>
-    <td style="color:var(--grl);font-weight:700">${p.num||'—'}</td>
-    <td><strong>${p.name}</strong>${linked.has(p._i)?'<span class="badge" style="background:rgba(232,197,71,.15);color:#e8c547;margin-left:5px;font-size:9px">⚽ XI</span>':''}${p.acq?`<span style="font-size:10px;color:var(--gr);margin-left:5px">${p.acq}</span>`:''}</td>
-    <td><span class="badge ${PCLS(p.pos)}">${p.pos}</span></td>
-    <td>${p.age||'—'}</td><td style="color:var(--grl)">${p.nat||'—'}</td>
-    <td>${p.wage?'<strong>£'+fmt(p.wage)+'</strong>/sem':'<span style="color:var(--gr)">—</span>'}</td>
-    <td style="color:var(--grl)">${p.con||'—'}</td>
-    <td style="color:${STAT_C[p.stat]};font-weight:600;font-size:11px">${STAT_L[p.stat]||p.stat}</td>
-    <td style="color:var(--gr);font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.note||''}</td>
-    <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delPlayer(${p._i})">✕</button></td>
-  </tr>`).join('');
+  const sorted = [...D.squad].map((p,i)=>({...p,_i:i})).sort((a,b)=>(PORD[a.pos]||99)-(PORD[b.pos]||99))
+    .filter(p => !filter || p.name.toLowerCase().includes(filter) || (p.pos||'').toLowerCase().includes(filter) || (p.nat||'').toLowerCase().includes(filter));
+  if (!sorted.length) { tb.innerHTML='<tr><td colspan="10" style="color:var(--gr);text-align:center;padding:24px">Aucun résultat.</td></tr>'; return; }
+  tb.innerHTML = sorted.map(p => {
+    const statLabel = p.stat==='inj' && p.returnDate
+      ? `<span style="color:${STAT_C.inj};font-weight:600;font-size:11px">Blessé</span><span style="font-size:10px;color:var(--grl);margin-left:4px">(retour: ${p.returnDate})</span>`
+      : `<span style="color:${STAT_C[p.stat]};font-weight:600;font-size:11px">${STAT_L[p.stat]||p.stat}</span>`;
+    return `<tr>
+      <td style="color:var(--grl);font-weight:700">${p.num||'—'}</td>
+      <td><strong>${p.name}</strong>${linked.has(p._i)?'<span class="badge" style="background:rgba(232,197,71,.15);color:#e8c547;margin-left:5px;font-size:9px">⚽ XI</span>':''}${p.acq?`<span style="font-size:10px;color:var(--gr);margin-left:5px">${p.acq}</span>`:''}</td>
+      <td><span class="badge ${PCLS(p.pos)}">${p.pos}</span></td>
+      <td>${p.age||'—'}</td><td style="color:var(--grl)">${p.nat||'—'}</td>
+      <td>${p.wage?'<strong>£'+fmt(p.wage)+'</strong>/sem':'<span style="color:var(--gr)">—</span>'}</td>
+      <td style="color:var(--grl)">${p.con||'—'}</td>
+      <td>${statLabel}</td>
+      <td style="color:var(--gr);font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.note||''}</td>
+      <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delPlayer(${p._i})">✕</button></td>
+    </tr>`;
+  }).join('');
 }
 
 // ════════════════════════════════════════════
@@ -1748,6 +1832,7 @@ function addTarget() {
 }
 function delTarget(i) { D.targets.splice(i,1); sv(); renderTargets(); }
 function delShortlist(i) { D.shortlist.splice(i,1); sv(); renderShortlist(); }
+function moveToShortlist(i) { const t=D.targets.splice(i,1)[0]; D.shortlist.push(t); sv(); renderTargets(); renderShortlist(); }
 function renderTargets() {
   const tb = g('tg-table');
   if (!D.targets||!D.targets.length) { tb.innerHTML='<tr><td colspan="9" style="color:var(--gr);text-align:center;padding:22px">Aucune cible</td></tr>'; return; }
@@ -1759,7 +1844,10 @@ function renderTargets() {
     <td style="color:${TS_C[t.stat]};font-weight:600;font-size:12px">${TS_L[t.stat]||t.stat}</td>
     <td style="font-size:12px">${TP_L[t.pri]||t.pri}</td>
     <td style="color:var(--gr);font-size:12px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.note||''}</td>
-    <td><button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delTarget(${i})">✕</button></td>
+    <td style="white-space:nowrap">
+      <button class="btn bg" style="padding:2px 6px;font-size:10px;margin-right:3px" onclick="moveToShortlist(${i})" title="Déplacer vers liste courte">→</button>
+      <button class="btn bd" style="padding:2px 6px;font-size:10px" onclick="delTarget(${i})">✕</button>
+    </td>
   </tr>`).join('');
 }
 function renderShortlist() {
@@ -1803,7 +1891,7 @@ function openArchiveModal() {
   g('arch-season').value = D.season||'';
   g('arch-pos').value    = D.pos||'';
   g('arch-tot').value    = D.posTotal||20;
-  g('arch-div').value    = 'D11 — Gray Hooper Holt Mid Sussex FL';
+  g('arch-div').value    = (CLUBS[D.clubId]||CLUBS.westfield).division;
   g('arch-nexts').value  = '';
   g('arch-notes').value  = '';
   g('arch-scorer').value = '';
