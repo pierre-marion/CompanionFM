@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Westfield FC — RP Dashboard</title>
+<title>CompanionFM — RP Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root{
@@ -77,6 +77,32 @@ tr:hover td{background:rgba(255,255,255,.02)}
 [contenteditable]:focus{border-color:var(--y)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--cbo);border-radius:2px}
 
+/* ── AUTH SCREEN ── */
+#screen-auth{position:fixed;inset:0;z-index:1100;background:var(--gd);display:flex;align-items:center;justify-content:center;padding:28px}
+.auth-wrap{width:100%;max-width:400px}
+.auth-hero{text-align:center;margin-bottom:32px}
+.auth-logo-icon{font-size:52px;line-height:1;margin-bottom:12px}
+.auth-title{font-size:28px;font-weight:900;color:var(--w);letter-spacing:3px;text-transform:uppercase}
+.auth-sub{font-size:12px;color:var(--grl);margin-top:5px;letter-spacing:.5px}
+.auth-card{background:var(--cb);border:1px solid var(--cbo);border-radius:14px;padding:24px 24px 20px;box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.auth-tabs{display:flex;gap:3px;margin-bottom:20px;background:var(--gd);border-radius:8px;padding:3px}
+.auth-tab{flex:1;text-align:center;padding:8px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:var(--grl);transition:all .18s}
+.auth-tab.active{background:var(--gs);color:var(--y);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.auth-err{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);border-radius:6px;padding:9px 12px;font-size:12px;color:#e74c3c;margin-bottom:14px}
+#screen-auth .fr{margin-bottom:12px}
+#screen-auth .fr label{font-size:12px;color:var(--grl);min-width:auto;display:block;margin-bottom:4px}
+#screen-auth .fr{display:block}
+
+/* ── CLUB SELECTION CARDS ── */
+.club-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.club-card{background:var(--gd);border:2px solid var(--cbo);border-radius:10px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s}
+.club-card:hover{border-color:rgba(232,197,71,.4);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.club-card.selected{border-color:var(--y);background:rgba(232,197,71,.06);box-shadow:0 0 0 1px var(--y)}
+.club-card img,.club-card-svg{width:56px;height:56px;border-radius:50%;border:2px solid var(--cbo);object-fit:cover;display:block;margin:0 auto 10px}
+.club-card.selected img,.club-card.selected .club-card-svg{border-color:var(--y)}
+.club-card-name{font-size:12px;font-weight:800;color:var(--w);line-height:1.2}
+.club-card-div{font-size:10px;color:var(--grl);margin-top:3px}
+
 /* ── WELCOME SCREEN ── */
 #screen-welcome{position:fixed;inset:0;z-index:1000;background:var(--gd);display:flex;align-items:center;justify-content:center;padding:28px;overflow-y:auto}
 .wlc-wrap{width:100%;max-width:500px}
@@ -93,8 +119,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .save-card-info{font-size:11px;color:var(--grl);margin-top:2px}
 .wlc-empty{text-align:center;padding:26px 0;color:var(--grl);font-size:13px}
 /* ── LOADING SCREEN ── */
-#screen-loading{position:fixed;inset:0;z-index:2000;background:#050d08;display:none;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
-#screen-loading::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(20,80,40,.55) 0%,transparent 70%);animation:ld-bg 3.5s ease-in-out infinite alternate;pointer-events:none}
+#screen-loading{position:fixed;inset:0;z-index:2000;background:var(--ld-bg,#050d08);display:none;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#screen-loading::before{content:'';position:absolute;inset:0;background:var(--ld-gradient,radial-gradient(ellipse 70% 60% at 50% 45%,rgba(20,80,40,.55) 0%,transparent 70%));animation:ld-bg 3.5s ease-in-out infinite alternate;pointer-events:none}
 @keyframes ld-bg{from{opacity:.5}to{opacity:1}}
 .ld-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.045);animation:ld-spin-r 11s linear infinite}
 .ld-ring2{position:absolute;border-radius:50%;border:1px solid rgba(232,197,71,.06);animation:ld-spin-r 16s linear infinite reverse}
@@ -187,13 +213,38 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
 </head>
 <body>
 
+<!-- ══ ÉCRAN AUTH ══ -->
+<div id="screen-auth" style="display:none">
+  <div class="auth-wrap">
+    <div class="auth-hero">
+      <div class="auth-logo-icon">⚽</div>
+      <div class="auth-title">CompanionFM</div>
+      <div class="auth-sub">Votre assistant Football Manager 26</div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-login"    onclick="setAuthTab('login')">Connexion</div>
+        <div class="auth-tab"        id="tab-register" onclick="setAuthTab('register')">Inscription</div>
+      </div>
+      <div id="auth-err" style="display:none" class="auth-err"></div>
+      <div class="fr"><label>Email</label><input type="email" id="auth-email" placeholder="votre@email.com" onkeydown="if(event.key==='Enter')authSubmit()"></div>
+      <div class="fr"><label>Mot de passe</label><input type="password" id="auth-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')authSubmit()"></div>
+      <button class="btn bp" id="auth-submit" style="width:100%;padding:10px;font-size:13px;margin-top:4px" onclick="authSubmit()">Se connecter</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ ÉCRAN D'ACCUEIL ══ -->
 <div id="screen-welcome">
   <div class="wlc-wrap">
     <div class="wlc-hero">
-      <img class="wlc-logo-img" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
-      <div class="wlc-title">Westfield FC</div>
+      <div style="font-size:52px;line-height:1;margin-bottom:12px">⚽</div>
+      <div class="wlc-title">CompanionFM</div>
       <div class="wlc-sub">RP Dashboard · Football Manager 26</div>
+      <div id="wlc-user-info" style="margin-top:10px;font-size:11px;color:var(--grl);display:flex;align-items:center;justify-content:center;gap:10px">
+        <span id="wlc-email">—</span>
+        <button class="btn bg" style="padding:3px 10px;font-size:11px" onclick="signOut()">Déconnexion</button>
+      </div>
     </div>
 
     <!-- Liste des saves -->
@@ -205,15 +256,24 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
 
     <!-- Formulaire nouvelle save (caché) -->
     <div id="wlc-new-form" style="display:none">
-      <div class="wlc-stitle">Nouvelle partie</div>
+      <div class="wlc-stitle">Nouvelle carrière</div>
       <div style="background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:20px">
-        <div class="fr" style="margin-bottom:14px">
-          <label style="min-width:130px">Nom du manager</label>
-          <input type="text" id="ns-mgr" placeholder="Votre nom…" onkeydown="if(event.key==='Enter')createSave()" autofocus>
+        <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Choisissez votre club</div>
+        <div class="club-cards">
+          <div class="club-card" id="club-card-westfield" onclick="selectClub('westfield')">
+            <img src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
+            <div class="club-card-name">Westfield FC</div>
+            <div class="club-card-div">D11 · Mid Sussex FL</div>
+          </div>
+          <div class="club-card" id="club-card-tattingstone" onclick="selectClub('tattingstone')">
+            <img src="./tattingstone-logo.svg" alt="Tattingstone United" style="border-radius:50%;border:2px solid var(--cbo);width:56px;height:56px;object-fit:cover;display:block;margin:0 auto 10px">
+            <div class="club-card-name">Tattingstone United</div>
+            <div class="club-card-div">Suffolk</div>
+          </div>
         </div>
-        <div class="fr" style="margin-bottom:0">
-          <label style="min-width:130px">Club</label>
-          <input type="text" value="Westfield FC" disabled style="opacity:.5">
+        <div class="fr" style="margin-bottom:0;margin-top:10px">
+          <label style="min-width:130px">Nom du manager</label>
+          <input type="text" id="ns-mgr" placeholder="Votre nom…" onkeydown="if(event.key==='Enter')createSave()">
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-top:12px">
@@ -233,13 +293,13 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
   <!-- Logo animé -->
   <div class="ld-logo-wrap">
     <div class="ld-glow"></div>
-    <img class="ld-logo" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
+    <img class="ld-logo" id="ld-logo-img" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="">
     <div class="ld-spin-ring"></div>
   </div>
 
   <!-- Texte -->
   <div class="ld-content">
-    <div class="ld-club-name">Westfield FC</div>
+    <div class="ld-club-name" id="ld-club-name">—</div>
     <div class="ld-tagline">RP Dashboard · Football Manager 26</div>
     <div class="ld-sep"></div>
     <div class="ld-mgr-wrap">Manager : <strong id="ld-mgr">—</strong></div>
@@ -250,9 +310,9 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
 
 <div id="sb" style="display:none">
   <div class="sb-head">
-    <img class="sb-logo" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
-    <div class="cn">Westfield FC</div>
-    <div class="cl">Gray Hooper Holt Mid Sussex FL<br><span class="sb-season" id="sb-season">2025/26</span></div>
+    <img class="sb-logo" id="sb-logo-img" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="">
+    <div class="cn" id="sb-club-name">—</div>
+    <div class="cl" id="sb-division">—<br><span class="sb-season" id="sb-season">2025/26</span></div>
   </div>
   <nav>
     <div class="ni active" onclick="showPage('dashboard',this)"><span class="ni-ic">⚡</span>Dashboard</div>
@@ -263,10 +323,11 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
     <div class="ni" onclick="showPage('notes',this)"><span class="ni-ic">📋</span>Notes</div>
     <div class="ni" onclick="showPage('history',this)"><span class="ni-ic">📜</span>Historique</div>
   </nav>
-  <div style="padding:10px 12px;border-top:1px solid var(--cbo)">
+  <div style="padding:10px 12px;border-top:1px solid var(--cbo);display:flex;flex-direction:column;gap:6px">
     <div class="ni" style="border-radius:6px;border:1px solid var(--cbo)" onclick="quitToMenu()"><span class="ni-ic">🚪</span>Menu principal</div>
+    <div class="ni" style="border-radius:6px;border:1px solid var(--cbo);color:var(--ng)" onclick="signOut()"><span class="ni-ic">🔓</span>Déconnexion</div>
   </div>
-  <div class="sb-foot">FM26 RP Dashboard<br>Westfield FC · Est. 1966</div>
+  <div class="sb-foot">FM26 RP Dashboard<br><span id="sb-foot-club">CompanionFM</span></div>
 </div>
 
 <div id="main" style="display:none">
@@ -275,7 +336,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
     <div class="tbm">
       <span>Saison <strong id="tb-season" contenteditable="true" oninput="sd()">2025/26</strong></span>
       <span>Manager <strong id="tb-mgr" contenteditable="true" oninput="sd()">Votre nom</strong></span>
-      <span>Division <strong>D11 — Mid Sussex FL</strong></span>
+      <span>Division <strong id="tb-division">—</strong></span>
     </div>
   </div>
 
@@ -321,7 +382,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
         <div class="card">
           <div class="ct">Prochain match</div>
           <div class="nm-box">
-            <div><div style="font-size:10px;color:var(--grl);margin-bottom:3px">DOMICILE</div><div class="nm-team">Westfield FC</div></div>
+            <div><div style="font-size:10px;color:var(--grl);margin-bottom:3px">DOMICILE</div><div class="nm-team" id="nm-home">—</div></div>
             <div class="nm-vs">VS</div>
             <div style="text-align:right"><div style="font-size:10px;color:var(--grl);margin-bottom:3px">EXTÉRIEUR</div><div class="nm-team" id="nm-opp" contenteditable="true" oninput="sd()">—</div></div>
           </div>
@@ -594,7 +655,7 @@ svg#pitch{display:block;border-radius:10px;touch-action:none;user-select:none}
 <!-- MODAL: Joueur -->
 <div class="mo" id="m-player">
   <div class="md">
-    <div class="md-head"><div class="md-icon green">👤</div><div><div class="mdt">Ajouter un joueur</div><div class="md-sub">Effectif Westfield FC</div></div></div>
+    <div class="md-head"><div class="md-icon green">👤</div><div><div class="mdt">Ajouter un joueur</div><div class="md-sub" id="modal-squad-club">Effectif</div></div></div>
     <div class="md-body">
       <div class="md-sect">Identité</div>
       <div class="md-grid">
@@ -799,7 +860,7 @@ const FORM_PRESETS = {
 };
 
 const DFLT = () => ({
-  mgr:'Votre nom', season:'2025/26',
+  mgr:'Votre nom', season:'2025/26', clubId:'westfield',
   pos:null, posTotal:20,
   played:0, won:0, drawn:0, lost:0, gf:0, ga:0,
   club:{stad:'',cap:'',city:'West Sussex',found:'1966'},
@@ -830,23 +891,96 @@ const SUPA_URL = 'https://neujdrauelvekiicayty.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldWpkcmF1ZWx2ZWtpaWNheXR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5NzA1MjUsImV4cCI6MjA5MzU0NjUyNX0.IDaOw0CwcaaZYAioVA6KgYp1HHNbIUHqzK2aAdCxYHs';
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 let currentSaveId = null;
+let currentUser   = null;
+
+// ════════════════════════════════════════════
+//  CLUBS CONFIG
+// ════════════════════════════════════════════
+const CLUBS = {
+  westfield: {
+    name: 'Westfield FC', short: 'WFC',
+    division: 'D11 — Mid Sussex FL', found: '1966', city: 'West Sussex',
+    logo: './22e567c3-9f71-4b96-b342-8122d17546b5.png',
+    vars: {
+      '--gd':'#060e09','--gs':'#0b1a0f','--gm':'#1a5c30','--ga':'#2d8a50',
+      '--y':'#e8c547','--yd':'#c9a82e',
+      '--w':'#f0f5f2','--gr':'#4a5e52','--grl':'#8fa898',
+      '--cb':'#0d1c12','--cbo':'#1c3824',
+      '--ld-bg':'#050d08',
+      '--ld-gradient':'radial-gradient(ellipse 70% 60% at 50% 45%,rgba(20,80,40,.55) 0%,transparent 70%)'
+    }
+  },
+  tattingstone: {
+    name: 'Tattingstone United', short: 'TU',
+    division: 'Suffolk', found: '1900', city: 'Tattingstone',
+    logo: './tattingstone-logo.svg',
+    vars: {
+      '--gd':'#06080f','--gs':'#0b1020','--gm':'#1a2f6f','--ga':'#2d4aab',
+      '--y':'#c9a227','--yd':'#a8831c',
+      '--w':'#f0f2f8','--gr':'#4a5070','--grl':'#8a90b8',
+      '--cb':'#0d1228','--cbo':'#1c2850',
+      '--ld-bg':'#05060e',
+      '--ld-gradient':'radial-gradient(ellipse 70% 60% at 50% 45%,rgba(20,40,120,.55) 0%,transparent 70%)'
+    }
+  }
+};
+let _selectedClub = 'westfield';
+
+function selectClub(id) {
+  _selectedClub = id;
+  document.querySelectorAll('.club-card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById('club-card-' + id);
+  if (card) card.classList.add('selected');
+}
+
+function applyClubTheme(clubId) {
+  const club = CLUBS[clubId] || CLUBS.westfield;
+  const root = document.documentElement;
+  Object.entries(club.vars).forEach(([k,v]) => root.style.setProperty(k, v));
+  // Update sidebar
+  const sbl = document.getElementById('sb-logo-img');
+  if (sbl) { sbl.src = club.logo; sbl.alt = club.name; }
+  const sbn = document.getElementById('sb-club-name');
+  if (sbn) sbn.textContent = club.name;
+  const sbd = document.getElementById('sb-division');
+  if (sbd) sbd.innerHTML = club.division + '<br><span class="sb-season" id="sb-season">' + (D.season||'2025/26') + '</span>';
+  const sbf = document.getElementById('sb-foot-club');
+  if (sbf) sbf.textContent = club.name + ' · Est. ' + club.found;
+  // Update topbar division
+  const tbd = document.getElementById('tb-division');
+  if (tbd) tbd.textContent = club.division;
+  // Update home team in next match
+  const nmh = document.getElementById('nm-home');
+  if (nmh) nmh.textContent = club.name;
+  // Update squad modal subtitle
+  const msc = document.getElementById('modal-squad-club');
+  if (msc) msc.textContent = 'Effectif ' + club.name;
+  // Update loading screen
+  const ldl = document.getElementById('ld-logo-img');
+  if (ldl) { ldl.src = club.logo; ldl.alt = club.name; }
+  const ldc = document.getElementById('ld-club-name');
+  if (ldc) ldc.textContent = club.name;
+}
 
 async function getSaves() {
   const { data, error } = await supa
     .from('saves')
-    .select('id, manager_name, season, club, last_played')
+    .select('id, manager_name, season, club, club_id, last_played')
     .order('last_played', { ascending: false });
   if (error) { console.error('getSaves:', error); return []; }
   return data || [];
 }
 
 async function sv() {
-  if (!currentSaveId) return;
+  if (!currentSaveId || !currentUser) return;
+  const club = CLUBS[D.clubId] || CLUBS.westfield;
   const { error } = await supa.from('saves').upsert({
     id: currentSaveId,
+    user_id: currentUser.id,
+    club_id: D.clubId || 'westfield',
     manager_name: D.mgr || 'Manager',
     season: D.season || '2025/26',
-    club: 'Westfield FC',
+    club: club.name,
     last_played: new Date().toISOString(),
     data: D
   });
@@ -871,6 +1005,7 @@ async function loadSaveData(id) {
     initPosFromPreset(D.tac.form || '4-4-2');
   if (!D.tac.playerPosDef || Object.keys(D.tac.playerPosDef).length < 11)
     D.tac.playerPosDef = JSON.parse(JSON.stringify(D.tac.playerPos));
+  applyClubTheme(D.clubId || 'westfield');
 }
 
 // ── Navigation écrans ──
@@ -884,6 +1019,8 @@ function hideApp() {
 }
 async function showWelcome() {
   await renderSaveCards();
+  const emailEl = g('wlc-email');
+  if (emailEl && currentUser) emailEl.textContent = currentUser.email;
   g('screen-welcome').style.display = 'flex';
   hideApp();
 }
@@ -907,11 +1044,12 @@ async function renderSaveCards() {
   el.innerHTML = saves.map(s => {
     const d = new Date(s.last_played);
     const when = isNaN(d) ? '—' : d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+    const clubCfg = CLUBS[s.club_id] || CLUBS.westfield;
     return `<div class="save-card" onclick="selectSave('${s.id}')">
-      <img class="save-card-ico" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="">
+      <img class="save-card-ico" src="${clubCfg.logo}" alt="${clubCfg.name}">
       <div style="flex:1">
         <div class="save-card-name">${s.manager_name}</div>
-        <div class="save-card-info">${s.club} · ${s.season}</div>
+        <div class="save-card-info">${clubCfg.name} · ${s.season}</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:10px;color:var(--gr)">${when}</div>
@@ -923,6 +1061,10 @@ async function renderSaveCards() {
 
 // ── Nouvelle save ──
 function showNewSaveForm() {
+  _selectedClub = 'westfield';
+  document.querySelectorAll('.club-card').forEach(c => c.classList.remove('selected'));
+  const def = document.getElementById('club-card-westfield');
+  if (def) def.classList.add('selected');
   g('wlc-saves-section').style.display = 'none';
   g('wlc-new-form').style.display = 'block';
   setTimeout(() => g('ns-mgr').focus(), 80);
@@ -934,18 +1076,24 @@ function hideNewSaveForm() {
 async function createSave() {
   const name = g('ns-mgr').value.trim();
   if (!name) { g('ns-mgr').focus(); return; }
+  if (!_selectedClub) { alert('Choisissez un club.'); return; }
   const id = 'save_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
   currentSaveId = id;
   D = DFLT();
   D.mgr = name;
+  D.clubId = _selectedClub;
+  const club = CLUBS[_selectedClub] || CLUBS.westfield;
+  D.club.city  = club.city;
+  D.club.found = club.found;
   initPosFromPreset('4-4-2');
+  applyClubTheme(_selectedClub);
   await sv();
-  startLoading(name);
+  startLoading(name, _selectedClub);
 }
 async function selectSave(id) {
   currentSaveId = id;
   await loadSaveData(id);
-  startLoading(D.mgr || 'Manager');
+  startLoading(D.mgr || 'Manager', D.clubId || 'westfield');
 }
 async function deleteSave(id) {
   if (!confirm('Supprimer cette sauvegarde définitivement ?')) return;
@@ -975,19 +1123,25 @@ function positionRings() {
   r2.style.cssText += `;width:${s2}px;height:${s2}px;left:${(W-s2)/2}px;top:${(H-s2)/2}px`;
 }
 
-function startLoading(managerName) {
+function startLoading(managerName, clubId) {
+  const club = CLUBS[clubId] || CLUBS.westfield;
+  // Apply club theme vars so loading screen inherits them
+  applyClubTheme(clubId);
+
   g('screen-welcome').style.display = 'none';
+  g('screen-auth').style.display    = 'none';
   const lscr = g('screen-loading');
   lscr.style.display = 'flex';
   positionRings();
   g('ld-mgr').textContent = managerName;
 
-  // Progress bar reset then animate
+  // Progress bar color per club
   const fill = g('ld-fill');
+  fill.style.background = `linear-gradient(90deg,${club.vars['--gm']},${club.vars['--y']})`;
   fill.style.transition = 'none';
   fill.style.width = '0';
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    fill.style.transition = 'width 1.95s cubic-bezier(.04,0,.12,1)';
+    fill.style.transition = 'width 3.4s cubic-bezier(.04,0,.18,1)';
     fill.style.width = '100%';
   }));
 
@@ -1004,7 +1158,7 @@ function startLoading(managerName) {
       msgEl.textContent = LD_MSGS[mi];
       msgEl.style.opacity = '1';
     }, 350);
-  }, 560);
+  }, 520);
 
   setTimeout(() => {
     clearInterval(_ldInterval); _ldInterval = null;
@@ -1012,12 +1166,69 @@ function startLoading(managerName) {
     showApp();
     applyAll();
     initPitchDrag();
-  }, 2100);
+  }, 3800);
+}
+
+// ── Auth functions ──
+let _authTab = 'login';
+function setAuthTab(tab) {
+  _authTab = tab;
+  g('tab-login').classList.toggle('active', tab === 'login');
+  g('tab-register').classList.toggle('active', tab === 'register');
+  g('auth-submit').textContent = tab === 'login' ? 'Se connecter' : 'Créer un compte';
+  g('auth-err').style.display = 'none';
+}
+function showAuthErr(msg) {
+  const el = g('auth-err');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+async function authSubmit() {
+  const email = g('auth-email').value.trim();
+  const pwd   = g('auth-pwd').value;
+  if (!email || !pwd) { showAuthErr('Email et mot de passe requis.'); return; }
+  const btn = g('auth-submit');
+  btn.disabled = true;
+  btn.textContent = '…';
+  let error;
+  if (_authTab === 'login') {
+    ({ error } = await supa.auth.signInWithPassword({ email, password: pwd }));
+  } else {
+    ({ error } = await supa.auth.signUp({ email, password: pwd }));
+  }
+  btn.disabled = false;
+  setAuthTab(_authTab);
+  if (error) { showAuthErr(error.message); return; }
+  const { data: { session } } = await supa.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    g('screen-auth').style.display = 'none';
+    await showWelcome();
+  } else {
+    showAuthErr('Compte créé ! Vérifiez votre email pour confirmer.');
+  }
+}
+async function signOut() {
+  await supa.auth.signOut();
+  currentUser = null;
+  currentSaveId = null;
+  hideApp();
+  g('screen-welcome').style.display = 'none';
+  g('screen-auth').style.display = 'flex';
+  g('auth-email').value = '';
+  g('auth-pwd').value = '';
+  setAuthTab('login');
 }
 
 // ── Init app ──
 async function initApp() {
-  await showWelcome();
+  const { data: { session } } = await supa.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await showWelcome();
+  } else {
+    g('screen-auth').style.display = 'flex';
+  }
 }
 function sd() {
   D.mgr   = document.getElementById('tb-mgr').innerText.trim();
@@ -1053,6 +1264,7 @@ function saveTac() {
   sv();
 }
 function applyAll() {
+  applyClubTheme(D.clubId || 'westfield');
   g('tb-mgr').innerText   = D.mgr||'Votre nom';
   g('tb-season').innerText = D.season||'2025/26';
   g('sb-season').textContent = D.season||'2025/26';
