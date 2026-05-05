@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Westfield FC — RP Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root{
   --gd:#060e09;--gs:#0b1a0f;--gm:#1a5c30;--ga:#2d8a50;
@@ -823,69 +824,53 @@ const DFLT = () => ({
 let D = DFLT();
 
 // ════════════════════════════════════════════
-//  SYSTÈME DE SAUVEGARDES
+//  SUPABASE — BDD CLOUD
 // ════════════════════════════════════════════
-const SAVES_IDX = 'wfc26_index';
-const SAVE_PFX  = 'wfc26_save_';
+const SUPA_URL = 'https://neujdrauelvekiicayty.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldWpkcmF1ZWx2ZWtpaWNheXR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5NzA1MjUsImV4cCI6MjA5MzU0NjUyNX0.IDaOw0CwcaaZYAioVA6KgYp1HHNbIUHqzK2aAdCxYHs';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 let currentSaveId = null;
 
-function getSaves() {
-  try { return JSON.parse(localStorage.getItem(SAVES_IDX) || '[]'); } catch(e) { return []; }
+async function getSaves() {
+  const { data, error } = await supa
+    .from('saves')
+    .select('id, manager_name, season, club, last_played')
+    .order('last_played', { ascending: false });
+  if (error) { console.error('getSaves:', error); return []; }
+  return data || [];
 }
-function updateIndex() {
-  const saves = getSaves();
-  const meta = {
+
+async function sv() {
+  if (!currentSaveId) return;
+  const { error } = await supa.from('saves').upsert({
     id: currentSaveId,
-    managerName: D.mgr || 'Manager',
+    manager_name: D.mgr || 'Manager',
     season: D.season || '2025/26',
     club: 'Westfield FC',
-    lastPlayed: new Date().toISOString()
-  };
-  const idx = saves.findIndex(s => s.id === currentSaveId);
-  if (idx >= 0) saves[idx] = meta; else saves.unshift(meta);
-  localStorage.setItem(SAVES_IDX, JSON.stringify(saves));
+    last_played: new Date().toISOString(),
+    data: D
+  });
+  if (error) console.error('sv:', error);
 }
-function sv() {
-  if (!currentSaveId) return;
-  localStorage.setItem(SAVE_PFX + currentSaveId, JSON.stringify(D));
-  updateIndex();
-}
-function loadSaveData(id) {
-  const s = localStorage.getItem(SAVE_PFX + id);
-  D = DFLT();
-  if (s) {
-    try {
-      const p = JSON.parse(s);
-      D = {...DFLT(), ...p};
-      D.fin = {...DFLT().fin, ...(p.fin||{})};
-      D.tac = {...DFLT().tac, ...(p.tac||{})};
-      D.tac.inPoss       = {...DFLT().tac.inPoss,  ...(p.tac?.inPoss||{})};
-      D.tac.outPoss      = {...DFLT().tac.outPoss, ...(p.tac?.outPoss||{})};
-      D.tac.trans        = {...DFLT().tac.trans,   ...(p.tac?.trans||{})};
-      D.tac.linkedSquad  = {...(p.tac?.linkedSquad||{})};
-    } catch(e) {}
+
+async function loadSaveData(id) {
+  const { data, error } = await supa
+    .from('saves').select('data').eq('id', id).single();
+  if (error) { console.error('loadSaveData:', error); D = DFLT(); }
+  else {
+    const p = data?.data || {};
+    D = {...DFLT(), ...p};
+    D.fin = {...DFLT().fin, ...(p.fin||{})};
+    D.tac = {...DFLT().tac, ...(p.tac||{})};
+    D.tac.inPoss      = {...DFLT().tac.inPoss,  ...(p.tac?.inPoss||{})};
+    D.tac.outPoss     = {...DFLT().tac.outPoss, ...(p.tac?.outPoss||{})};
+    D.tac.trans       = {...DFLT().tac.trans,   ...(p.tac?.trans||{})};
+    D.tac.linkedSquad = {...(p.tac?.linkedSquad||{})};
   }
   if (!D.tac.playerPos || Object.keys(D.tac.playerPos).length < 11)
     initPosFromPreset(D.tac.form || '4-4-2');
   if (!D.tac.playerPosDef || Object.keys(D.tac.playerPosDef).length < 11)
     D.tac.playerPosDef = JSON.parse(JSON.stringify(D.tac.playerPos));
-}
-
-// ── Migration ancienne save ──
-function migrateOldSave() {
-  const old = localStorage.getItem('wfc26v3');
-  if (!old || getSaves().length > 0) return;
-  try {
-    const p = JSON.parse(old);
-    const id = 'save_' + Date.now().toString(36);
-    localStorage.setItem(SAVE_PFX + id, old);
-    localStorage.setItem(SAVES_IDX, JSON.stringify([{
-      id, managerName: p.mgr || 'Manager',
-      season: p.season || '2025/26', club: 'Westfield FC',
-      lastPlayed: new Date().toISOString()
-    }]));
-    localStorage.removeItem('wfc26v3');
-  } catch(e) {}
 }
 
 // ── Navigation écrans ──
@@ -897,35 +882,35 @@ function hideApp() {
   g('sb').style.display   = 'none';
   g('main').style.display = 'none';
 }
-function showWelcome() {
-  migrateOldSave();
-  renderSaveCards();
+async function showWelcome() {
+  await renderSaveCards();
   g('screen-welcome').style.display = 'flex';
   hideApp();
 }
-function quitToMenu() {
-  sv();
-  g('screen-welcome').style.display = 'flex';
+async function quitToMenu() {
+  await sv();
   hideNewSaveForm();
-  renderSaveCards();
+  await renderSaveCards();
+  g('screen-welcome').style.display = 'flex';
   hideApp();
 }
 
 // ── Cards de saves ──
-function renderSaveCards() {
-  const saves = getSaves();
+async function renderSaveCards() {
   const el = g('wlc-saves');
+  el.innerHTML = '<div class="wlc-empty" style="opacity:.5">Chargement…</div>';
+  const saves = await getSaves();
   if (!saves.length) {
     el.innerHTML = '<div class="wlc-empty">Aucune sauvegarde — commencez une nouvelle partie.</div>';
     return;
   }
   el.innerHTML = saves.map(s => {
-    const d = new Date(s.lastPlayed);
+    const d = new Date(s.last_played);
     const when = isNaN(d) ? '—' : d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
     return `<div class="save-card" onclick="selectSave('${s.id}')">
       <img class="save-card-ico" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="">
       <div style="flex:1">
-        <div class="save-card-name">${s.managerName}</div>
+        <div class="save-card-name">${s.manager_name}</div>
         <div class="save-card-info">${s.club} · ${s.season}</div>
       </div>
       <div style="text-align:right">
@@ -943,10 +928,10 @@ function showNewSaveForm() {
   setTimeout(() => g('ns-mgr').focus(), 80);
 }
 function hideNewSaveForm() {
-  g('wlc-new-form').style.display  = 'none';
+  g('wlc-new-form').style.display      = 'none';
   g('wlc-saves-section').style.display = 'block';
 }
-function createSave() {
+async function createSave() {
   const name = g('ns-mgr').value.trim();
   if (!name) { g('ns-mgr').focus(); return; }
   const id = 'save_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
@@ -954,20 +939,18 @@ function createSave() {
   D = DFLT();
   D.mgr = name;
   initPosFromPreset('4-4-2');
-  sv();
+  await sv();
   startLoading(name);
 }
-function selectSave(id) {
+async function selectSave(id) {
   currentSaveId = id;
-  loadSaveData(id);
+  await loadSaveData(id);
   startLoading(D.mgr || 'Manager');
 }
-function deleteSave(id) {
+async function deleteSave(id) {
   if (!confirm('Supprimer cette sauvegarde définitivement ?')) return;
-  localStorage.removeItem(SAVE_PFX + id);
-  const saves = getSaves().filter(s => s.id !== id);
-  localStorage.setItem(SAVES_IDX, JSON.stringify(saves));
-  renderSaveCards();
+  await supa.from('saves').delete().eq('id', id);
+  await renderSaveCards();
 }
 
 // ── Écran de chargement ──
@@ -1033,8 +1016,8 @@ function startLoading(managerName) {
 }
 
 // ── Init app ──
-function initApp() {
-  showWelcome();
+async function initApp() {
+  await showWelcome();
 }
 function sd() {
   D.mgr   = document.getElementById('tb-mgr').innerText.trim();
