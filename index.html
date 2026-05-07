@@ -272,12 +272,35 @@ input[type="color"]{width:38px;height:30px;border-radius:6px;cursor:pointer;bord
 .press-cat.rumeur{background:rgba(192,57,43,.12);color:#e74c3c}
 .press-cat.interview{background:rgba(180,180,255,.1);color:#aab4e8}
 
-/* ── KITS & LOGOS ── */
-.kit-zone{border:2px dashed var(--cbo);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;background:var(--gd);min-height:160px}
+/* ── KITS CREATOR ── */
+.kc-layout{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start}
+@media(max-width:660px){.kc-layout{grid-template-columns:1fr}}
+.kc-preview-box{background:var(--gd);border:1px solid var(--cbo);border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px;position:sticky;top:16px}
+.kc-canvas{border-radius:6px;display:block;background:transparent}
+.kc-slot-bar{display:flex;width:100%;border-radius:8px;overflow:hidden;border:1px solid var(--cbo);margin-bottom:18px}
+.kc-slot{flex:1;padding:8px 0;font-size:11px;font-weight:700;cursor:pointer;text-align:center;color:var(--grl);background:var(--gd);transition:all .15s;border:none;outline:none}
+.kc-slot.active{background:var(--y);color:#111}
+.kc-sec-lbl{font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;margin-top:14px}
+.kc-patterns{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:2px}
+.kc-pat{border:2px solid var(--cbo);border-radius:7px;padding:5px 3px 5px;cursor:pointer;text-align:center;font-size:10px;color:var(--grl);transition:all .14s;background:var(--gd);user-select:none}
+.kc-pat:hover{border-color:var(--y)}.kc-pat.active{border-color:var(--y);background:rgba(232,197,71,.07);color:var(--y);font-weight:700}
+.kc-pat-ico{height:22px;border-radius:3px;margin-bottom:4px;overflow:hidden}
+.kp-uni{background:#555}.kp-v{background:repeating-linear-gradient(90deg,#555 0,#555 4px,#333 4px,#333 8px)}
+.kp-h{background:repeating-linear-gradient(0deg,#555 0,#555 4px,#333 4px,#333 8px)}
+.kp-halves{background:linear-gradient(90deg,#555 50%,#333 50%)}
+.kp-thirds{background:linear-gradient(0deg,#333 33%,#555 33%,#555 66%,#777 66%)}
+.kp-sash{background:linear-gradient(130deg,#555 35%,#333 35%,#333 65%,#555 65%)}
+.kp-checker{background:repeating-conic-gradient(#555 0% 25%,#333 0% 50%) 0 0/8px 8px}
+.kp-diag{background:linear-gradient(135deg,#333 50%,#555 50%)}
+.kc-color-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.kc-color-row label{font-size:12px;color:var(--grl);min-width:78px}
+.kc-collar-row{display:flex;gap:5px;margin-bottom:4px}
+.kc-collar{flex:1;border:2px solid var(--cbo);border-radius:7px;padding:6px 3px;cursor:pointer;text-align:center;font-size:11px;color:var(--grl);transition:all .14s;background:var(--gd);user-select:none}
+.kc-collar.active{border-color:var(--y);color:var(--y);background:rgba(232,197,71,.07)}
+.kit-zone{border:2px dashed var(--cbo);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;background:var(--gd);min-height:140px}
 .kit-zone:hover{border-color:var(--y);background:rgba(255,255,255,.02)}
 .kit-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px}
 .kit-zone-label{font-size:11px;color:var(--grl);margin-top:8px;text-align:center}
-.kit-zone-icon{font-size:28px;pointer-events:none}
 .kit-card{text-align:center}
 .kit-name{font-size:12px;font-weight:700;color:var(--y);margin-bottom:10px}
 .kit-path-box{background:var(--gd);border-radius:6px;padding:10px 12px;font-family:monospace;font-size:11px;color:var(--grl);line-height:1.7;margin-top:4px}
@@ -809,98 +832,118 @@ input[type="color"]{width:38px;height:30px;border-radius:6px;cursor:pointer;bord
 
   <!-- MAILLOTS & LOGOS -->
   <div id="page-kits" class="page">
-    <div style="margin-bottom:20px">
-      <div style="font-size:15px;font-weight:700">Maillots & Logos</div>
-      <div style="font-size:12px;color:var(--grl);margin-top:2px">Gérez et exportez les assets graphiques de votre club</div>
+    <div style="margin-bottom:18px">
+      <div style="font-size:15px;font-weight:700">Créateur de Maillots</div>
+      <div style="font-size:12px;color:var(--grl);margin-top:2px">Dessinez vos maillots et exportez-les pour FM</div>
     </div>
 
-    <!-- Maillots -->
-    <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--cbo)">Maillots</div>
-    <div class="g3" style="margin-bottom:24px">
-      <div class="kit-card card">
-        <div class="kit-name">🟢 Domicile</div>
-        <div class="kit-zone" id="kz-home" onclick="g('ki-home').click()" title="Importer le maillot domicile">
-          <div id="kz-home-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">👕</div><div class="kit-zone-label">Cliquer pour importer</div></div>
-          <img id="kz-home-img" src="" alt="" style="display:none">
-        </div>
-        <input type="file" id="ki-home" accept="image/*" style="display:none" onchange="handleKitUpload('home',this)">
-        <div style="display:flex;gap:6px;margin-top:10px">
-          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('home')">Export PNG</button>
-          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('home')" title="Supprimer">✕</button>
-        </div>
+    <!-- Slot selector -->
+    <div class="kc-slot-bar">
+      <button class="kc-slot active" data-slot="home" onclick="switchKitSlot('home')">Domicile</button>
+      <button class="kc-slot" data-slot="away" onclick="switchKitSlot('away')">Extérieur</button>
+      <button class="kc-slot" data-slot="third" onclick="switchKitSlot('third')">Third</button>
+    </div>
+
+    <!-- Two-col layout -->
+    <div class="kc-layout">
+      <!-- Prévisualisation -->
+      <div class="kc-preview-box">
+        <canvas id="kit-canvas" class="kc-canvas" width="220" height="240"></canvas>
+        <button class="btn bp" style="width:100%;font-size:12px;padding:8px" onclick="exportKitCanvas()">Télécharger PNG</button>
       </div>
-      <div class="kit-card card">
-        <div class="kit-name">⚪ Extérieur</div>
-        <div class="kit-zone" id="kz-away" onclick="g('ki-away').click()" title="Importer le maillot extérieur">
-          <div id="kz-away-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">👕</div><div class="kit-zone-label">Cliquer pour importer</div></div>
-          <img id="kz-away-img" src="" alt="" style="display:none">
+
+      <!-- Contrôles -->
+      <div>
+        <!-- Motif -->
+        <div class="kc-sec-lbl">Motif</div>
+        <div class="kc-patterns">
+          <div class="kc-pat active" data-pattern="uni"       onclick="setKitPattern('uni')">      <div class="kc-pat-ico kp-uni"></div>Uni</div>
+          <div class="kc-pat"        data-pattern="v_stripes" onclick="setKitPattern('v_stripes')"><div class="kc-pat-ico kp-v"></div>Rayures V</div>
+          <div class="kc-pat"        data-pattern="h_stripes" onclick="setKitPattern('h_stripes')"><div class="kc-pat-ico kp-h"></div>Rayures H</div>
+          <div class="kc-pat"        data-pattern="halves"    onclick="setKitPattern('halves')">   <div class="kc-pat-ico kp-halves"></div>Moitié</div>
+          <div class="kc-pat"        data-pattern="sash"      onclick="setKitPattern('sash')">     <div class="kc-pat-ico kp-sash"></div>Écharpe</div>
+          <div class="kc-pat"        data-pattern="thirds"    onclick="setKitPattern('thirds')">   <div class="kc-pat-ico kp-thirds"></div>Bandes</div>
+          <div class="kc-pat"        data-pattern="checker"   onclick="setKitPattern('checker')">  <div class="kc-pat-ico kp-checker"></div>Damier</div>
+          <div class="kc-pat"        data-pattern="diagonal"  onclick="setKitPattern('diagonal')"> <div class="kc-pat-ico kp-diag"></div>Diagonale</div>
         </div>
-        <input type="file" id="ki-away" accept="image/*" style="display:none" onchange="handleKitUpload('away',this)">
-        <div style="display:flex;gap:6px;margin-top:10px">
-          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('away')">Export PNG</button>
-          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('away')" title="Supprimer">✕</button>
+
+        <!-- Couleurs -->
+        <div class="kc-sec-lbl">Couleurs</div>
+        <div class="kc-color-row">
+          <label>Principale</label>
+          <input type="color" id="kc-color-0" value="#ffffff" oninput="syncKitHex(0)">
+          <input type="text"  id="kc-hex-0"   value="#ffffff" maxlength="7" style="width:76px" oninput="syncKitPicker(0)">
         </div>
-      </div>
-      <div class="kit-card card">
-        <div class="kit-name">🔴 Third</div>
-        <div class="kit-zone" id="kz-third" onclick="g('ki-third').click()" title="Importer le maillot third">
-          <div id="kz-third-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">👕</div><div class="kit-zone-label">Cliquer pour importer</div></div>
-          <img id="kz-third-img" src="" alt="" style="display:none">
+        <div class="kc-color-row">
+          <label>Secondaire</label>
+          <input type="color" id="kc-color-1" value="#1a1a2e" oninput="syncKitHex(1)">
+          <input type="text"  id="kc-hex-1"   value="#1a1a2e" maxlength="7" style="width:76px" oninput="syncKitPicker(1)">
         </div>
-        <input type="file" id="ki-third" accept="image/*" style="display:none" onchange="handleKitUpload('third',this)">
-        <div style="display:flex;gap:6px;margin-top:10px">
-          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('third')">Export PNG</button>
-          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('third')" title="Supprimer">✕</button>
+        <div class="kc-color-row">
+          <label>Tertiaire</label>
+          <input type="color" id="kc-color-2" value="#e8c547" oninput="syncKitHex(2)">
+          <input type="text"  id="kc-hex-2"   value="#e8c547" maxlength="7" style="width:76px" oninput="syncKitPicker(2)">
+        </div>
+
+        <!-- Encolure -->
+        <div class="kc-sec-lbl">Encolure</div>
+        <div class="kc-collar-row">
+          <div class="kc-collar active" data-collar="v"     onclick="setKitCollar('v')">Col V</div>
+          <div class="kc-collar"        data-collar="round" onclick="setKitCollar('round')">Col rond</div>
+          <div class="kc-collar"        data-collar="polo"  onclick="setKitCollar('polo')">Polo</div>
+        </div>
+
+        <!-- Numéro -->
+        <div class="kc-sec-lbl">Couleur du numéro</div>
+        <div class="kc-color-row">
+          <label>Numéro</label>
+          <input type="color" id="kc-number-color" value="#000000" oninput="setKitNumberColor(this.value)">
         </div>
       </div>
     </div>
 
     <!-- Logos -->
-    <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--cbo)">Logos</div>
+    <div style="margin-top:28px;font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--cbo)">Logos du club</div>
     <div class="g2" style="margin-bottom:24px">
       <div class="kit-card card">
-        <div class="kit-name">🏟️ Logo principal</div>
-        <div class="kit-zone" id="kz-logo" onclick="g('ki-logo').click()" title="Importer le logo principal">
-          <div id="kz-logo-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">🏟️</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+        <div class="kit-name">Logo principal</div>
+        <div class="kit-zone" id="kz-logo" onclick="g('ki-logo').click()">
+          <div id="kz-logo-ph" style="text-align:center;pointer-events:none"><div style="font-size:26px;color:var(--grl)">+</div><div class="kit-zone-label">Cliquer pour importer</div></div>
           <img id="kz-logo-img" src="" alt="" style="display:none">
         </div>
         <input type="file" id="ki-logo" accept="image/*" style="display:none" onchange="handleKitUpload('logo',this)">
         <div style="display:flex;gap:6px;margin-top:10px">
           <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('logo')">Export PNG</button>
-          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('logo')" title="Supprimer">✕</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('logo')">X</button>
         </div>
       </div>
       <div class="kit-card card">
-        <div class="kit-name">🔵 Logo small / icône</div>
-        <div class="kit-zone" id="kz-small" onclick="g('ki-small').click()" title="Importer l'icône">
-          <div id="kz-small-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">🔵</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+        <div class="kit-name">Logo small / icône</div>
+        <div class="kit-zone" id="kz-small" onclick="g('ki-small').click()">
+          <div id="kz-small-ph" style="text-align:center;pointer-events:none"><div style="font-size:26px;color:var(--grl)">+</div><div class="kit-zone-label">Cliquer pour importer</div></div>
           <img id="kz-small-img" src="" alt="" style="display:none">
         </div>
         <input type="file" id="ki-small" accept="image/*" style="display:none" onchange="handleKitUpload('small',this)">
         <div style="display:flex;gap:6px;margin-top:10px">
           <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('small')">Export PNG</button>
-          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('small')" title="Supprimer">✕</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('small')">X</button>
         </div>
       </div>
     </div>
 
-    <!-- Aide emplacement -->
+    <!-- Aide FM -->
     <div class="card" style="border-left:3px solid var(--y)">
-      <div class="ct">📁 Où placer les fichiers dans FM</div>
+      <div class="ct">Où placer les fichiers dans FM</div>
       <div class="g2">
         <div>
           <div style="font-size:11px;color:var(--grl);margin-bottom:6px;font-weight:600">Maillots</div>
           <div class="kit-path-box">Documents/Sports Interactive/<br>Football Manager 2026/<br>graphics/kits/</div>
-          <div style="font-size:11px;color:var(--gr);margin-top:6px">
-            <span id="kit-filename-hint">Ex: monclub_home.png</span>
-          </div>
+          <div style="font-size:11px;color:var(--gr);margin-top:6px"><span id="kit-filename-hint">Ex: monclub_home.png</span></div>
         </div>
         <div>
           <div style="font-size:11px;color:var(--grl);margin-bottom:6px;font-weight:600">Logos</div>
           <div class="kit-path-box">Documents/Sports Interactive/<br>Football Manager 2026/<br>graphics/logos/</div>
-          <div style="font-size:11px;color:var(--gr);margin-top:6px">
-            <span id="logo-filename-hint">Ex: monclub_logo.png</span>
-          </div>
+          <div style="font-size:11px;color:var(--gr);margin-top:6px"><span id="logo-filename-hint">Ex: monclub_logo.png</span></div>
         </div>
       </div>
     </div>
@@ -1208,6 +1251,7 @@ const DFLT = () => ({
   theme:{ bg:'#060e09', accent:'#e8c547' },
   // ── Assets ──
   kits:{ home:'', away:'', third:'', logo:'', small:'' },
+  kitDesigns:{},
   // ── Hall of Fame ──
   hof:[],
   // ── Timeline ──
@@ -1424,8 +1468,9 @@ async function loadSaveData(id) {
   D.theme    = {...DFLT().theme,  ...(p.theme||{})};
   D.kits     = {...DFLT().kits,   ...(p.kits||{})};
   D.club     = {...DFLT().club,   ...(p.club||{})};
-  D.hof      = p.hof      || [];
-  D.timeline = p.timeline || [];
+  D.hof        = p.hof        || [];
+  D.timeline   = p.timeline   || [];
+  D.kitDesigns = p.kitDesigns || {};
   // Back-fill from legacy CLUBS for old saves
   if (!D.clubName  && D.clubId && CLUBS[D.clubId]) D.clubName  = CLUBS[D.clubId].name;
   if (!D.coachName) D.coachName = D.mgr || '';
@@ -2479,36 +2524,75 @@ function updateProgression() {
 //  SOCIAL FEED
 // ════════════════════════════════════════════
 const FEED_TPLS = [
-  {type:'fan',      emoji:'🔥', name:'{clubName} Ultras',    handle:'@{slug}_ultras',
-   text:'{clubName} on the rise! The gaffer {coachName} is building something special here. From {startDiv} — watch this space 🔥🔥'},
-  {type:'fan',      emoji:'⚽', name:'Non-League Fanatic',   handle:'@NonLeagueFanatic',
-   text:"Watching {clubName}'s journey up the pyramid is one of the most exciting stories in English football right now. This is why we love non-league football."},
-  {type:'fan',      emoji:'💚', name:'Travelling Fan',       handle:'@AwayDayBlogger',
-   text:"Made the trip to watch {clubName} today. Brilliant atmosphere, proper football. Manager {coachName} clearly has this squad believing. Come on you {clubName}! ⚽"},
-  {type:'journalist',emoji:'📰',name:'County FA Reporter',   handle:'@CountyFAReport',
-   text:'MATCH REPORT | {clubName} continue their impressive form under {coachName}. The {division} side are building something real.'},
-  {type:'journalist',emoji:'🗞️',name:'Non-League Paper',     handle:'@NonLeaguePaper',
-   text:"INTERVIEW: \"{clubName} have a clear identity and clear direction\" — {coachName} speaks exclusively about his vision for the club and what comes next."},
-  {type:'journalist',emoji:'📊',name:'Pyramid Stats',        handle:'@PyramidStats',
-   text:"ANALYSIS: {clubName}'s rise under {coachName} in numbers. The data shows a team playing with genuine structure and purpose. Full breakdown below 👇"},
-  {type:'insider',  emoji:'🚨', name:'FM Transfer Insider',  handle:'@FMTransferInsider',
-   text:"🚨 EXCLUSIVE: {clubName} monitoring a striker ahead of the next window. Budget is tight but manager {coachName} has been backed by the board. More to follow."},
-  {type:'insider',  emoji:'👀', name:'Lower League Scoop',   handle:'@LowerLeagueScoop',
-   text:"Word from inside {clubName}: {coachName} is keen to add some pace upfront. One name mentioned repeatedly in the last few days. Stay tuned."},
-  {type:'official', emoji:'📣', name:'{clubName} FC',        handle:'@{slug}_FC',
-   text:"📣 OFFICIAL | {clubName} would like to thank all supporters for their continued backing this season. More exciting times ahead. 💚 #UpThe{slug}"},
-  {type:'troll',    emoji:'😂', name:'D8 Observer',          handle:'@FootballTroll99',
-   text:"{clubName} in {division}? Give it two seasons and they'll be back where they came from lmao. {coachName} won't last."},
-  {type:'fan',      emoji:'🏟️', name:'Ground Hopper UK',     handle:'@GroundHopperUK',
-   text:"Visited {clubName}'s ground last weekend. Proper non-league atmosphere. One to watch as they continue their push up the pyramid. Highly recommend a visit."},
-  {type:'journalist',emoji:'🏆',name:'Trophy Watch',         handle:'@TrophyWatchENG',
-   text:"Could {clubName} be serious cup contenders this season? {coachName} has assembled a squad with real quality for this level. We'll be keeping a close eye on them."},
-  {type:'insider',  emoji:'💸', name:'Wages Insider',        handle:'@FootballWagesUK',
-   text:"Hearing {clubName} are offering slightly above-market wages to attract players to {division}. Smart move from {coachName} as they bid to sustain momentum."},
+  // SUPPORTERS
+  {type:'fan', name:'Virage {slug}', handle:'@virage_{slug}',
+   tpl:'Allez {clubName} ! {coachName} est en train de construire quelque chose de solide. On y croit depuis le début.', cond:'always'},
+  {type:'fan', name:'Supporter Dévoué', handle:'@supporteur_{slug}',
+   tpl:'Belle série en ce moment. Ce groupe mérite tellement plus de reconnaissance. Continuez comme ça les gars, on est derrière vous.', cond:'goodForm'},
+  {type:'fan', name:'Abonné Tribune', handle:'@tribune_{slug}',
+   tpl:'C\'est compliqué en ce moment, je ne vais pas vous mentir. Mais on lâche rien. Ce club, c\'est dans le sang.', cond:'badForm'},
+  {type:'fan', name:'Groundhopper', handle:'@groundhop_fr',
+   tpl:'Passé voir {clubName} jouer ce week-end. Ambiance authentique, vrai football. Une équipe à suivre de très près cette saison.', cond:'always'},
+  {type:'fan', name:'{clubName} Ultras', handle:'@ultras_{slug}',
+   tpl:'Voir {clubName} dans le top 3, c\'est du pur bonheur. Personne ne les attendait là. Bravo à {coachName} et tout le groupe.', cond:'topThree'},
+  {type:'fan', name:'Fan de longue date', handle:'@fan_{slug}',
+   tpl:'La lutte pour le maintien c\'est éprouvant mais on est là. L\'histoire de ce club n\'a jamais été un long fleuve tranquille.', cond:'relZone'},
+  {type:'fan', name:'Déplacement Domaine', handle:'@deplacement_{slug}',
+   tpl:'{clubName} marque à la pelle cette saison. Le jeu offensif de {coachName} fait vraiment des ravages en {division}.', cond:'goalRich'},
+  // JOURNALISTES
+  {type:'journalist', name:'La Gazette du Foot', handle:'@gazettefoot',
+   tpl:'ANALYSE | {clubName} impressionne sous la houlette de {coachName}. L\'identité de jeu est claire, les résultats suivent.', cond:'goodForm'},
+  {type:'journalist', name:'L\'Observateur Sportif', handle:'@observateursport',
+   tpl:'BILAN | Après plusieurs résultats décevants, {clubName} cherche la régularité. {coachName} va devoir trouver des solutions rapidement.', cond:'badForm'},
+  {type:'journalist', name:'Tribune Tactique', handle:'@tribunetactique',
+   tpl:'DÉCRYPTAGE | Le système de {coachName} à {clubName} : pressing haut, transitions rapides. Une équipe cohérente et difficile à manoeuvrer en {division}.', cond:'always'},
+  {type:'journalist', name:'Pyramide Football', handle:'@pyramidefootball',
+   tpl:'COURSE AU TITRE | {clubName} s\'est installé dans les hauteurs du classement de {division}. Personne ne les avait prédits là en début de saison.', cond:'topThree'},
+  {type:'journalist', name:'Alerte Maintien', handle:'@alertemaintien',
+   tpl:'MAINTIEN | {clubName} se trouve en zone dangereuse. Les prochaines rencontres seront sans doute décisives pour la suite de la saison.', cond:'relZone'},
+  {type:'journalist', name:'Stats Division', handle:'@statsdivision',
+   tpl:'STATISTIQUES | {clubName} est l\'une des meilleures attaques de {division} cette saison. Les chiffres offensifs de {coachName} sont impressionnants.', cond:'goalRich'},
+  // INSIDERS
+  {type:'insider', name:'Source Fiable', handle:'@sourcefiable_foot',
+   tpl:'INFO | {clubName} aurait identifié plusieurs cibles pour le prochain mercato. {coachName} a ses pistes bien définies en {division}.', cond:'always'},
+  {type:'insider', name:'Mercato Infos', handle:'@mercatoinfos',
+   tpl:'EXCLU | Un attaquant de {division} est dans le viseur de {clubName} depuis plusieurs semaines. Ça avance discrètement.', cond:'always'},
+  {type:'insider', name:'Vestiaire Ouvert', handle:'@vestiaireouvert',
+   tpl:'SOURCE INTERNE | La pression monte en interne après cette série sans victoire. La situation de {coachName} commence à être surveillée.', cond:'badForm'},
+  {type:'insider', name:'Transferts Directs', handle:'@transfertsdirects',
+   tpl:'FIABLE | {clubName} proposerait des conditions financières intéressantes pour attirer des joueurs de qualité. {coachName} est ambitieux.', cond:'always'},
+  // OFFICIEL
+  {type:'official', name:'{clubName} FC', handle:'@{slug}_officiel',
+   tpl:'Le club tient à remercier chaleureusement l\'ensemble de ses supporters pour leur soutien indéfectible tout au long de cette saison. Merci à tous.', cond:'always'},
+  {type:'official', name:'{clubName} FC', handle:'@{slug}_officiel',
+   tpl:'COMMUNIQUÉ | Le club est fier du parcours de ses joueurs et de l\'ensemble du staff. Nous restons pleinement concentrés sur nos objectifs.', cond:'topThree'},
+  // TROLLS
+  {type:'troll', name:'Observateur Cynique', handle:'@cynique_foot',
+   tpl:'{clubName} en {division} ? Je leur donne encore deux mois avant que ça s\'effondre. {coachName} sera parti avant la fin de saison.', cond:'always'},
+  {type:'troll', name:'Sceptique de service', handle:'@sceptique99',
+   tpl:'Faut pas s\'enflammer pour {clubName} hein. On a vu des clubs comme ça chuter subitement. C\'est la loi du football.', cond:'goodForm'},
+  {type:'troll', name:'Réaliste du dimanche', handle:'@realiste_foot',
+   tpl:'{clubName} dans la zone de relégation, c\'était prévisible. La {division}, c\'est clairement pas leur niveau cette année.', cond:'relZone'},
 ];
 
 let _feedFilter = 'all';
 let _feedLikes  = {};
+
+function getFeedCtx() {
+  const played = D.played || 0;
+  const wr = played >= 3 ? (D.won||0) / played : null;
+  const pos = D.pos || null, tot = D.posTotal || 20;
+  return {
+    always:    true,
+    goodForm:  wr !== null && wr >= 0.55,
+    badForm:   wr !== null && wr <= 0.33,
+    topThree:  pos !== null && pos <= 3,
+    relZone:   pos !== null && pos >= tot - 2,
+    goalRich:  played >= 3 && (D.gf||0)/played >= 2.2,
+    solid:     played >= 3 && (D.ga||0)/played <= 0.7,
+    hasHist:   !!(D.history && D.history.length > 0)
+  };
+}
 
 function resolveTpl(tpl) {
   const clubName  = D.clubName || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].name : 'Votre club');
@@ -2528,31 +2612,41 @@ function renderFeed(filter) {
   if (filter !== undefined) _feedFilter = filter;
   const el = g('feed-list');
   if (!el) return;
-  const times = ['1m','4m','12m','23m','45m','1h','2h','3h','5h','8h','1j','2j'];
-  const posts = FEED_TPLS
-    .filter(t => _feedFilter === 'all' || t.type === _feedFilter)
-    .map((t, i) => {
-      const lid  = 'fl' + i;
-      const likes = _feedLikes[lid] || (10 + i * 7 + Math.floor(i * 2.3));
-      const time  = times[i % times.length];
-      return `<div class="feed-post">
-        <div class="feed-avatar">${t.emoji}</div>
-        <div style="flex:1;min-width:0">
-          <div class="feed-meta">
-            <span class="feed-name">${resolveTpl(t.name)}</span>
-            <span class="feed-handle">${resolveTpl(t.handle)}</span>
-            <span class="feed-time">${time}</span>
-            <span class="feed-badge ${t.type}">${{fan:'Fan',journalist:'Presse',insider:'Insider',official:'Officiel',troll:'Troll'}[t.type]||t.type}</span>
-          </div>
-          <div class="feed-content">${resolveTpl(t.text)}</div>
-          <div class="feed-actions">
-            <span onclick="likeFeed('${lid}',this)">❤️ <span id="${lid}-lk">${likes}</span></span>
-            <span>💬 ${3 + i * 2}</span>
-            <span>🔁 ${1 + Math.floor(i * 1.5)}</span>
-          </div>
+  const ctx = getFeedCtx();
+  const typeColor = {fan:'#27ae60', journalist:'#3498db', insider:'#c9a227', official:'#8080cc', troll:'#e74c3c'};
+  const typeLabel = {fan:'Supporter', journalist:'Journaliste', insider:'Insider', official:'Officiel', troll:'Troll'};
+  const times = ['2 min','8 min','18 min','35 min','1 h','2 h','3 h','5 h','8 h','hier','hier','avant-hier'];
+
+  const relevant = FEED_TPLS.filter(t => {
+    const c = t.cond;
+    if (!c || c === 'always') return true;
+    return Array.isArray(c) ? c.some(k => !!ctx[k]) : !!ctx[c];
+  });
+  const shown = relevant.filter(t => _feedFilter === 'all' || t.type === _feedFilter);
+  const posts = (shown.length ? shown : relevant).map((t, i) => {
+    const lid   = 'fl' + i;
+    const likes = _feedLikes[lid] || (8 + i * 6 + Math.floor(i * 1.9));
+    const bg    = typeColor[t.type] || '#555';
+    const name  = resolveTpl(t.name);
+    const letter= name.replace(/[^A-Za-zÀ-ÿ]/g,'')[0]?.toUpperCase() || '?';
+    return `<div class="feed-post">
+      <div class="feed-avatar" style="background:${bg}22;border-color:${bg}44;font-size:13px;font-weight:800;color:${bg}">${letter}</div>
+      <div style="flex:1;min-width:0">
+        <div class="feed-meta">
+          <span class="feed-name">${name}</span>
+          <span class="feed-handle">${resolveTpl(t.handle)}</span>
+          <span class="feed-time">${times[i % times.length]}</span>
+          <span class="feed-badge ${t.type}">${typeLabel[t.type]||t.type}</span>
         </div>
-      </div>`;
-    });
+        <div class="feed-content">${resolveTpl(t.tpl)}</div>
+        <div class="feed-actions">
+          <span onclick="likeFeed('${lid}',this)">J'aime &nbsp;<span id="${lid}-lk">${likes}</span></span>
+          <span>Répondre</span>
+          <span>Partager</span>
+        </div>
+      </div>
+    </div>`;
+  });
   el.innerHTML = posts.length
     ? posts.join('')
     : '<div class="feed-empty">Aucun post dans cette catégorie.</div>';
@@ -2575,44 +2669,59 @@ function likeFeed(id, btn) {
 //  PRESSE
 // ════════════════════════════════════════════
 const PRESS_TPLS = [
-  {cat:'club',      media:'The Non-League Chronicle',
-   title:'{clubName} dreams bigger after impressive season',
-   excerpt:'{coachName} has transformed {clubName} into one of the most talked-about clubs at this level. The ambition is clear and the results back it up.',
-   date:'15 mai 2026'},
-  {cat:'match',     media:'County Sports Gazette',
-   title:'Dominant display puts {clubName} in top spot',
-   excerpt:'A clinical performance from {clubName} leaves them firmly in contention. Manager {coachName} praised his side\'s intensity and tactical discipline.',
-   date:'11 mai 2026'},
-  {cat:'interview', media:'Football Pyramid Weekly',
-   title:'{coachName}: "We are only just getting started"',
-   excerpt:'In an exclusive interview, {clubName}\'s manager speaks candidly about the vision, the recruitment process and why he believes the club can keep rising.',
-   date:'8 mai 2026'},
-  {cat:'mercato',   media:'Transfer Talk Non-League',
-   title:'{clubName} set to strengthen squad ahead of key window',
-   excerpt:'Sources close to the club suggest {coachName} has identified two targets in the upcoming transfer window, with a striker and a centre-back top of the list.',
-   date:'5 mai 2026'},
-  {cat:'club',      media:'Pyramid Report',
-   title:'How {clubName} built a winning culture from scratch',
-   excerpt:'From modest beginnings to {division} — the story of how {coachName} and {clubName} rewrote the expectations of a community club.',
-   date:'2 mai 2026'},
-  {cat:'match',     media:'Match Analysis UK',
-   title:'Tactical breakdown: why {clubName} keep winning',
-   excerpt:'We look at the pressing triggers, the transition game and the set-piece routines that have made {clubName} such a tough opponent this season.',
-   date:'28 avril 2026'},
+  {cat:'club', media:'La Chronique du Football Amateur',
+   title:'{clubName} voit plus grand après une saison impressionnante',
+   excerpt:'{coachName} a transformé {clubName} en l\'un des clubs les plus en vue de {division}. L\'ambition est réelle et les résultats la confirment.',
+   cond:'goodForm'},
+  {cat:'match', media:'La Gazette Sportive Régionale',
+   title:'Prestation dominatrice, {clubName} s\'installe en tête',
+   excerpt:'Une performance clinique de {clubName} les laisse fermement dans la course. {coachName} a salué l\'intensité et la discipline tactique de ses joueurs.',
+   cond:'topThree'},
+  {cat:'interview', media:'Football Amateur Hebdo',
+   title:'{coachName} : "Nous n\'avons encore rien fait"',
+   excerpt:'Dans un entretien exclusif, le manager de {clubName} parle franchement de sa vision, du recrutement et de sa conviction que le club peut continuer à progresser.',
+   cond:'always'},
+  {cat:'mercato', media:'Transferts & Rumeurs',
+   title:'{clubName} prêt à renforcer l\'effectif lors du prochain mercato',
+   excerpt:'Des sources proches du club confirment que {coachName} a identifié deux cibles prioritaires : un attaquant et un défenseur central.',
+   cond:'always'},
+  {cat:'club', media:'Rapport Pyramide',
+   title:'Comment {clubName} a construit une culture gagnante',
+   excerpt:'De débuts modestes jusqu\'en {division} — l\'histoire de comment {coachName} et {clubName} ont redéfini les attentes autour d\'un club de proximité.',
+   cond:'always'},
+  {cat:'match', media:'Analyse Tactique France',
+   title:'Décryptage : pourquoi {clubName} gagne match après match',
+   excerpt:'Pressing haut, transitions rapides, coups de pied arrêtés redoutables — {clubName} est devenu un adversaire difficile à maîtriser en {division} cette saison.',
+   cond:'goodForm'},
+  {cat:'club', media:'L\'Echo du Terrain',
+   title:'{clubName} en zone de danger : la réaction attendue',
+   excerpt:'Après plusieurs contre-performances, {clubName} doit rapidement trouver des solutions. {coachName} est sous pression mais assure garder la confiance du vestiaire.',
+   cond:'badForm'},
+  {cat:'mercato', media:'Mercato Régional',
+   title:'Un attaquant de {division} dans le viseur de {clubName}',
+   excerpt:'Selon nos informations, le staff technique de {clubName} suit de près un joueur offensif évoluant en {division}. Une décision attendue dans les prochaines semaines.',
+   cond:'always'},
+  {cat:'interview', media:'Vestiaire Magazine',
+   title:'Le groupe de {clubName} : cohésion, discipline, ambition',
+   excerpt:'{coachName} revient sur la construction de son groupe, les choix tactiques et les raisons pour lesquelles {clubName} est aujourd\'hui un prétendant sérieux en {division}.',
+   cond:'always'},
+  {cat:'match', media:'Stats & Foot',
+   title:'{clubName}, meilleure attaque de {division} cette saison ?',
+   excerpt:'Les statistiques offensives de {clubName} sont remarquables. {coachName} a mis en place un système qui génère des occasions à chaque rencontre.',
+   cond:'goalRich'},
 ];
 
 let _pressFilter = 'all';
 
 function resolvePressHtml(tpl) {
-  const catColors = {match:'match', mercato:'mercato', club:'club', rumeur:'rumeur', interview:'interview'};
-  const catLabel  = {match:'Match', mercato:'Mercato', club:'Club', rumeur:'Rumeur', interview:'Interview'};
+  const catLabel = {match:'Match', mercato:'Mercato', club:'Club', rumeur:'Rumeur', interview:'Interview'};
   return `<div class="press-card">
     <div class="press-media">${tpl.media}</div>
     <div class="press-title">${resolveTpl(tpl.title)}</div>
     <div class="press-excerpt">${resolveTpl(tpl.excerpt)}</div>
     <div class="press-foot">
-      <span class="press-cat ${catColors[tpl.cat]||'club'}">${catLabel[tpl.cat]||tpl.cat}</span>
-      <span style="font-size:11px;color:var(--gr);margin-left:auto">${tpl.date}</span>
+      <span class="press-cat ${tpl.cat||'club'}">${catLabel[tpl.cat]||tpl.cat}</span>
+      <span style="font-size:11px;color:var(--gr);margin-left:auto">${tpl.date||'Mai 2026'}</span>
     </div>
   </div>`;
 }
@@ -2621,10 +2730,15 @@ function renderPress(filter) {
   if (filter !== undefined) _pressFilter = filter;
   const el = g('press-list');
   if (!el) return;
-  const articles = PRESS_TPLS.filter(t => _pressFilter === 'all' || t.cat === _pressFilter);
-  el.innerHTML = articles.length
-    ? articles.map(resolvePressHtml).join('')
-    : '<div class="feed-empty">Aucun article dans cette catégorie.</div>';
+  const ctx = getFeedCtx();
+  const relevant = PRESS_TPLS.filter(t => {
+    const c = t.cond;
+    if (!c || c === 'always') return true;
+    return Array.isArray(c) ? c.some(k => !!ctx[k]) : !!ctx[c];
+  });
+  const shown = relevant.filter(t => _pressFilter === 'all' || t.cat === _pressFilter);
+  el.innerHTML = (shown.length ? shown : relevant).map(resolvePressHtml).join('') ||
+    '<div class="feed-empty">Aucun article dans cette catégorie.</div>';
 }
 function filterPress(cat, el) {
   _pressFilter = cat;
@@ -2700,6 +2814,8 @@ function addTimeline() {
 // ════════════════════════════════════════════
 //  KITS & LOGOS
 // ════════════════════════════════════════════
+
+// ── Logos import ──
 function handleKitUpload(slot, input) {
   const file = input.files[0];
   if (!file) return;
@@ -2707,8 +2823,7 @@ function handleKitUpload(slot, input) {
   reader.onload = e => {
     if (!D.kits) D.kits = {};
     D.kits[slot] = e.target.result;
-    const img = g('kz-'+slot+'-img');
-    const ph  = g('kz-'+slot+'-ph');
+    const img = g('kz-'+slot+'-img'), ph = g('kz-'+slot+'-ph');
     if (img) { img.src = e.target.result; img.style.display = 'block'; }
     if (ph)  ph.style.display = 'none';
     sv();
@@ -2718,32 +2833,235 @@ function handleKitUpload(slot, input) {
 function clearKit(slot) {
   if (!confirm('Supprimer ce fichier ?')) return;
   if (D.kits) D.kits[slot] = '';
-  const img = g('kz-'+slot+'-img');
-  const ph  = g('kz-'+slot+'-ph');
+  const img = g('kz-'+slot+'-img'), ph = g('kz-'+slot+'-ph');
   if (img) { img.src = ''; img.style.display = 'none'; }
   if (ph)  ph.style.display = 'flex';
   sv();
 }
 function exportKit(slot) {
   const src = D.kits && D.kits[slot];
-  if (!src) { alert('Aucune image à exporter pour ce slot.'); return; }
-  const clubName = D.clubName || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].name : 'club');
-  const slug = clubName.toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
-  const filename = slug + '_' + slot + '.png';
-  const a = document.createElement('a');
-  a.href = src;
-  a.download = filename;
-  a.click();
+  if (!src) { alert('Aucune image pour ce slot.'); return; }
+  const slug = (D.clubName||'club').toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  const a = document.createElement('a'); a.href = src; a.download = slug+'_'+slot+'.png'; a.click();
 }
 function renderKits() {
-  if (!D.kits) return;
-  ['home','away','third','logo','small'].forEach(slot => {
-    const img = g('kz-'+slot+'-img');
-    const ph  = g('kz-'+slot+'-ph');
-    const src = D.kits[slot];
+  ['logo','small'].forEach(slot => {
+    const img = g('kz-'+slot+'-img'), ph = g('kz-'+slot+'-ph');
+    const src = D.kits && D.kits[slot];
     if (img && src) { img.src = src; img.style.display = 'block'; if(ph) ph.style.display='none'; }
     else if (img)   { img.src = ''; img.style.display = 'none'; if(ph) ph.style.display='flex'; }
   });
+  if (!D.kitDesigns) D.kitDesigns = {};
+  syncKitControls();
+  renderKitCanvas();
+}
+
+// ── Kit Creator ──
+let _kitSlot = 'home';
+
+function getKitDesign(slot) {
+  if (!D.kitDesigns) D.kitDesigns = {};
+  if (!D.kitDesigns[slot]) D.kitDesigns[slot] = {
+    pattern:'uni', colors:['#ffffff','#1a1a2e','#e8c547'], collar:'v', number:'#000000'
+  };
+  return D.kitDesigns[slot];
+}
+
+function switchKitSlot(slot) {
+  _kitSlot = slot;
+  document.querySelectorAll('.kc-slot').forEach(t => t.classList.toggle('active', t.dataset.slot === slot));
+  syncKitControls();
+  renderKitCanvas();
+}
+
+function syncKitControls() {
+  const cfg = getKitDesign(_kitSlot);
+  document.querySelectorAll('.kc-pat').forEach(el => el.classList.toggle('active', el.dataset.pattern === cfg.pattern));
+  document.querySelectorAll('.kc-collar').forEach(el => el.classList.toggle('active', el.dataset.collar === cfg.collar));
+  [0,1,2].forEach(i => {
+    const v = cfg.colors[i]||'#ffffff';
+    const cp = g('kc-color-'+i), hx = g('kc-hex-'+i);
+    if (cp) cp.value = v; if (hx) hx.value = v;
+  });
+  const nc = g('kc-number-color'); if (nc) nc.value = cfg.number||'#000000';
+}
+
+function setKitPattern(p) {
+  getKitDesign(_kitSlot).pattern = p;
+  document.querySelectorAll('.kc-pat').forEach(el => el.classList.toggle('active', el.dataset.pattern === p));
+  renderKitCanvas(); sv();
+}
+function setKitCollar(c) {
+  getKitDesign(_kitSlot).collar = c;
+  document.querySelectorAll('.kc-collar').forEach(el => el.classList.toggle('active', el.dataset.collar === c));
+  renderKitCanvas(); sv();
+}
+function syncKitHex(idx) {
+  const v = g('kc-color-'+idx).value;
+  const hx = g('kc-hex-'+idx); if (hx) hx.value = v;
+  getKitDesign(_kitSlot).colors[idx] = v;
+  renderKitCanvas(); sv();
+}
+function syncKitPicker(idx) {
+  const v = (g('kc-hex-'+idx).value||'').trim();
+  if (!/^#[0-9a-fA-F]{6}$/.test(v)) return;
+  const cp = g('kc-color-'+idx); if (cp) cp.value = v;
+  getKitDesign(_kitSlot).colors[idx] = v;
+  renderKitCanvas(); sv();
+}
+function setKitNumberColor(v) { getKitDesign(_kitSlot).number = v; renderKitCanvas(); sv(); }
+
+function exportKitCanvas() {
+  const canvas = g('kit-canvas'); if (!canvas) return;
+  const slug = (D.clubName||'club').toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  if (!D.kits) D.kits = {};
+  D.kits[_kitSlot] = canvas.toDataURL('image/png');
+  sv();
+  const a = document.createElement('a'); a.href = D.kits[_kitSlot]; a.download = slug+'_'+_kitSlot+'.png'; a.click();
+}
+
+// ── Canvas drawing ──
+function renderKitCanvas() {
+  const canvas = g('kit-canvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cfg = getKitDesign(_kitSlot);
+  ctx.clearRect(0, 0, W, H);
+
+  const sc = Math.min(W/280, H/290);
+  const ox = (W - 280*sc)/2, oy = (H - 290*sc)/2;
+  const px = x => ox + x*sc, py = y => oy + y*sc;
+
+  const shirt = buildShirtPath(px, py, cfg.collar);
+
+  // Pattern fill (clipped)
+  ctx.save();
+  ctx.clip(shirt);
+  drawKitPattern(ctx, W, H, cfg, px, py, sc);
+  // Depth shading
+  const sL = ctx.createLinearGradient(px(48),0,px(115),0);
+  sL.addColorStop(0,'rgba(0,0,0,.20)'); sL.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = sL; ctx.fillRect(0,0,W,H);
+  const sR = ctx.createLinearGradient(px(165),0,px(232),0);
+  sR.addColorStop(0,'rgba(0,0,0,0)'); sR.addColorStop(1,'rgba(0,0,0,.20)');
+  ctx.fillStyle = sR; ctx.fillRect(0,0,W,H);
+  const hi = ctx.createRadialGradient(px(125),py(120),0,px(140),py(140),70*sc);
+  hi.addColorStop(0,'rgba(255,255,255,.11)'); hi.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle = hi; ctx.fillRect(0,0,W,H);
+  ctx.restore();
+
+  // Collar detail
+  drawCollarDetail(ctx, px, py, cfg, sc);
+
+  // Outline
+  ctx.strokeStyle = 'rgba(0,0,0,.42)';
+  ctx.lineWidth = 1.5*sc; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.stroke(shirt);
+
+  // Number "10"
+  ctx.font = `900 ${Math.round(36*sc)}px Inter,Arial,sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = cfg.number||'#000'; ctx.globalAlpha = 0.80;
+  ctx.fillText('10', px(140), py(185));
+  ctx.globalAlpha = 1;
+}
+
+function buildShirtPath(px, py, collar) {
+  const p = new Path2D();
+  if (collar === 'v') {
+    p.moveTo(px(108),py(34)); p.lineTo(px(140),py(70)); p.lineTo(px(172),py(34));
+  } else if (collar === 'polo') {
+    p.moveTo(px(108),py(36)); p.lineTo(px(140),py(70)); p.lineTo(px(172),py(36));
+  } else {
+    p.moveTo(px(112),py(34)); p.quadraticCurveTo(px(140),py(62),px(168),py(34));
+  }
+  p.lineTo(px(222),py(48)); p.lineTo(px(265),py(60)); p.lineTo(px(268),py(120));
+  p.lineTo(px(218),py(125));
+  p.quadraticCurveTo(px(207),py(97),px(204),py(78));
+  p.lineTo(px(228),py(268)); p.lineTo(px(52),py(268)); p.lineTo(px(76),py(78));
+  p.quadraticCurveTo(px(73),py(97),px(62),py(125));
+  p.lineTo(px(12),py(120)); p.lineTo(px(15),py(60)); p.lineTo(px(58),py(48));
+  p.closePath();
+  return p;
+}
+
+function drawKitPattern(ctx, W, H, cfg, px, py, sc) {
+  const [c1,c2,c3] = cfg.colors;
+  const sw = 17*sc;
+  switch (cfg.pattern) {
+    case 'uni':
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H); break;
+    case 'v_stripes':
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = c2;
+      for (let x=0; x<W; x+=sw*2) ctx.fillRect(x,0,sw,H); break;
+    case 'h_stripes':
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = c2;
+      for (let y=0; y<H; y+=sw*2) ctx.fillRect(0,y,W,sw); break;
+    case 'halves':
+      ctx.fillStyle = c1; ctx.fillRect(0,0,px(140),H);
+      ctx.fillStyle = c2; ctx.fillRect(px(140),0,W,H); break;
+    case 'thirds':
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,py(128));
+      ctx.fillStyle = c2; ctx.fillRect(0,py(128),W,py(198)-py(128));
+      ctx.fillStyle = c3; ctx.fillRect(0,py(198),W,H); break;
+    case 'sash': {
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
+      const bw = 58*sc;
+      ctx.fillStyle = c2; ctx.beginPath();
+      ctx.moveTo(px(60),py(30)); ctx.lineTo(px(200),py(30));
+      ctx.lineTo(px(248),py(268)); ctx.lineTo(px(88),py(268));
+      ctx.closePath(); ctx.fill(); break;
+    }
+    case 'checker': {
+      const cs = 15*sc;
+      for (let r=0; r<=Math.ceil(H/cs); r++)
+        for (let c=0; c<=Math.ceil(W/cs); c++) {
+          ctx.fillStyle = (r+c)%2===0 ? c1 : c2;
+          ctx.fillRect(c*cs, r*cs, cs, cs);
+        }
+      break;
+    }
+    case 'diagonal':
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = c2; ctx.beginPath();
+      ctx.moveTo(0,0); ctx.lineTo(W,0); ctx.lineTo(0,H);
+      ctx.closePath(); ctx.fill(); break;
+    default:
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
+  }
+}
+
+function drawCollarDetail(ctx, px, py, cfg, sc) {
+  const c2 = cfg.colors[1]||'#000';
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  if (cfg.collar === 'v') {
+    ctx.beginPath();
+    ctx.moveTo(px(108),py(34)); ctx.lineTo(px(140),py(70)); ctx.lineTo(px(172),py(34));
+    ctx.strokeStyle = c2; ctx.lineWidth = 3.5*sc; ctx.stroke();
+  } else if (cfg.collar === 'round') {
+    ctx.beginPath();
+    ctx.moveTo(px(112),py(34)); ctx.quadraticCurveTo(px(140),py(62),px(168),py(34));
+    ctx.strokeStyle = c2; ctx.lineWidth = 4*sc; ctx.stroke();
+  } else if (cfg.collar === 'polo') {
+    ctx.beginPath();
+    ctx.moveTo(px(108),py(36)); ctx.lineTo(px(140),py(70)); ctx.lineTo(px(172),py(36));
+    ctx.strokeStyle = c2; ctx.lineWidth = 3.5*sc; ctx.stroke();
+    // polo tab
+    ctx.beginPath();
+    ctx.rect(px(126),py(34),px(154)-px(126),py(60)-py(34));
+    ctx.fillStyle = c2; ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = sc; ctx.stroke();
+    // button line
+    ctx.beginPath();
+    ctx.moveTo(px(140),py(36)); ctx.lineTo(px(140),py(58));
+    ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = sc; ctx.stroke();
+    [py(41),py(47),py(53)].forEach(y => {
+      ctx.beginPath(); ctx.arc(px(140),y,1.5*sc,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fill();
+    });
+  }
 }
 
 // ════════════════════════════════════════════
