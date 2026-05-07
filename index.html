@@ -2920,7 +2920,8 @@ function exportKitCanvas() {
   const a = document.createElement('a'); a.href = D.kits[_kitSlot]; a.download = slug+'_'+_kitSlot+'.png'; a.click();
 }
 
-// ── Canvas drawing ──
+// ── Canvas drawing — vrai rendu 3D ──
+
 function renderKitCanvas() {
   const canvas = g('kit-canvas'); if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -2934,92 +2935,170 @@ function renderKitCanvas() {
 
   const shirt = buildShirtPath(px, py, cfg.collar);
 
-  // Pattern fill (clipped)
-  ctx.save();
-  ctx.clip(shirt);
+  // ── LAYER 1 : motif de base ──
+  ctx.save(); ctx.clip(shirt);
   drawKitPattern(ctx, W, H, cfg, px, py, sc);
-  // Depth shading
-  const sL = ctx.createLinearGradient(px(48),0,px(115),0);
-  sL.addColorStop(0,'rgba(0,0,0,.20)'); sL.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle = sL; ctx.fillRect(0,0,W,H);
-  const sR = ctx.createLinearGradient(px(165),0,px(232),0);
-  sR.addColorStop(0,'rgba(0,0,0,0)'); sR.addColorStop(1,'rgba(0,0,0,.20)');
-  ctx.fillStyle = sR; ctx.fillRect(0,0,W,H);
-  const hi = ctx.createRadialGradient(px(125),py(120),0,px(140),py(140),70*sc);
-  hi.addColorStop(0,'rgba(255,255,255,.11)'); hi.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.fillStyle = hi; ctx.fillRect(0,0,W,H);
   ctx.restore();
 
-  // Collar detail
-  drawCollarDetail(ctx, px, py, cfg, sc);
+  // ── LAYER 2 : shading 3D (8 passes) ──
+  ctx.save(); ctx.clip(shirt);
 
-  // Outline
-  ctx.strokeStyle = 'rgba(0,0,0,.42)';
-  ctx.lineWidth = 1.5*sc; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  // 2a. Corps cylindrique — gradient radial centre→bords
+  const cyl = ctx.createRadialGradient(px(134),py(130),5*sc, px(140),py(160),138*sc);
+  cyl.addColorStop(0,   'rgba(255,255,255,.17)');
+  cyl.addColorStop(0.30,'rgba(255,255,255,.06)');
+  cyl.addColorStop(0.62,'rgba(0,0,0,.03)');
+  cyl.addColorStop(1,   'rgba(0,0,0,.34)');
+  ctx.fillStyle = cyl; ctx.fillRect(0,0,W,H);
+
+  // 2b. Bord gauche — courbure qui s'éloigne du spectateur
+  const eL = ctx.createLinearGradient(px(50),0,px(112),0);
+  eL.addColorStop(0,'rgba(0,0,0,.33)'); eL.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = eL; ctx.fillRect(0,0,W,H);
+
+  // 2c. Bord droit
+  const eR = ctx.createLinearGradient(px(168),0,px(230),0);
+  eR.addColorStop(0,'rgba(0,0,0,0)'); eR.addColorStop(1,'rgba(0,0,0,.33)');
+  ctx.fillStyle = eR; ctx.fillRect(0,0,W,H);
+
+  // 2d. Lumière du dessus
+  const tl = ctx.createLinearGradient(0,py(34),0,py(270));
+  tl.addColorStop(0,   'rgba(255,255,255,.16)');
+  tl.addColorStop(0.18,'rgba(255,255,255,.04)');
+  tl.addColorStop(0.65,'rgba(0,0,0,0)');
+  tl.addColorStop(1,   'rgba(0,0,0,.20)');
+  ctx.fillStyle = tl; ctx.fillRect(0,0,W,H);
+
+  // 2e. Reflet spéculaire — haut-gauche de la poitrine
+  const sp = ctx.createRadialGradient(px(118),py(88),0, px(128),py(105),54*sc);
+  sp.addColorStop(0,   'rgba(255,255,255,.26)');
+  sp.addColorStop(0.45,'rgba(255,255,255,.09)');
+  sp.addColorStop(1,   'rgba(255,255,255,0)');
+  ctx.fillStyle = sp; ctx.fillRect(0,0,W,H);
+
+  // 2f. Plis de tissu (3 bandes horizontales subtiles)
+  [[py(148),8*sc,.07],[py(196),6*sc,.055],[py(238),5*sc,.045]].forEach(([fy,fw,a]) => {
+    const f = ctx.createLinearGradient(0,fy-fw,0,fy+fw);
+    f.addColorStop(0,'rgba(0,0,0,0)'); f.addColorStop(.5,`rgba(0,0,0,${a})`); f.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = f; ctx.fillRect(0,fy-fw,W,fw*2);
+  });
+
+  // 2g. Ombres d'aisselles
+  [[px(74),py(118)],[px(206),py(118)]].forEach(([ax,ay]) => {
+    const ar = ctx.createRadialGradient(ax,ay,0,ax,ay,24*sc);
+    ar.addColorStop(0,'rgba(0,0,0,.32)'); ar.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = ar; ctx.fillRect(0,0,W,H);
+  });
+
+  // 2h. Haut des manches — ombre de jonction
+  const slvT = ctx.createLinearGradient(0,py(46),0,py(90));
+  slvT.addColorStop(0,'rgba(0,0,0,.22)'); slvT.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = slvT; ctx.fillRect(0,0,W,H);
+
+  ctx.restore();
+
+  // ── LAYER 3 : lignes de couture (dashed) ──
+  ctx.save(); ctx.clip(shirt);
+  ctx.strokeStyle = 'rgba(0,0,0,.13)'; ctx.lineWidth = .8*sc;
+  ctx.setLineDash([2.5*sc,2.5*sc]);
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  // Couture épaule gauche
+  ctx.beginPath(); ctx.moveTo(px(108),py(36)); ctx.lineTo(px(75),py(82)); ctx.stroke();
+  // Couture épaule droite
+  ctx.beginPath(); ctx.moveTo(px(172),py(36)); ctx.lineTo(px(205),py(82)); ctx.stroke();
+  // Couture côté gauche (légère)
+  ctx.strokeStyle = 'rgba(0,0,0,.07)';
+  ctx.beginPath(); ctx.moveTo(px(76),py(82)); ctx.quadraticCurveTo(px(58),py(175),px(52),py(268)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px(204),py(82)); ctx.quadraticCurveTo(px(222),py(175),px(228),py(268)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  // ── LAYER 4 : col 3D ──
+  draw3DCollar(ctx, px, py, cfg, sc);
+
+  // ── LAYER 5 : contour général ──
+  ctx.strokeStyle = 'rgba(0,0,0,.40)';
+  ctx.lineWidth = 1.6*sc; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
   ctx.stroke(shirt);
 
-  // Number "10"
-  ctx.font = `900 ${Math.round(36*sc)}px Inter,Arial,sans-serif`;
+  // ── LAYER 6 : numéro avec ombre portée ──
+  const fz = Math.round(36*sc);
+  ctx.font = `900 ${fz}px Inter,Arial,sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillStyle = cfg.number||'#000'; ctx.globalAlpha = 0.80;
+  // ombre
+  ctx.fillStyle = 'rgba(0,0,0,.30)'; ctx.globalAlpha = .6;
+  ctx.fillText('10', px(141.5), py(186.5));
+  ctx.globalAlpha = 1;
+  // chiffre
+  ctx.fillStyle = cfg.number||'#000'; ctx.globalAlpha = .84;
   ctx.fillText('10', px(140), py(185));
   ctx.globalAlpha = 1;
 }
 
 function buildShirtPath(px, py, collar) {
   const p = new Path2D();
+  // ─ Encolure ─
   if (collar === 'v') {
-    p.moveTo(px(108),py(34)); p.lineTo(px(140),py(70)); p.lineTo(px(172),py(34));
+    p.moveTo(px(108),py(34)); p.lineTo(px(140),py(72)); p.lineTo(px(172),py(34));
   } else if (collar === 'polo') {
-    p.moveTo(px(108),py(36)); p.lineTo(px(140),py(70)); p.lineTo(px(172),py(36));
-  } else {
-    p.moveTo(px(112),py(34)); p.quadraticCurveTo(px(140),py(62),px(168),py(34));
+    p.moveTo(px(108),py(36)); p.lineTo(px(140),py(72)); p.lineTo(px(172),py(36));
+  } else { // round
+    p.moveTo(px(112),py(34)); p.quadraticCurveTo(px(140),py(64),px(168),py(34));
   }
-  p.lineTo(px(222),py(48)); p.lineTo(px(265),py(60)); p.lineTo(px(268),py(120));
-  p.lineTo(px(218),py(125));
-  p.quadraticCurveTo(px(207),py(97),px(204),py(78));
-  p.lineTo(px(228),py(268)); p.lineTo(px(52),py(268)); p.lineTo(px(76),py(78));
-  p.quadraticCurveTo(px(73),py(97),px(62),py(125));
-  p.lineTo(px(12),py(120)); p.lineTo(px(15),py(60)); p.lineTo(px(58),py(48));
+  // ─ Épaule droite → manche droite ─
+  p.lineTo(px(220),py(46));
+  p.quadraticCurveTo(px(244),py(50),px(264),py(60));
+  p.lineTo(px(267),py(122));
+  p.quadraticCurveTo(px(248),py(128),px(217),py(127));
+  // ─ Emmanchure droite (courbe) ─
+  p.quadraticCurveTo(px(206),py(98),px(203),py(80));
+  // ─ Corps droit (légèrement bombé pour l'effet 3D) ─
+  p.quadraticCurveTo(px(222),py(175),px(227),py(268));
+  // ─ Bas de maillot ─
+  p.lineTo(px(53),py(268));
+  // ─ Corps gauche (bombé) ─
+  p.quadraticCurveTo(px(58),py(175),px(77),py(80));
+  // ─ Emmanchure gauche ─
+  p.quadraticCurveTo(px(74),py(98),px(63),py(127));
+  p.quadraticCurveTo(px(32),py(128),px(13),py(122));
+  // ─ Manche gauche → épaule gauche ─
+  p.lineTo(px(16),py(60));
+  p.quadraticCurveTo(px(36),py(50),px(60),py(46));
   p.closePath();
   return p;
 }
 
 function drawKitPattern(ctx, W, H, cfg, px, py, sc) {
   const [c1,c2,c3] = cfg.colors;
-  const sw = 17*sc;
+  const sw = 18*sc;
   switch (cfg.pattern) {
     case 'uni':
       ctx.fillStyle = c1; ctx.fillRect(0,0,W,H); break;
     case 'v_stripes':
-      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
-      ctx.fillStyle = c2;
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H); ctx.fillStyle = c2;
       for (let x=0; x<W; x+=sw*2) ctx.fillRect(x,0,sw,H); break;
     case 'h_stripes':
-      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
-      ctx.fillStyle = c2;
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,H); ctx.fillStyle = c2;
       for (let y=0; y<H; y+=sw*2) ctx.fillRect(0,y,W,sw); break;
     case 'halves':
       ctx.fillStyle = c1; ctx.fillRect(0,0,px(140),H);
       ctx.fillStyle = c2; ctx.fillRect(px(140),0,W,H); break;
     case 'thirds':
-      ctx.fillStyle = c1; ctx.fillRect(0,0,W,py(128));
-      ctx.fillStyle = c2; ctx.fillRect(0,py(128),W,py(198)-py(128));
-      ctx.fillStyle = c3; ctx.fillRect(0,py(198),W,H); break;
-    case 'sash': {
+      ctx.fillStyle = c1; ctx.fillRect(0,0,W,py(126));
+      ctx.fillStyle = c2; ctx.fillRect(0,py(126),W,py(196)-py(126));
+      ctx.fillStyle = c3; ctx.fillRect(0,py(196),W,H); break;
+    case 'sash':
       ctx.fillStyle = c1; ctx.fillRect(0,0,W,H);
-      const bw = 58*sc;
       ctx.fillStyle = c2; ctx.beginPath();
-      ctx.moveTo(px(60),py(30)); ctx.lineTo(px(200),py(30));
-      ctx.lineTo(px(248),py(268)); ctx.lineTo(px(88),py(268));
+      ctx.moveTo(px(62),py(28)); ctx.lineTo(px(202),py(28));
+      ctx.lineTo(px(250),py(268)); ctx.lineTo(px(90),py(268));
       ctx.closePath(); ctx.fill(); break;
-    }
     case 'checker': {
-      const cs = 15*sc;
+      const cs = 16*sc;
       for (let r=0; r<=Math.ceil(H/cs); r++)
         for (let c=0; c<=Math.ceil(W/cs); c++) {
-          ctx.fillStyle = (r+c)%2===0 ? c1 : c2;
-          ctx.fillRect(c*cs, r*cs, cs, cs);
+          ctx.fillStyle = (r+c)%2===0?c1:c2;
+          ctx.fillRect(c*cs,r*cs,cs,cs);
         }
       break;
     }
@@ -3033,35 +3112,75 @@ function drawKitPattern(ctx, W, H, cfg, px, py, sc) {
   }
 }
 
-function drawCollarDetail(ctx, px, py, cfg, sc) {
-  const c2 = cfg.colors[1]||'#000';
-  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+function draw3DCollar(ctx, px, py, cfg, sc) {
+  const c2 = cfg.colors[1] || '#111111';
+  ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+
   if (cfg.collar === 'v') {
+    // Bande gauche (angle calculé)
+    const bw = 7*sc;
+    const ang = Math.atan2(py(72)-py(34), px(140)-px(108));
+    const nx = Math.sin(ang)*bw, ny = -Math.cos(ang)*bw;
+    // Bande gauche
     ctx.beginPath();
-    ctx.moveTo(px(108),py(34)); ctx.lineTo(px(140),py(70)); ctx.lineTo(px(172),py(34));
-    ctx.strokeStyle = c2; ctx.lineWidth = 3.5*sc; ctx.stroke();
+    ctx.moveTo(px(108),py(34)); ctx.lineTo(px(140),py(72));
+    ctx.lineTo(px(140)+nx, py(72)+ny); ctx.lineTo(px(108)+nx, py(34)+ny);
+    ctx.closePath(); ctx.fillStyle = c2; ctx.fill();
+    const lh = ctx.createLinearGradient(px(108),py(34),px(108)+nx,py(34)+ny);
+    lh.addColorStop(0,'rgba(255,255,255,.4)'); lh.addColorStop(1,'rgba(0,0,0,.08)');
+    ctx.fillStyle = lh; ctx.fill();
+    // Bande droite
+    const ang2 = Math.atan2(py(72)-py(34), px(140)-px(172));
+    const nx2 = -Math.sin(ang2)*bw, ny2 = Math.cos(ang2)*bw;
+    ctx.beginPath();
+    ctx.moveTo(px(172),py(34)); ctx.lineTo(px(140),py(72));
+    ctx.lineTo(px(140)+nx2, py(72)+ny2); ctx.lineTo(px(172)+nx2, py(34)+ny2);
+    ctx.closePath(); ctx.fillStyle = c2; ctx.fill();
+    const rh = ctx.createLinearGradient(px(172),py(34),px(172)+nx2,py(34)+ny2);
+    rh.addColorStop(0,'rgba(255,255,255,.4)'); rh.addColorStop(1,'rgba(0,0,0,.08)');
+    ctx.fillStyle = rh; ctx.fill();
+    // Trait intérieur du V
+    ctx.beginPath(); ctx.moveTo(px(108),py(34)); ctx.lineTo(px(140),py(72)); ctx.lineTo(px(172),py(34));
+    ctx.strokeStyle = mixColors(c2,'#000000',.2); ctx.lineWidth = .8*sc; ctx.stroke();
+
   } else if (cfg.collar === 'round') {
-    ctx.beginPath();
-    ctx.moveTo(px(112),py(34)); ctx.quadraticCurveTo(px(140),py(62),px(168),py(34));
-    ctx.strokeStyle = c2; ctx.lineWidth = 4*sc; ctx.stroke();
-  } else if (cfg.collar === 'polo') {
-    ctx.beginPath();
-    ctx.moveTo(px(108),py(36)); ctx.lineTo(px(140),py(70)); ctx.lineTo(px(172),py(36));
+    // Bande ronde 3D — 3 couches de stroke
+    ctx.beginPath(); ctx.moveTo(px(112),py(34)); ctx.quadraticCurveTo(px(140),py(64),px(168),py(34));
+    ctx.strokeStyle = 'rgba(0,0,0,.22)'; ctx.lineWidth = 10*sc; ctx.stroke();
+    ctx.strokeStyle = c2; ctx.lineWidth = 8*sc; ctx.stroke();
+    // Reflet sur le dessus du col
+    ctx.strokeStyle = 'rgba(255,255,255,.32)'; ctx.lineWidth = 3*sc; ctx.stroke();
+    // Ombre intérieure du col
+    ctx.beginPath(); ctx.moveTo(px(112),py(34)); ctx.quadraticCurveTo(px(140),py(64),px(168),py(34));
+    ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1.5*sc;
+    ctx.translate(0,1.5*sc); ctx.stroke(); ctx.translate(0,-1.5*sc);
+
+  } else { // polo
+    // Trait V de base
+    ctx.beginPath(); ctx.moveTo(px(108),py(36)); ctx.lineTo(px(140),py(72)); ctx.lineTo(px(172),py(36));
     ctx.strokeStyle = c2; ctx.lineWidth = 3.5*sc; ctx.stroke();
-    // polo tab
-    ctx.beginPath();
-    ctx.rect(px(126),py(34),px(154)-px(126),py(60)-py(34));
+    // Empiècement polo
+    const tw = px(154)-px(126), th = py(63)-py(34);
+    ctx.beginPath(); ctx.rect(px(126),py(34),tw,th);
     ctx.fillStyle = c2; ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = sc; ctx.stroke();
-    // button line
-    ctx.beginPath();
-    ctx.moveTo(px(140),py(36)); ctx.lineTo(px(140),py(58));
-    ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = sc; ctx.stroke();
-    [py(41),py(47),py(53)].forEach(y => {
-      ctx.beginPath(); ctx.arc(px(140),y,1.5*sc,0,Math.PI*2);
-      ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fill();
+    // Gradient relief
+    const pg = ctx.createLinearGradient(px(126),py(34),px(154),py(63));
+    pg.addColorStop(0,'rgba(255,255,255,.30)'); pg.addColorStop(.5,'rgba(255,255,255,.08)'); pg.addColorStop(1,'rgba(0,0,0,.12)');
+    ctx.fillStyle = pg; ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.28)'; ctx.lineWidth = sc; ctx.stroke();
+    // Fente centrale
+    ctx.beginPath(); ctx.moveTo(px(140),py(35)); ctx.lineTo(px(140),py(62));
+    ctx.strokeStyle = 'rgba(0,0,0,.30)'; ctx.lineWidth = .9*sc; ctx.stroke();
+    // Boutons (cercles avec reflet)
+    [py(41),py(49),py(57)].forEach(by => {
+      ctx.beginPath(); ctx.arc(px(140),by,2.2*sc,0,Math.PI*2);
+      ctx.fillStyle = mixColors(c2,'#ffffff',.35); ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,.30)'; ctx.lineWidth = .6*sc; ctx.stroke();
+      ctx.beginPath(); ctx.arc(px(139),by-.8*sc,1*sc,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.fill();
     });
   }
+  ctx.restore();
 }
 
 // ════════════════════════════════════════════
