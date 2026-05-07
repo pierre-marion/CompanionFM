@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>CompanionFM — RP Dashboard</title>
+<title>FM Career Universe</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root{
@@ -219,6 +219,90 @@ svg#pitch{width:100%;height:auto;display:block}
 /* Auth forgot */
 .auth-forgot{text-align:right;margin-top:-4px;margin-bottom:12px;font-size:11px;color:var(--grl);cursor:pointer}
 .auth-forgot:hover{color:var(--w)}
+
+/* ── CAREER CREATION FORM ── */
+.nc-logo-zone{width:96px;height:96px;border-radius:50%;border:2px dashed var(--cbo);margin:0 auto 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--gd);transition:border-color .2s,background .2s;overflow:hidden;position:relative}
+.nc-logo-zone:hover{border-color:var(--y);background:rgba(255,255,255,.03)}
+.nc-logo-zone img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0}
+.nc-color-row{display:flex;gap:12px;margin-bottom:4px}
+.nc-color-item{flex:1}
+.nc-color-item label{font-size:11px;color:var(--grl);display:block;margin-bottom:4px}
+.nc-color-item .cc-inner{display:flex;align-items:center;gap:6px}
+input[type="color"]{width:38px;height:30px;border-radius:6px;cursor:pointer;border:1px solid var(--cbo);background:none;padding:2px;flex-shrink:0}
+
+/* ── CAREER PROGRESSION BANNER ── */
+.cp-banner{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.cp-step{display:flex;align-items:center;gap:8px;font-size:13px}
+.cp-step .cp-div{font-weight:700;color:var(--w);background:rgba(255,255,255,.06);padding:4px 10px;border-radius:6px;border:1px solid var(--cbo)}
+.cp-step .cp-div.current{color:var(--y);background:rgba(232,197,71,.1);border-color:rgba(232,197,71,.25)}
+.cp-arrow{color:var(--grl);font-size:11px;margin:0 6px}
+.cp-label{font-size:10px;color:var(--grl);text-transform:uppercase;letter-spacing:1px;margin-right:14px;white-space:nowrap}
+
+/* ── SOCIAL FEED ── */
+.feed-post{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;gap:12px;transition:border-color .18s}
+.feed-post:hover{border-color:rgba(255,255,255,.1)}
+.feed-avatar{width:40px;height:40px;border-radius:50%;background:var(--gm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1.5px solid var(--cbo)}
+.feed-meta{display:flex;align-items:baseline;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.feed-name{font-size:13px;font-weight:700;color:var(--w)}
+.feed-handle{font-size:11px;color:var(--grl)}
+.feed-time{font-size:11px;color:var(--gr);margin-left:auto}
+.feed-badge{display:inline-block;padding:1px 6px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.feed-badge.fan{background:rgba(39,174,96,.15);color:#27ae60}
+.feed-badge.journalist{background:rgba(52,152,219,.15);color:#3498db}
+.feed-badge.insider{background:rgba(232,197,71,.15);color:var(--y)}
+.feed-badge.official{background:rgba(180,180,255,.1);color:#aab4e8}
+.feed-badge.troll{background:rgba(192,57,43,.12);color:#e74c3c}
+.feed-content{font-size:13px;color:var(--w);line-height:1.55;margin-bottom:9px}
+.feed-actions{display:flex;gap:16px;font-size:11px;color:var(--grl)}
+.feed-actions span{cursor:pointer;transition:color .15s;user-select:none}
+.feed-actions span:hover{color:var(--y)}
+.feed-empty{text-align:center;padding:40px 20px;color:var(--gr);font-size:13px}
+
+/* ── PRESS SECTION ── */
+.press-card{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:border-color .18s}
+.press-card:hover{border-color:rgba(255,255,255,.1)}
+.press-media{font-size:10px;font-weight:700;color:var(--y);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.press-title{font-size:15px;font-weight:700;color:var(--w);line-height:1.3;margin-bottom:7px}
+.press-excerpt{font-size:12px;color:var(--grl);line-height:1.55}
+.press-foot{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--cbo)}
+.press-cat{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.press-cat.match{background:rgba(39,174,96,.15);color:#27ae60}
+.press-cat.mercato{background:rgba(232,197,71,.15);color:var(--y)}
+.press-cat.club{background:rgba(52,152,219,.15);color:#3498db}
+.press-cat.rumeur{background:rgba(192,57,43,.12);color:#e74c3c}
+.press-cat.interview{background:rgba(180,180,255,.1);color:#aab4e8}
+
+/* ── KITS & LOGOS ── */
+.kit-zone{border:2px dashed var(--cbo);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;background:var(--gd);min-height:160px}
+.kit-zone:hover{border-color:var(--y);background:rgba(255,255,255,.02)}
+.kit-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px}
+.kit-zone-label{font-size:11px;color:var(--grl);margin-top:8px;text-align:center}
+.kit-zone-icon{font-size:28px;pointer-events:none}
+.kit-card{text-align:center}
+.kit-name{font-size:12px;font-weight:700;color:var(--y);margin-bottom:10px}
+.kit-path-box{background:var(--gd);border-radius:6px;padding:10px 12px;font-family:monospace;font-size:11px;color:var(--grl);line-height:1.7;margin-top:4px}
+
+/* ── HALL OF FAME ── */
+.hof-card{background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:16px;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;transition:border-color .2s}
+.hof-card:hover{border-color:rgba(232,197,71,.3)}
+.hof-badge{width:48px;height:48px;border-radius:50%;background:var(--gm);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid var(--cbo)}
+.hof-badge.legend{border-color:var(--y);background:rgba(232,197,71,.12)}
+.hof-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase}
+.hof-status.legend{background:rgba(232,197,71,.2);color:var(--y)}
+.hof-status.hero{background:rgba(52,152,219,.2);color:#3498db}
+.hof-status.prospect{background:rgba(39,174,96,.18);color:#27ae60}
+.hof-status.flop{background:rgba(192,57,43,.14);color:#e74c3c}
+
+/* ── TIMELINE ── */
+.tl-container{position:relative;padding-left:32px}
+.tl-container::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--cbo)}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-dot{position:absolute;left:-26px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--gm);border:2px solid var(--y);flex-shrink:0}
+.tl-dot.major{background:var(--y);box-shadow:0 0 10px rgba(232,197,71,.4)}
+.tl-card{background:var(--cb);border:1px solid var(--cbo);border-radius:8px;padding:12px 14px}
+.tl-date{font-size:10px;color:var(--grl);margin-bottom:4px}
+.tl-title{font-size:13px;font-weight:700;color:var(--w);margin-bottom:3px}
+.tl-desc{font-size:12px;color:var(--grl);line-height:1.5}
 </style>
 </head>
 <body>
@@ -228,8 +312,8 @@ svg#pitch{width:100%;height:auto;display:block}
   <div class="auth-wrap">
     <div class="auth-hero">
       <div class="auth-logo-icon">⚽</div>
-      <div class="auth-title">CompanionFM</div>
-      <div class="auth-sub">Votre assistant Football Manager 26</div>
+      <div class="auth-title">FM Career Universe</div>
+      <div class="auth-sub">Hub de carrière Football Manager</div>
     </div>
     <div class="auth-card">
       <div class="auth-tabs">
@@ -250,8 +334,8 @@ svg#pitch{width:100%;height:auto;display:block}
   <div class="wlc-wrap">
     <div class="wlc-hero">
       <div style="font-size:52px;line-height:1;margin-bottom:12px">⚽</div>
-      <div class="wlc-title">CompanionFM</div>
-      <div class="wlc-sub">RP Dashboard · Football Manager 26</div>
+      <div class="wlc-title">FM Career Universe</div>
+      <div class="wlc-sub">Hub de carrière Football Manager</div>
       <div id="wlc-user-info" style="margin-top:10px;font-size:11px;color:var(--grl);display:flex;align-items:center;justify-content:center;gap:10px">
         <span id="wlc-email">—</span>
         <button class="btn bg" style="padding:3px 10px;font-size:11px" onclick="signOut()">Déconnexion</button>
@@ -267,29 +351,60 @@ svg#pitch{width:100%;height:auto;display:block}
 
     <!-- Formulaire nouvelle save (caché) -->
     <div id="wlc-new-form" style="display:none">
-      <div class="wlc-stitle">Nouvelle carrière</div>
+      <div class="wlc-stitle">✦ Nouvelle carrière</div>
       <div style="background:var(--cb);border:1px solid var(--cbo);border-radius:10px;padding:20px">
-        <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Choisissez votre club</div>
-        <div class="club-cards">
-          <div class="club-card" id="club-card-westfield" onclick="selectClub('westfield')">
-            <img src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="Westfield FC">
-            <div class="club-card-name">Westfield FC</div>
-            <div class="club-card-div">D11 · Mid Sussex FL</div>
+
+        <!-- Logo upload -->
+        <div style="text-align:center;margin-bottom:18px">
+          <div class="nc-logo-zone" id="nc-logo-zone" onclick="g('nc-logo-input').click()" title="Cliquer pour importer le logo">
+            <span id="nc-logo-placeholder" style="pointer-events:none">📤</span>
+            <img id="nc-logo-img" src="" alt="" style="display:none">
           </div>
-          <div class="club-card" id="club-card-tattingstone" onclick="selectClub('tattingstone')">
-            <img src="./tattingstone.png" alt="Tattingstone United" style="border-radius:50%;border:2px solid var(--cbo);width:56px;height:56px;object-fit:cover;display:block;margin:0 auto 10px">
-            <div class="club-card-name">Tattingstone United</div>
-            <div class="club-card-div">Suffolk</div>
+          <div style="font-size:11px;color:var(--grl)">Logo du club · PNG/JPG recommandé</div>
+          <input type="file" id="nc-logo-input" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+        </div>
+
+        <!-- Infos principales -->
+        <div class="fr" style="margin-bottom:10px">
+          <label style="min-width:130px">Nom du club *</label>
+          <input type="text" id="nc-club" placeholder="Ex: Westfield FC" maxlength="60">
+        </div>
+        <div class="fr" style="margin-bottom:10px">
+          <label style="min-width:130px">Nom du manager *</label>
+          <input type="text" id="nc-coach" placeholder="Votre nom" maxlength="60" onkeydown="if(event.key==='Enter')createSave()">
+        </div>
+        <div class="fr" style="margin-bottom:10px">
+          <label style="min-width:130px">Division de départ</label>
+          <input type="text" id="nc-div" placeholder="Ex: Division 11 — Mid Sussex" maxlength="80">
+        </div>
+        <div class="fr" style="margin-bottom:16px">
+          <label style="min-width:130px">Saison de départ</label>
+          <input type="text" id="nc-season" placeholder="2025/26" value="2025/26" maxlength="20">
+        </div>
+
+        <!-- Couleurs -->
+        <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px">Identité visuelle</div>
+        <div class="nc-color-row">
+          <div class="nc-color-item">
+            <label>Fond (couleur sombre)</label>
+            <div class="cc-inner">
+              <input type="color" id="nc-color-bg" value="#060e09" oninput="syncColorHex('bg');previewTheme()">
+              <input type="text" id="nc-hex-bg" value="#060e09" placeholder="#060e09" style="flex:1;font-family:monospace;font-size:12px" oninput="syncColorPicker('bg')">
+            </div>
+          </div>
+          <div class="nc-color-item">
+            <label>Accent (couleur highlight)</label>
+            <div class="cc-inner">
+              <input type="color" id="nc-color-accent" value="#e8c547" oninput="syncColorHex('accent');previewTheme()">
+              <input type="text" id="nc-hex-accent" value="#e8c547" placeholder="#e8c547" style="flex:1;font-family:monospace;font-size:12px" oninput="syncColorPicker('accent')">
+            </div>
           </div>
         </div>
-        <div class="fr" style="margin-bottom:0;margin-top:10px">
-          <label style="min-width:130px">Nom du manager</label>
-          <input type="text" id="ns-mgr" placeholder="Votre nom…" onkeydown="if(event.key==='Enter')createSave()">
-        </div>
+        <div style="font-size:10px;color:var(--gr);margin-top:6px">* champs requis</div>
       </div>
       <div style="display:flex;gap:8px;margin-top:12px">
         <button class="btn bg" style="flex:1;padding:9px" onclick="hideNewSaveForm()">← Retour</button>
-        <button class="btn bp" style="flex:2;padding:9px;font-size:13px" onclick="createSave()">Commencer</button>
+        <button class="btn bp" style="flex:2;padding:9px;font-size:13px" onclick="createSave()">⚽ Commencer la carrière</button>
       </div>
     </div>
   </div>
@@ -311,7 +426,7 @@ svg#pitch{width:100%;height:auto;display:block}
   <!-- Texte -->
   <div class="ld-content">
     <div class="ld-club-name" id="ld-club-name">—</div>
-    <div class="ld-tagline">RP Dashboard · Football Manager 26</div>
+    <div class="ld-tagline">FM Career Universe · Football Manager</div>
     <div class="ld-sep"></div>
     <div class="ld-mgr-wrap">Manager : <strong id="ld-mgr">—</strong></div>
     <div class="ld-bar"><div class="ld-fill" id="ld-fill"></div></div>
@@ -321,16 +436,22 @@ svg#pitch{width:100%;height:auto;display:block}
 
 <div id="sb" style="display:none">
   <div class="sb-head">
-    <img class="sb-logo" id="sb-logo-img" src="./22e567c3-9f71-4b96-b342-8122d17546b5.png" alt="">
+    <img class="sb-logo" id="sb-logo-img" src="" alt="" style="display:none">
+    <div id="sb-no-logo" class="sb-logo" style="display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--gm)">⚽</div>
     <div class="cn" id="sb-club-name">—</div>
     <div class="cl" id="sb-division">—<br><span class="sb-season" id="sb-season">2025/26</span></div>
   </div>
   <nav>
     <div class="ni active" onclick="showPage('dashboard',this)"><span class="ni-ic">⚡</span>Dashboard</div>
+    <div class="ni" onclick="showPage('feed',this)"><span class="ni-ic">📣</span>Feed Social</div>
+    <div class="ni" onclick="showPage('press',this)"><span class="ni-ic">🗞️</span>Presse</div>
     <div class="ni" onclick="showPage('finances',this)"><span class="ni-ic">💰</span>Finances</div>
     <div class="ni" onclick="showPage('tactics',this)"><span class="ni-ic">🎯</span>Tactique</div>
     <div class="ni" onclick="showPage('squad',this)"><span class="ni-ic">👥</span>Effectif</div>
     <div class="ni" onclick="showPage('recruitment',this)"><span class="ni-ic">🔍</span>Recrutement</div>
+    <div class="ni" onclick="showPage('kits',this)"><span class="ni-ic">👕</span>Maillots & Logos</div>
+    <div class="ni" onclick="showPage('hof',this)"><span class="ni-ic">🏆</span>Hall of Fame</div>
+    <div class="ni" onclick="showPage('timeline',this)"><span class="ni-ic">📅</span>Timeline</div>
     <div class="ni" onclick="showPage('notes',this)"><span class="ni-ic">📋</span>Notes</div>
     <div class="ni" onclick="showPage('history',this)"><span class="ni-ic">📜</span>Historique</div>
   </nav>
@@ -338,7 +459,7 @@ svg#pitch{width:100%;height:auto;display:block}
     <div class="ni" style="border-radius:6px;border:1px solid var(--cbo)" onclick="quitToMenu()"><span class="ni-ic">🚪</span>Menu principal</div>
     <div class="ni" style="border-radius:6px;border:1px solid var(--cbo);color:var(--ng)" onclick="signOut()"><span class="ni-ic">🔓</span>Déconnexion</div>
   </div>
-  <div class="sb-foot">FM26 RP Dashboard<br><span id="sb-foot-club">CompanionFM</span></div>
+  <div class="sb-foot">FM Career Universe<br><span id="sb-foot-club">—</span></div>
 </div>
 
 <div id="main" style="display:none">
@@ -354,6 +475,11 @@ svg#pitch{width:100%;height:auto;display:block}
 
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
+    <!-- Career progression banner -->
+    <div class="cp-banner">
+      <span class="cp-label">Progression</span>
+      <div id="d-progression" style="display:flex;align-items:center;gap:0;flex-wrap:wrap"><span style="color:var(--grl);font-size:12px">—</span></div>
+    </div>
     <div class="g4" style="margin-bottom:16px">
       <div class="sc"><div class="sv" id="d-pos">—</div><div class="sl">Position</div></div>
       <div class="sc"><div class="sv" id="d-pts">0</div><div class="sl">Points</div></div>
@@ -641,6 +767,204 @@ svg#pitch{width:100%;height:auto;display:block}
     </div>
     <div id="history-list"><div style="text-align:center;padding:40px;color:var(--gr)">Aucune saison archivée.</div></div>
   </div>
+
+  <!-- FEED SOCIAL -->
+  <div id="page-feed" class="page">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:15px;font-weight:700">Feed Social</div>
+        <div style="font-size:12px;color:var(--grl);margin-top:2px">Ce que la toile dit de votre club</div>
+      </div>
+      <button class="btn bp" onclick="refreshFeed()">↻ Actualiser</button>
+    </div>
+    <div class="tabs" id="feed-tabs">
+      <div class="tab active" onclick="filterFeed('all',this)">Tous</div>
+      <div class="tab" onclick="filterFeed('fan',this)">Supporters</div>
+      <div class="tab" onclick="filterFeed('journalist',this)">Presse</div>
+      <div class="tab" onclick="filterFeed('insider',this)">Insiders</div>
+      <div class="tab" onclick="filterFeed('official',this)">Officiel</div>
+      <div class="tab" onclick="filterFeed('troll',this)">Trolls</div>
+    </div>
+    <div id="feed-list"><div class="feed-empty">Chargement du feed…</div></div>
+  </div>
+
+  <!-- PRESSE -->
+  <div id="page-press" class="page">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:15px;font-weight:700">Revue de Presse</div>
+        <div style="font-size:12px;color:var(--grl);margin-top:2px">Articles et couverture médiatique</div>
+      </div>
+      <button class="btn bp" onclick="refreshPress()">↻ Actualiser</button>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="filterPress('all',this)">Tous</div>
+      <div class="tab" onclick="filterPress('match',this)">Matchs</div>
+      <div class="tab" onclick="filterPress('mercato',this)">Mercato</div>
+      <div class="tab" onclick="filterPress('club',this)">Club</div>
+      <div class="tab" onclick="filterPress('interview',this)">Interviews</div>
+    </div>
+    <div id="press-list"><div class="feed-empty">Chargement des articles…</div></div>
+  </div>
+
+  <!-- MAILLOTS & LOGOS -->
+  <div id="page-kits" class="page">
+    <div style="margin-bottom:20px">
+      <div style="font-size:15px;font-weight:700">Maillots & Logos</div>
+      <div style="font-size:12px;color:var(--grl);margin-top:2px">Gérez et exportez les assets graphiques de votre club</div>
+    </div>
+
+    <!-- Maillots -->
+    <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--cbo)">Maillots</div>
+    <div class="g3" style="margin-bottom:24px">
+      <div class="kit-card card">
+        <div class="kit-name">🟢 Domicile</div>
+        <div class="kit-zone" id="kz-home" onclick="g('ki-home').click()" title="Importer le maillot domicile">
+          <div id="kz-home-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">👕</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+          <img id="kz-home-img" src="" alt="" style="display:none">
+        </div>
+        <input type="file" id="ki-home" accept="image/*" style="display:none" onchange="handleKitUpload('home',this)">
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('home')">Export PNG</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('home')" title="Supprimer">✕</button>
+        </div>
+      </div>
+      <div class="kit-card card">
+        <div class="kit-name">⚪ Extérieur</div>
+        <div class="kit-zone" id="kz-away" onclick="g('ki-away').click()" title="Importer le maillot extérieur">
+          <div id="kz-away-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">👕</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+          <img id="kz-away-img" src="" alt="" style="display:none">
+        </div>
+        <input type="file" id="ki-away" accept="image/*" style="display:none" onchange="handleKitUpload('away',this)">
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('away')">Export PNG</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('away')" title="Supprimer">✕</button>
+        </div>
+      </div>
+      <div class="kit-card card">
+        <div class="kit-name">🔴 Third</div>
+        <div class="kit-zone" id="kz-third" onclick="g('ki-third').click()" title="Importer le maillot third">
+          <div id="kz-third-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">👕</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+          <img id="kz-third-img" src="" alt="" style="display:none">
+        </div>
+        <input type="file" id="ki-third" accept="image/*" style="display:none" onchange="handleKitUpload('third',this)">
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('third')">Export PNG</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('third')" title="Supprimer">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logos -->
+    <div style="font-size:10px;font-weight:700;color:var(--grl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--cbo)">Logos</div>
+    <div class="g2" style="margin-bottom:24px">
+      <div class="kit-card card">
+        <div class="kit-name">🏟️ Logo principal</div>
+        <div class="kit-zone" id="kz-logo" onclick="g('ki-logo').click()" title="Importer le logo principal">
+          <div id="kz-logo-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">🏟️</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+          <img id="kz-logo-img" src="" alt="" style="display:none">
+        </div>
+        <input type="file" id="ki-logo" accept="image/*" style="display:none" onchange="handleKitUpload('logo',this)">
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('logo')">Export PNG</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('logo')" title="Supprimer">✕</button>
+        </div>
+      </div>
+      <div class="kit-card card">
+        <div class="kit-name">🔵 Logo small / icône</div>
+        <div class="kit-zone" id="kz-small" onclick="g('ki-small').click()" title="Importer l'icône">
+          <div id="kz-small-ph" style="text-align:center;pointer-events:none"><div class="kit-zone-icon">🔵</div><div class="kit-zone-label">Cliquer pour importer</div></div>
+          <img id="kz-small-img" src="" alt="" style="display:none">
+        </div>
+        <input type="file" id="ki-small" accept="image/*" style="display:none" onchange="handleKitUpload('small',this)">
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn bg" style="flex:1;font-size:11px" onclick="exportKit('small')">Export PNG</button>
+          <button class="btn bd" style="font-size:11px;padding:7px 10px" onclick="clearKit('small')" title="Supprimer">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aide emplacement -->
+    <div class="card" style="border-left:3px solid var(--y)">
+      <div class="ct">📁 Où placer les fichiers dans FM</div>
+      <div class="g2">
+        <div>
+          <div style="font-size:11px;color:var(--grl);margin-bottom:6px;font-weight:600">Maillots</div>
+          <div class="kit-path-box">Documents/Sports Interactive/<br>Football Manager 2026/<br>graphics/kits/</div>
+          <div style="font-size:11px;color:var(--gr);margin-top:6px">
+            <span id="kit-filename-hint">Ex: monclub_home.png</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--grl);margin-bottom:6px;font-weight:600">Logos</div>
+          <div class="kit-path-box">Documents/Sports Interactive/<br>Football Manager 2026/<br>graphics/logos/</div>
+          <div style="font-size:11px;color:var(--gr);margin-top:6px">
+            <span id="logo-filename-hint">Ex: monclub_logo.png</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HALL OF FAME -->
+  <div id="page-hof" class="page">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:15px;font-weight:700">Hall of Fame</div>
+        <div style="font-size:12px;color:var(--grl);margin-top:2px">Les légendes de votre club</div>
+      </div>
+      <button class="btn bp" onclick="openM('hof')">+ Ajouter une légende</button>
+    </div>
+    <div id="hof-list"><div style="text-align:center;padding:40px;color:var(--gr);font-size:13px">Aucune légende ajoutée pour l'instant.</div></div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div id="page-timeline" class="page">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:15px;font-weight:700">Timeline de carrière</div>
+        <div style="font-size:12px;color:var(--grl);margin-top:2px">Les grands moments de votre aventure</div>
+      </div>
+      <button class="btn bp" onclick="openM('tl')">+ Ajouter un moment</button>
+    </div>
+    <div class="tl-container" id="timeline-list"><div style="color:var(--gr);font-size:13px;padding:20px 0">Aucun moment ajouté.</div></div>
+  </div>
+
+</div>
+
+<!-- MODAL: Hall of Fame -->
+<div class="mo" id="m-hof">
+  <div class="md">
+    <div class="md-head"><div class="md-icon yellow">🏆</div><div><div class="mdt">Ajouter une légende</div><div class="md-sub">Hall of Fame du club</div></div></div>
+    <div class="md-body">
+      <div class="md-grid">
+        <div class="fr md-full"><label>Nom du joueur</label><input type="text" id="hof-name" placeholder="Prénom Nom"></div>
+        <div class="fr"><label>Poste</label><select id="hof-pos"><option>GK</option><option>CB</option><option>LB</option><option>RB</option><option>DM</option><option>CM</option><option>AM</option><option>LW</option><option>RW</option><option>ST</option></select></div>
+        <div class="fr"><label>Statut</label><select id="hof-status"><option value="legend">Légende</option><option value="hero">Héros culte</option><option value="prospect">Espoir</option><option value="flop">Flop</option></select></div>
+        <div class="fr"><label>Saisons au club</label><input type="text" id="hof-seasons" placeholder="Ex: 2025/26 – 2027/28"></div>
+        <div class="fr"><label>Buts / Apps</label><input type="text" id="hof-stats" placeholder="Ex: 47 buts / 98 matchs"></div>
+        <div class="fr md-full"><label>Moments marquants</label><textarea id="hof-moments" rows="2" style="width:100%;resize:none" placeholder="Ex: Auteur du but de la montée en D9…"></textarea></div>
+      </div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('hof')">Annuler</button><button class="btn bp" onclick="addHof()">Ajouter</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Timeline -->
+<div class="mo" id="m-tl">
+  <div class="md">
+    <div class="md-head"><div class="md-icon blue">📅</div><div><div class="mdt">Ajouter un moment</div><div class="md-sub">Timeline de carrière</div></div></div>
+    <div class="md-body">
+      <div class="md-grid">
+        <div class="fr"><label>Date / Saison</label><input type="text" id="tl-date" placeholder="Ex: Juin 2026"></div>
+        <div class="fr"><label>Type</label><select id="tl-type"><option value="promotion">Montée</option><option value="trophy">Trophée</option><option value="transfer">Transfert</option><option value="match">Match historique</option><option value="milestone">Milestone</option><option value="other">Autre</option></select></div>
+        <div class="fr md-full"><label>Titre</label><input type="text" id="tl-title" placeholder="Ex: Première montée en D10"></div>
+        <div class="fr md-full"><label>Description</label><textarea id="tl-desc" rows="2" style="width:100%;resize:none" placeholder="Décrivez le moment…"></textarea></div>
+        <div class="fr"><label>Moment majeur ?</label><select id="tl-major"><option value="0">Non</option><option value="1">Oui — point clé</option></select></div>
+      </div>
+    </div>
+    <div class="mdf"><button class="btn bg" onclick="closeM('tl')">Annuler</button><button class="btn bp" onclick="addTimeline()">Ajouter</button></div>
+  </div>
 </div>
 
 <!-- MODAL: Résultat -->
@@ -876,10 +1200,23 @@ const FORM_PRESETS = {
 };
 
 const DFLT = () => ({
-  mgr:'Votre nom', season:'2025/26', clubId:'westfield',
+  // ── Career identity (new generic fields) ──
+  clubName:'',        // user-defined club name
+  coachName:'',       // user-defined manager name
+  logoB64:'',         // base64 logo image (data URL)
+  division:'',        // current division text
+  theme:{ bg:'#060e09', accent:'#e8c547' },
+  // ── Assets ──
+  kits:{ home:'', away:'', third:'', logo:'', small:'' },
+  // ── Hall of Fame ──
+  hof:[],
+  // ── Timeline ──
+  timeline:[],
+  // ── Legacy fields kept for backward compat ──
+  mgr:'Votre nom', season:'2025/26', clubId:'',
   pos:null, posTotal:20,
   played:0, won:0, drawn:0, lost:0, gf:0, ga:0,
-  club:{stad:'',cap:'',city:'West Sussex',found:'1966'},
+  club:{stad:'',cap:'',city:'',found:''},
   next:{opp:'—',date:'',comp:''},
   fin:{transfer:0,wages:0,balance:0,tx:[]},
   tac:{
@@ -949,33 +1286,97 @@ function selectClub(id) {
   if (card) card.classList.add('selected');
 }
 
-function applyClubTheme(clubId) {
-  const club = CLUBS[clubId] || CLUBS.westfield;
+// ── Color utilities ──
+function hexToRgb(hex) {
+  hex = hex.replace(/^#/,'');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  return [parseInt(hex.slice(0,2),16), parseInt(hex.slice(2,4),16), parseInt(hex.slice(4,6),16)];
+}
+function rgbToHex(r,g,b) {
+  return '#'+[r,g,b].map(x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0')).join('');
+}
+function mixColors(hex1, hex2, t) {
+  const [r1,g1,b1]=hexToRgb(hex1), [r2,g2,b2]=hexToRgb(hex2);
+  return rgbToHex(r1+(r2-r1)*t, g1+(g2-g1)*t, b1+(b2-b1)*t);
+}
+function buildThemeVars(bg, accent) {
+  return {
+    '--gd': bg,
+    '--gs': mixColors(bg,'#ffffff',0.05),
+    '--gm': mixColors(bg, accent, 0.22),
+    '--ga': mixColors(bg, accent, 0.40),
+    '--y':  accent,
+    '--yd': mixColors(accent,'#000000',0.15),
+    '--w':  '#f0f5f2',
+    '--gr': mixColors(bg,'#ffffff',0.35),
+    '--grl':mixColors(bg,'#ffffff',0.55),
+    '--cb': mixColors(bg,'#ffffff',0.03),
+    '--cbo':mixColors(bg,'#ffffff',0.12),
+    '--ld-bg': mixColors(bg,'#000000',0.1),
+    '--ld-gradient':`radial-gradient(ellipse 70% 60% at 50% 45%,${mixColors(bg,accent,0.4)} 0%,transparent 70%)`
+  };
+}
+
+function applyClubTheme(clubIdOrNull) {
+  // Determine theme source: prefer D.theme (new saves), fall back to CLUBS legacy
+  let vars, clubName, logoSrc, division, found;
+
+  if (D.theme && D.theme.bg && D.theme.accent) {
+    vars = buildThemeVars(D.theme.bg, D.theme.accent);
+  } else if (clubIdOrNull && CLUBS[clubIdOrNull]) {
+    vars = CLUBS[clubIdOrNull].vars;
+  } else {
+    vars = buildThemeVars('#060e09','#e8c547');
+  }
+
+  // Derive display values
+  clubName = D.clubName || (clubIdOrNull && CLUBS[clubIdOrNull] ? CLUBS[clubIdOrNull].name : '—');
+  const legacyClub = clubIdOrNull && CLUBS[clubIdOrNull];
+  division = D.division || (legacyClub ? legacyClub.division : '');
+  found    = D.club.found || (legacyClub ? legacyClub.found : '');
+  logoSrc  = D.logoB64 || (legacyClub ? legacyClub.logo : '');
+
+  // Apply CSS vars
   const root = document.documentElement;
-  Object.entries(club.vars).forEach(([k,v]) => root.style.setProperty(k, v));
-  // Update sidebar
+  Object.entries(vars).forEach(([k,v]) => root.style.setProperty(k, v));
+
+  // Sidebar logo
   const sbl = document.getElementById('sb-logo-img');
-  if (sbl) { sbl.src = club.logo; sbl.alt = club.name; }
+  if (sbl) {
+    sbl.src = logoSrc || '';
+    sbl.alt = clubName;
+    sbl.style.display = logoSrc ? 'block' : 'none';
+  }
+  const sbNoLogo = document.getElementById('sb-no-logo');
+  if (sbNoLogo) sbNoLogo.style.display = logoSrc ? 'none' : 'flex';
+
   const sbn = document.getElementById('sb-club-name');
-  if (sbn) sbn.textContent = club.name;
+  if (sbn) sbn.textContent = clubName;
   const sbd = document.getElementById('sb-division');
-  if (sbd) sbd.innerHTML = club.division + '<br><span class="sb-season" id="sb-season">' + (D.season||'2025/26') + '</span>';
+  if (sbd) sbd.innerHTML = (division||'—') + '<br><span class="sb-season" id="sb-season">' + (D.season||'2025/26') + '</span>';
   const sbf = document.getElementById('sb-foot-club');
-  if (sbf) sbf.textContent = club.name + ' · Est. ' + club.found;
-  // Update topbar division
+  if (sbf) sbf.textContent = clubName + (found ? ' · Est. ' + found : '');
+
+  // Topbar
   const tbd = document.getElementById('tb-division');
-  if (tbd) tbd.textContent = club.division;
-  // Update home team in next match
+  if (tbd) tbd.textContent = division || '—';
+  // Next match home team
   const nmh = document.getElementById('nm-home');
-  if (nmh) nmh.textContent = club.name;
-  // Update squad modal subtitle
+  if (nmh) nmh.textContent = clubName;
+  // Squad modal subtitle
   const msc = document.getElementById('modal-squad-club');
-  if (msc) msc.textContent = 'Effectif ' + club.name;
-  // Update loading screen
+  if (msc) msc.textContent = 'Effectif ' + clubName;
+  // Loading screen
   const ldl = document.getElementById('ld-logo-img');
-  if (ldl) { ldl.src = club.logo; ldl.alt = club.name; }
+  if (ldl) { ldl.src = logoSrc || ''; ldl.alt = clubName; ldl.style.display = logoSrc ? 'block' : 'none'; }
   const ldc = document.getElementById('ld-club-name');
-  if (ldc) ldc.textContent = club.name;
+  if (ldc) ldc.textContent = clubName;
+  // Kit filenames hint
+  const clubSlug = clubName.toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  const kfh = document.getElementById('kit-filename-hint');
+  if (kfh) kfh.textContent = `Ex: ${clubSlug}_home.png, ${clubSlug}_away.png`;
+  const lfh = document.getElementById('logo-filename-hint');
+  if (lfh) lfh.textContent = `Ex: ${clubSlug}_logo.png, ${clubSlug}_small.png`;
 }
 
 async function getSaves() {
@@ -989,14 +1390,15 @@ async function getSaves() {
 
 async function sv() {
   if (!currentSaveId || !currentUser) return;
-  const club = CLUBS[D.clubId] || CLUBS.westfield;
+  const displayClub = D.clubName || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].name : 'Mon club');
+  const displayMgr  = D.coachName || D.mgr || 'Manager';
   const { error } = await supa.from('saves').upsert({
     id: currentSaveId,
     user_id: currentUser.id,
-    club_id: D.clubId || 'westfield',
-    manager_name: D.mgr || 'Manager',
+    club_id: D.clubId || 'custom',
+    manager_name: displayMgr,
     season: D.season || '2025/26',
-    club: club.name,
+    club: displayClub,
     last_played: new Date().toISOString(),
     data: D
   });
@@ -1007,9 +1409,9 @@ async function sv() {
 async function loadSaveData(id) {
   const { data, error } = await supa
     .from('saves').select('data').eq('id', id).single();
+  const p = (!error && data?.data) ? data.data : {};
   if (error) { console.error('loadSaveData:', error); D = DFLT(); }
   else {
-    const p = data?.data || {};
     D = {...DFLT(), ...p};
     D.fin = {...DFLT().fin, ...(p.fin||{})};
     D.tac = {...DFLT().tac, ...(p.tac||{})};
@@ -1018,11 +1420,22 @@ async function loadSaveData(id) {
     D.tac.trans       = {...DFLT().tac.trans,   ...(p.tac?.trans||{})};
     D.tac.linkedSquad = {...(p.tac?.linkedSquad||{})};
   }
+  // Merge new sub-objects — safe even on error (p = {})
+  D.theme    = {...DFLT().theme,  ...(p.theme||{})};
+  D.kits     = {...DFLT().kits,   ...(p.kits||{})};
+  D.club     = {...DFLT().club,   ...(p.club||{})};
+  D.hof      = p.hof      || [];
+  D.timeline = p.timeline || [];
+  // Back-fill from legacy CLUBS for old saves
+  if (!D.clubName  && D.clubId && CLUBS[D.clubId]) D.clubName  = CLUBS[D.clubId].name;
+  if (!D.coachName) D.coachName = D.mgr || '';
+  if (!D.division  && D.clubId && CLUBS[D.clubId]) D.division  = CLUBS[D.clubId].division;
+  if (!D.theme.bg || !D.theme.accent) D.theme = DFLT().theme;
   if (!D.tac.playerPos || Object.keys(D.tac.playerPos).length < 11)
     initPosFromPreset(D.tac.form || '4-4-2');
   if (!D.tac.playerPosDef || Object.keys(D.tac.playerPosDef).length < 11)
     D.tac.playerPosDef = JSON.parse(JSON.stringify(D.tac.playerPos));
-  applyClubTheme(D.clubId || 'westfield');
+  applyClubTheme(D.clubId || null);
 }
 
 // ── Navigation écrans ──
@@ -1055,18 +1468,25 @@ async function renderSaveCards() {
   el.innerHTML = '<div class="wlc-empty" style="opacity:.5">Chargement…</div>';
   const saves = await getSaves();
   if (!saves.length) {
-    el.innerHTML = '<div class="wlc-empty">Aucune sauvegarde — commencez une nouvelle partie.</div>';
+    el.innerHTML = '<div class="wlc-empty">Aucune carrière — commencez une nouvelle partie.</div>';
     return;
   }
   el.innerHTML = saves.map(s => {
     const d = new Date(s.last_played);
     const when = isNaN(d) ? '—' : d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
-    const clubCfg = CLUBS[s.club_id] || CLUBS.westfield;
+    // Support both new (D.logoB64 stored in data) and legacy (CLUBS logo)
+    const savedData = null; // data not loaded here, use club column
+    const legacyCfg = s.club_id && CLUBS[s.club_id];
+    const logoSrc   = legacyCfg ? legacyCfg.logo : '';
+    const clubName  = s.club || (legacyCfg ? legacyCfg.name : 'Club');
+    const logoHtml  = logoSrc
+      ? `<img class="save-card-ico" src="${logoSrc}" alt="${clubName}">`
+      : `<div class="save-card-ico" style="display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--gm)">⚽</div>`;
     return `<div class="save-card" onclick="selectSave('${s.id}')">
-      <img class="save-card-ico" src="${clubCfg.logo}" alt="${clubCfg.name}">
+      ${logoHtml}
       <div style="flex:1">
         <div class="save-card-name">${s.manager_name}</div>
-        <div class="save-card-info">${clubCfg.name} · ${s.season}</div>
+        <div class="save-card-info">${clubName} · ${s.season}</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:10px;color:var(--gr)">${when}</div>
@@ -1078,39 +1498,55 @@ async function renderSaveCards() {
 
 // ── Nouvelle save ──
 function showNewSaveForm() {
-  _selectedClub = 'westfield';
-  document.querySelectorAll('.club-card').forEach(c => c.classList.remove('selected'));
-  const def = document.getElementById('club-card-westfield');
-  if (def) def.classList.add('selected');
+  // Reset form
+  g('nc-club').value   = '';
+  g('nc-coach').value  = '';
+  g('nc-div').value    = '';
+  g('nc-season').value = '2025/26';
+  g('nc-color-bg').value     = '#060e09';
+  g('nc-hex-bg').value       = '#060e09';
+  g('nc-color-accent').value = '#e8c547';
+  g('nc-hex-accent').value   = '#e8c547';
+  // Reset logo preview
+  g('nc-logo-img').src = '';
+  g('nc-logo-img').style.display = 'none';
+  g('nc-logo-placeholder').style.display = 'block';
+  _newCareerLogo = '';
   g('wlc-saves-section').style.display = 'none';
   g('wlc-new-form').style.display = 'block';
-  setTimeout(() => g('ns-mgr').focus(), 80);
+  setTimeout(() => g('nc-club').focus(), 80);
 }
 function hideNewSaveForm() {
   g('wlc-new-form').style.display      = 'none';
   g('wlc-saves-section').style.display = 'block';
 }
 async function createSave() {
-  const name = g('ns-mgr').value.trim();
-  if (!name) { g('ns-mgr').focus(); return; }
-  if (!_selectedClub) { alert('Choisissez un club.'); return; }
+  const clubName  = g('nc-club').value.trim();
+  const coachName = g('nc-coach').value.trim();
+  if (!clubName)  { g('nc-club').focus();  return; }
+  if (!coachName) { g('nc-coach').focus(); return; }
+  const bgColor     = g('nc-color-bg').value     || '#060e09';
+  const accentColor = g('nc-color-accent').value || '#e8c547';
   const id = 'save_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
   currentSaveId = id;
   D = DFLT();
-  D.mgr = name;
-  D.clubId = _selectedClub;
-  const club = CLUBS[_selectedClub] || CLUBS.westfield;
-  D.club.city  = club.city;
-  D.club.found = club.found;
+  D.clubName  = clubName;
+  D.coachName = coachName;
+  D.mgr       = coachName;
+  D.division  = g('nc-div').value.trim();
+  D.season    = g('nc-season').value.trim() || '2025/26';
+  D.theme     = { bg: bgColor, accent: accentColor };
+  D.logoB64   = _newCareerLogo || '';
+  D.clubId    = '';
   initPosFromPreset('4-4-2');
-  applyClubTheme(_selectedClub);
+  applyClubTheme(null);
   await sv();
-  startLoading(name, _selectedClub);
+  startLoading(coachName, null);
 }
 async function selectSave(id) {
   currentSaveId = id;
   await loadSaveData(id);
-  startLoading(D.mgr || 'Manager', D.clubId || 'westfield');
+  startLoading(D.coachName || D.mgr || 'Manager', D.clubId || null);
 }
 async function deleteSave(id) {
   if (!confirm('Supprimer cette sauvegarde définitivement ?')) return;
@@ -1141,9 +1577,8 @@ function positionRings() {
 }
 
 function startLoading(managerName, clubId) {
-  const club = CLUBS[clubId] || CLUBS.westfield;
-  // Apply club theme vars so loading screen inherits them
-  applyClubTheme(clubId);
+  // Apply theme so loading screen inherits correct colors/logo
+  applyClubTheme(clubId || null);
 
   g('screen-welcome').style.display = 'none';
   g('screen-auth').style.display    = 'none';
@@ -1152,9 +1587,11 @@ function startLoading(managerName, clubId) {
   positionRings();
   g('ld-mgr').textContent = managerName;
 
-  // Progress bar color per club
+  // Progress bar color from current theme vars
   const fill = g('ld-fill');
-  fill.style.background = `linear-gradient(90deg,${club.vars['--gm']},${club.vars['--y']})`;
+  const themeGm = getComputedStyle(document.documentElement).getPropertyValue('--gm').trim() || '#1a5c30';
+  const themeY  = getComputedStyle(document.documentElement).getPropertyValue('--y').trim()  || '#e8c547';
+  fill.style.background = `linear-gradient(90deg,${themeGm},${themeY})`;
   fill.style.transition = 'none';
   fill.style.width = '0';
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -1248,7 +1685,9 @@ async function initApp() {
   }
 }
 function sd() {
-  D.mgr   = document.getElementById('tb-mgr').innerText.trim();
+  const mgrVal = document.getElementById('tb-mgr').innerText.trim();
+  D.mgr       = mgrVal;
+  D.coachName = mgrVal;
   D.season = document.getElementById('tb-season').innerText.trim();
   D.next.opp  = document.getElementById('nm-opp').innerText.trim();
   D.next.date = document.getElementById('nm-date').value;
@@ -1281,8 +1720,10 @@ function saveTac() {
   sv();
 }
 function applyAll() {
-  applyClubTheme(D.clubId || 'westfield');
-  g('tb-mgr').innerText   = D.mgr||'Votre nom';
+  // Sync legacy mgr field from new coachName if present
+  if (D.coachName) D.mgr = D.coachName;
+  applyClubTheme(D.clubId || null);
+  g('tb-mgr').innerText   = D.coachName || D.mgr || 'Manager';
   g('tb-season').innerText = D.season||'2025/26';
   g('sb-season').textContent = D.season||'2025/26';
   g('nm-opp').innerText   = D.next.opp||'—';
@@ -1290,8 +1731,8 @@ function applyAll() {
   g('nm-comp').value      = D.next.comp||'';
   g('c-stad').value  = D.club.stad||'';
   g('c-cap').value   = D.club.cap||'';
-  g('c-city').value  = D.club.city||'West Sussex';
-  g('c-found').value = D.club.found||'1966';
+  g('c-city').value  = D.club.city||'';
+  g('c-found').value = D.club.found||'';
   g('f-transfer').value = D.fin.transfer||'';
   g('f-wages').value    = D.fin.wages||'';
   g('f-balance').value  = D.fin.balance||'';
@@ -1317,13 +1758,14 @@ function applyAll() {
   renderResults(); renderSquad(); renderTargets(); renderShortlist();
   renderTx(); renderObj(); renderHistory();
   renderPitch();
-  updateDash(); updateWages();
+  renderFeed(); renderPress(); renderHof(); renderTimeline(); renderKits();
+  updateDash(); updateWages(); updateProgression();
 }
 const g   = id => document.getElementById(id);
 const sv2 = (id,v) => { const e=g(id); if(e&&v!==undefined) e.value=v; };
 
 // ── NAV ──
-const PTITLES = {dashboard:'Dashboard',finances:'Finances',tactics:'Tactique',squad:'Effectif',recruitment:'Recrutement',notes:'Notes & Objectifs',history:'Historique'};
+const PTITLES = {dashboard:'Dashboard',feed:'Feed Social',press:'Revue de Presse',finances:'Finances',tactics:'Tactique',squad:'Effectif',recruitment:'Recrutement',kits:'Maillots & Logos',hof:'Hall of Fame',timeline:'Timeline',notes:'Notes & Objectifs',history:'Historique'};
 function showPage(n, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
@@ -1891,7 +2333,7 @@ function openArchiveModal() {
   g('arch-season').value = D.season||'';
   g('arch-pos').value    = D.pos||'';
   g('arch-tot').value    = D.posTotal||20;
-  g('arch-div').value    = (CLUBS[D.clubId]||CLUBS.westfield).division;
+  g('arch-div').value    = D.division || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].division : '');
   g('arch-nexts').value  = '';
   g('arch-notes').value  = '';
   g('arch-scorer').value = '';
@@ -1912,7 +2354,7 @@ function archiveSeason() {
   D.played=D.won=D.drawn=D.lost=D.gf=D.ga=0; D.pos=null; D.results=[];
   if (ns) { D.season=ns; g('tb-season').innerText=ns; g('sb-season').textContent=ns; }
   g('pos-input').value='';
-  sv(); renderResults(); renderHistory(); updateDash(); closeM('archive');
+  sv(); renderResults(); renderHistory(); updateDash(); updateProgression(); closeM('archive');
   alert(`Saison ${snap.season} archivée ⚽ Bonne continuation pour ${ns||'la prochaine saison'} !`);
 }
 function renderHistory() {
@@ -1967,6 +2409,341 @@ function fmt(n) {
   if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
   if (n >= 1000)    return (n/1000).toFixed(1)+'K';
   return n.toString();
+}
+
+// ════════════════════════════════════════════
+//  CAREER CREATION HELPERS
+// ════════════════════════════════════════════
+let _newCareerLogo = '';
+
+function handleLogoUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    _newCareerLogo = e.target.result;
+    const img = g('nc-logo-img');
+    const ph  = g('nc-logo-placeholder');
+    img.src = _newCareerLogo;
+    img.style.display = 'block';
+    ph.style.display  = 'none';
+    // Auto-suggest bg color from logo (simple: just update preview)
+    previewTheme();
+  };
+  reader.readAsDataURL(file);
+}
+
+function syncColorHex(type) {
+  const picker = g('nc-color-' + type);
+  const hex    = g('nc-hex-' + type);
+  if (hex) hex.value = picker.value;
+}
+function syncColorPicker(type) {
+  const hex    = g('nc-hex-' + type);
+  const picker = g('nc-color-' + type);
+  const val = hex.value.trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) { picker.value = val; previewTheme(); }
+}
+function previewTheme() {
+  const bg     = g('nc-color-bg').value     || '#060e09';
+  const accent = g('nc-color-accent').value || '#e8c547';
+  const vars = buildThemeVars(bg, accent);
+  const root = document.documentElement;
+  Object.entries(vars).forEach(([k,v]) => root.style.setProperty(k, v));
+}
+
+// ════════════════════════════════════════════
+//  CAREER PROGRESSION
+// ════════════════════════════════════════════
+function updateProgression() {
+  const el = g('d-progression');
+  if (!el) return;
+  const hist = D.history || [];
+  const current = D.division || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].division : '—');
+  if (!hist.length && !current) { el.innerHTML = '<span style="color:var(--grl);font-size:12px">—</span>'; return; }
+  // Build steps: past seasons + current
+  const steps = [];
+  hist.forEach(h => { const d = h.div || h.division; if (d) steps.push({ div: d, season: h.season, current: false }); });
+  steps.push({ div: current || '—', season: D.season || '', current: true });
+  // Deduplicate consecutive same divisions
+  const deduped = steps.filter((s,i) => i === 0 || s.div !== steps[i-1].div);
+  el.innerHTML = deduped.map((s, i) =>
+    `<div class="cp-step">
+      <span class="cp-div${s.current ? ' current' : ''}" title="${s.season}">${s.div}</span>
+    </div>` +
+    (i < deduped.length - 1 ? '<span class="cp-arrow">→</span>' : '')
+  ).join('');
+}
+
+// ════════════════════════════════════════════
+//  SOCIAL FEED
+// ════════════════════════════════════════════
+const FEED_TPLS = [
+  {type:'fan',      emoji:'🔥', name:'{clubName} Ultras',    handle:'@{slug}_ultras',
+   text:'{clubName} on the rise! The gaffer {coachName} is building something special here. From {startDiv} — watch this space 🔥🔥'},
+  {type:'fan',      emoji:'⚽', name:'Non-League Fanatic',   handle:'@NonLeagueFanatic',
+   text:"Watching {clubName}'s journey up the pyramid is one of the most exciting stories in English football right now. This is why we love non-league football."},
+  {type:'fan',      emoji:'💚', name:'Travelling Fan',       handle:'@AwayDayBlogger',
+   text:"Made the trip to watch {clubName} today. Brilliant atmosphere, proper football. Manager {coachName} clearly has this squad believing. Come on you {clubName}! ⚽"},
+  {type:'journalist',emoji:'📰',name:'County FA Reporter',   handle:'@CountyFAReport',
+   text:'MATCH REPORT | {clubName} continue their impressive form under {coachName}. The {division} side are building something real.'},
+  {type:'journalist',emoji:'🗞️',name:'Non-League Paper',     handle:'@NonLeaguePaper',
+   text:"INTERVIEW: \"{clubName} have a clear identity and clear direction\" — {coachName} speaks exclusively about his vision for the club and what comes next."},
+  {type:'journalist',emoji:'📊',name:'Pyramid Stats',        handle:'@PyramidStats',
+   text:"ANALYSIS: {clubName}'s rise under {coachName} in numbers. The data shows a team playing with genuine structure and purpose. Full breakdown below 👇"},
+  {type:'insider',  emoji:'🚨', name:'FM Transfer Insider',  handle:'@FMTransferInsider',
+   text:"🚨 EXCLUSIVE: {clubName} monitoring a striker ahead of the next window. Budget is tight but manager {coachName} has been backed by the board. More to follow."},
+  {type:'insider',  emoji:'👀', name:'Lower League Scoop',   handle:'@LowerLeagueScoop',
+   text:"Word from inside {clubName}: {coachName} is keen to add some pace upfront. One name mentioned repeatedly in the last few days. Stay tuned."},
+  {type:'official', emoji:'📣', name:'{clubName} FC',        handle:'@{slug}_FC',
+   text:"📣 OFFICIAL | {clubName} would like to thank all supporters for their continued backing this season. More exciting times ahead. 💚 #UpThe{slug}"},
+  {type:'troll',    emoji:'😂', name:'D8 Observer',          handle:'@FootballTroll99',
+   text:"{clubName} in {division}? Give it two seasons and they'll be back where they came from lmao. {coachName} won't last."},
+  {type:'fan',      emoji:'🏟️', name:'Ground Hopper UK',     handle:'@GroundHopperUK',
+   text:"Visited {clubName}'s ground last weekend. Proper non-league atmosphere. One to watch as they continue their push up the pyramid. Highly recommend a visit."},
+  {type:'journalist',emoji:'🏆',name:'Trophy Watch',         handle:'@TrophyWatchENG',
+   text:"Could {clubName} be serious cup contenders this season? {coachName} has assembled a squad with real quality for this level. We'll be keeping a close eye on them."},
+  {type:'insider',  emoji:'💸', name:'Wages Insider',        handle:'@FootballWagesUK',
+   text:"Hearing {clubName} are offering slightly above-market wages to attract players to {division}. Smart move from {coachName} as they bid to sustain momentum."},
+];
+
+let _feedFilter = 'all';
+let _feedLikes  = {};
+
+function resolveTpl(tpl) {
+  const clubName  = D.clubName || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].name : 'Votre club');
+  const coachName = D.coachName || D.mgr || 'Le manager';
+  const division  = D.division || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].division : '—');
+  const startDiv  = (D.history && D.history.length ? D.history[0].division : null) || division;
+  const slug      = clubName.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10) || 'club';
+  return tpl
+    .replace(/\{clubName\}/g,  clubName)
+    .replace(/\{coachName\}/g, coachName)
+    .replace(/\{division\}/g,  division)
+    .replace(/\{startDiv\}/g,  startDiv)
+    .replace(/\{slug\}/g,      slug);
+}
+
+function renderFeed(filter) {
+  if (filter !== undefined) _feedFilter = filter;
+  const el = g('feed-list');
+  if (!el) return;
+  const times = ['1m','4m','12m','23m','45m','1h','2h','3h','5h','8h','1j','2j'];
+  const posts = FEED_TPLS
+    .filter(t => _feedFilter === 'all' || t.type === _feedFilter)
+    .map((t, i) => {
+      const lid  = 'fl' + i;
+      const likes = _feedLikes[lid] || (10 + i * 7 + Math.floor(i * 2.3));
+      const time  = times[i % times.length];
+      return `<div class="feed-post">
+        <div class="feed-avatar">${t.emoji}</div>
+        <div style="flex:1;min-width:0">
+          <div class="feed-meta">
+            <span class="feed-name">${resolveTpl(t.name)}</span>
+            <span class="feed-handle">${resolveTpl(t.handle)}</span>
+            <span class="feed-time">${time}</span>
+            <span class="feed-badge ${t.type}">${{fan:'Fan',journalist:'Presse',insider:'Insider',official:'Officiel',troll:'Troll'}[t.type]||t.type}</span>
+          </div>
+          <div class="feed-content">${resolveTpl(t.text)}</div>
+          <div class="feed-actions">
+            <span onclick="likeFeed('${lid}',this)">❤️ <span id="${lid}-lk">${likes}</span></span>
+            <span>💬 ${3 + i * 2}</span>
+            <span>🔁 ${1 + Math.floor(i * 1.5)}</span>
+          </div>
+        </div>
+      </div>`;
+    });
+  el.innerHTML = posts.length
+    ? posts.join('')
+    : '<div class="feed-empty">Aucun post dans cette catégorie.</div>';
+}
+
+function filterFeed(type, el) {
+  _feedFilter = type;
+  document.querySelectorAll('#feed-tabs .tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderFeed();
+}
+function refreshFeed() { renderFeed(); }
+function likeFeed(id, btn) {
+  if (!_feedLikes[id]) { const cur = parseInt(g(id+'-lk').textContent)||0; _feedLikes[id] = cur + 1; }
+  else _feedLikes[id]++;
+  g(id+'-lk').textContent = _feedLikes[id];
+}
+
+// ════════════════════════════════════════════
+//  PRESSE
+// ════════════════════════════════════════════
+const PRESS_TPLS = [
+  {cat:'club',      media:'The Non-League Chronicle',
+   title:'{clubName} dreams bigger after impressive season',
+   excerpt:'{coachName} has transformed {clubName} into one of the most talked-about clubs at this level. The ambition is clear and the results back it up.',
+   date:'15 mai 2026'},
+  {cat:'match',     media:'County Sports Gazette',
+   title:'Dominant display puts {clubName} in top spot',
+   excerpt:'A clinical performance from {clubName} leaves them firmly in contention. Manager {coachName} praised his side\'s intensity and tactical discipline.',
+   date:'11 mai 2026'},
+  {cat:'interview', media:'Football Pyramid Weekly',
+   title:'{coachName}: "We are only just getting started"',
+   excerpt:'In an exclusive interview, {clubName}\'s manager speaks candidly about the vision, the recruitment process and why he believes the club can keep rising.',
+   date:'8 mai 2026'},
+  {cat:'mercato',   media:'Transfer Talk Non-League',
+   title:'{clubName} set to strengthen squad ahead of key window',
+   excerpt:'Sources close to the club suggest {coachName} has identified two targets in the upcoming transfer window, with a striker and a centre-back top of the list.',
+   date:'5 mai 2026'},
+  {cat:'club',      media:'Pyramid Report',
+   title:'How {clubName} built a winning culture from scratch',
+   excerpt:'From modest beginnings to {division} — the story of how {coachName} and {clubName} rewrote the expectations of a community club.',
+   date:'2 mai 2026'},
+  {cat:'match',     media:'Match Analysis UK',
+   title:'Tactical breakdown: why {clubName} keep winning',
+   excerpt:'We look at the pressing triggers, the transition game and the set-piece routines that have made {clubName} such a tough opponent this season.',
+   date:'28 avril 2026'},
+];
+
+let _pressFilter = 'all';
+
+function resolvePressHtml(tpl) {
+  const catColors = {match:'match', mercato:'mercato', club:'club', rumeur:'rumeur', interview:'interview'};
+  const catLabel  = {match:'Match', mercato:'Mercato', club:'Club', rumeur:'Rumeur', interview:'Interview'};
+  return `<div class="press-card">
+    <div class="press-media">${tpl.media}</div>
+    <div class="press-title">${resolveTpl(tpl.title)}</div>
+    <div class="press-excerpt">${resolveTpl(tpl.excerpt)}</div>
+    <div class="press-foot">
+      <span class="press-cat ${catColors[tpl.cat]||'club'}">${catLabel[tpl.cat]||tpl.cat}</span>
+      <span style="font-size:11px;color:var(--gr);margin-left:auto">${tpl.date}</span>
+    </div>
+  </div>`;
+}
+
+function renderPress(filter) {
+  if (filter !== undefined) _pressFilter = filter;
+  const el = g('press-list');
+  if (!el) return;
+  const articles = PRESS_TPLS.filter(t => _pressFilter === 'all' || t.cat === _pressFilter);
+  el.innerHTML = articles.length
+    ? articles.map(resolvePressHtml).join('')
+    : '<div class="feed-empty">Aucun article dans cette catégorie.</div>';
+}
+function filterPress(cat, el) {
+  _pressFilter = cat;
+  document.querySelectorAll('#page-press .tabs .tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderPress();
+}
+function refreshPress() { renderPress(); }
+
+// ════════════════════════════════════════════
+//  HALL OF FAME
+// ════════════════════════════════════════════
+function renderHof() {
+  const el = g('hof-list');
+  if (!el) return;
+  const list = D.hof || [];
+  if (!list.length) { el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gr);font-size:13px">Aucune légende ajoutée.</div>'; return; }
+  const statusEmoji = {legend:'⭐', hero:'💙', prospect:'🌱', flop:'📉'};
+  el.innerHTML = list.map((h,i) => `
+    <div class="hof-card">
+      <div class="hof-badge ${h.status==='legend'?'legend':''}">${statusEmoji[h.status]||'⚽'}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="font-size:15px;font-weight:700;color:var(--w)">${h.name}</span>
+          <span style="font-size:11px;color:var(--grl)">${h.pos||''}</span>
+          <span class="hof-status ${h.status||'hero'}">${{legend:'Légende',hero:'Héros culte',prospect:'Espoir',flop:'Flop'}[h.status]||h.status}</span>
+        </div>
+        ${h.seasons?`<div style="font-size:12px;color:var(--grl);margin-bottom:3px">📅 ${h.seasons}</div>`:''}
+        ${h.stats?`<div style="font-size:12px;color:var(--grl);margin-bottom:3px">📊 ${h.stats}</div>`:''}
+        ${h.moments?`<div style="font-size:12px;color:var(--grl);font-style:italic">"${h.moments}"</div>`:''}
+      </div>
+      <button class="btn bd" style="padding:3px 8px;font-size:10px;align-self:flex-start" onclick="delHof(${i})">✕</button>
+    </div>`).join('');
+}
+function addHof() {
+  const name = g('hof-name').value.trim();
+  if (!name) return;
+  if (!D.hof) D.hof = [];
+  D.hof.push({ name, pos:g('hof-pos').value, status:g('hof-status').value, seasons:g('hof-seasons').value.trim(), stats:g('hof-stats').value.trim(), moments:g('hof-moments').value.trim() });
+  sv(); renderHof(); closeM('hof');
+  ['hof-name','hof-seasons','hof-stats','hof-moments'].forEach(id => g(id).value='');
+}
+function delHof(i) { if(confirm('Retirer de la légende ?')){ D.hof.splice(i,1); sv(); renderHof(); } }
+
+// ════════════════════════════════════════════
+//  TIMELINE
+// ════════════════════════════════════════════
+const TL_EMOJI = {promotion:'🚀',trophy:'🏆',transfer:'💸',match:'⚽',milestone:'🎯',other:'📌'};
+function renderTimeline() {
+  const el = g('timeline-list');
+  if (!el) return;
+  const list = D.timeline || [];
+  if (!list.length) { el.innerHTML = '<div style="color:var(--gr);font-size:13px;padding:20px 0">Aucun moment ajouté.</div>'; return; }
+  el.innerHTML = [...list].reverse().map((t,i) => `
+    <div class="tl-item">
+      <div class="tl-dot${t.major?.' major':''}"></div>
+      <div class="tl-card">
+        <div class="tl-date">${t.date||'—'}</div>
+        <div class="tl-title">${TL_EMOJI[t.type]||'📌'} ${t.title||'—'}</div>
+        ${t.desc?`<div class="tl-desc">${t.desc}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+function addTimeline() {
+  const title = g('tl-title').value.trim();
+  if (!title) return;
+  if (!D.timeline) D.timeline = [];
+  D.timeline.push({ date:g('tl-date').value.trim(), type:g('tl-type').value, title, desc:g('tl-desc').value.trim(), major:g('tl-major').value==='1' });
+  sv(); renderTimeline(); closeM('tl');
+  ['tl-date','tl-title','tl-desc'].forEach(id => g(id).value='');
+}
+
+// ════════════════════════════════════════════
+//  KITS & LOGOS
+// ════════════════════════════════════════════
+function handleKitUpload(slot, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    if (!D.kits) D.kits = {};
+    D.kits[slot] = e.target.result;
+    const img = g('kz-'+slot+'-img');
+    const ph  = g('kz-'+slot+'-ph');
+    if (img) { img.src = e.target.result; img.style.display = 'block'; }
+    if (ph)  ph.style.display = 'none';
+    sv();
+  };
+  reader.readAsDataURL(file);
+}
+function clearKit(slot) {
+  if (!confirm('Supprimer ce fichier ?')) return;
+  if (D.kits) D.kits[slot] = '';
+  const img = g('kz-'+slot+'-img');
+  const ph  = g('kz-'+slot+'-ph');
+  if (img) { img.src = ''; img.style.display = 'none'; }
+  if (ph)  ph.style.display = 'flex';
+  sv();
+}
+function exportKit(slot) {
+  const src = D.kits && D.kits[slot];
+  if (!src) { alert('Aucune image à exporter pour ce slot.'); return; }
+  const clubName = D.clubName || (D.clubId && CLUBS[D.clubId] ? CLUBS[D.clubId].name : 'club');
+  const slug = clubName.toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  const filename = slug + '_' + slot + '.png';
+  const a = document.createElement('a');
+  a.href = src;
+  a.download = filename;
+  a.click();
+}
+function renderKits() {
+  if (!D.kits) return;
+  ['home','away','third','logo','small'].forEach(slot => {
+    const img = g('kz-'+slot+'-img');
+    const ph  = g('kz-'+slot+'-ph');
+    const src = D.kits[slot];
+    if (img && src) { img.src = src; img.style.display = 'block'; if(ph) ph.style.display='none'; }
+    else if (img)   { img.src = ''; img.style.display = 'none'; if(ph) ph.style.display='flex'; }
+  });
 }
 
 // ════════════════════════════════════════════
