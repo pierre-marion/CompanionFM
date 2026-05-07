@@ -2680,7 +2680,7 @@ function renderTimeline() {
   if (!list.length) { el.innerHTML = '<div style="color:var(--gr);font-size:13px;padding:20px 0">Aucun moment ajouté.</div>'; return; }
   el.innerHTML = [...list].reverse().map((t,i) => `
     <div class="tl-item">
-      <div class="tl-dot${t.major?.' major':''}"></div>
+      <div class="tl-dot${t.major?' major':''}"></div>
       <div class="tl-card">
         <div class="tl-date">${t.date||'—'}</div>
         <div class="tl-title">${TL_EMOJI[t.type]||'📌'} ${t.title||'—'}</div>
